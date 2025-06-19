@@ -1,12 +1,25 @@
 @extends('layouts.login')
 @section('title', 'Login')
 @section('content')
+<style>
+@keyframes bounce-in {
+  0%   { transform: scale(0.95) translateY(0); }
+  30%  { transform: scale(1.03) translateY(-10px);}
+  50%  { transform: scale(0.98) translateY(0);}
+  70%  { transform: scale(1.01) translateY(-4px);}
+  100% { transform: scale(1) translateY(0);}
+}
+.bounce-on-load {
+  animation: bounce-in 0.8s ease;
+}
+</style>
 <div class="container mt-5">
   <div class="row">
     <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
       <div class="card card-primary">
         <div class="card-header justify-content-center">
-          <h4>Login</h4>
+          <img src="{{ asset('assets/img/logo-removebg-preview.png') }}" alt="logo" class="brand-image img-circle elevation-3 bounce-on-load"
+            style="width: 100px; height: 100px;">
         </div>
         <div class="card-body">
           <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
@@ -56,9 +69,9 @@
           </form>
         </div>
       </div>
-      <div class="mt-5 text-muted text-center">
+      {{-- <div class="mt-5 text-muted text-center">
         Don't have an account? <a href="{{ route('register') }}">Create One</a>
-      </div>
+      </div> --}}
     </div>
   </div>
 </div>

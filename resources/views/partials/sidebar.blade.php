@@ -1,8 +1,19 @@
 <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="index.html"> <img alt="image" src="assets/img/logo.png" class="header-logo" /> <span
-                class="logo-name">Otika</span>
+            <a href="{{ route('dashboard') }}">
+                <style>
+                @keyframes gentle-bounce {
+                  0%, 100% { transform: translateY(0); }
+                  50% { transform: translateY(-4px); }
+                }
+                .gentle-bounce {
+                  animation: gentle-bounce 1.6s ease-in-out infinite;
+                }
+                </style>
+                <img alt="image" src="{{ asset('assets/img/logo-removebg-preview.png') }}" class="header-logo gentle-bounce" />
+                 <img alt="image" src="assets/img/eazisols.png" class="header-logo" />
+                {{-- <span class="logo-name">Eazisols</span> --}}
             </a>
           </div>
           <ul class="sidebar-menu">
@@ -11,7 +22,11 @@
               <a href="{{ route('home') }}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
+<<<<<<< Updated upstream
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="briefcase"></i><span>Careers</span></a>
+=======
+              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="briefcase"></i><span>Widgets</span></a>
+>>>>>>> Stashed changes
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('careers.index') }}">All Careers</a></li>
                 <li><a class="nav-link" href="{{ route('careers.create') }}">Add New Career</a></li>
