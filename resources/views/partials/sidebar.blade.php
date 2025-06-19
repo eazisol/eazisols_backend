@@ -22,11 +22,7 @@
               <a href="{{ route('home') }}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
-<<<<<<< Updated upstream
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="briefcase"></i><span>Careers</span></a>
-=======
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="briefcase"></i><span>Widgets</span></a>
->>>>>>> Stashed changes
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('careers.index') }}">All Careers</a></li>
                 <li><a class="nav-link" href="{{ route('careers.create') }}">Add New Career</a></li>
