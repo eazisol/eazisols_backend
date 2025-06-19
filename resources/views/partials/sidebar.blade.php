@@ -11,9 +11,9 @@
                   animation: gentle-bounce 1.6s ease-in-out infinite;
                 }
                 </style>
-                <img alt="image" src="{{ asset('assets/img/logo-removebg-preview.png') }}" class="header-logo gentle-bounce" />
-                 <img alt="image" src="assets/img/eazisols.png" class="header-logo" />
-                {{-- <span class="logo-name">Eazisols</span> --}}
+                <img alt="image" src="{{ asset('assets/img/logo-removebg-preview.png') }}" class="header-logo gentle-bounce logo-collapsed" />
+                 {{-- <img alt="image" src="assets/img/eazisols.png" class="header-logo logo-expanded" /> --}}
+                <span class="logo-name">Eazisols</span>
             </a>
           </div>
           <ul class="sidebar-menu">
