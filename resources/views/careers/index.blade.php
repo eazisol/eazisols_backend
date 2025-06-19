@@ -163,9 +163,7 @@
                                             <a href="{{ route('careers.edit', $career) }}" class="btn btn-primary btn-sm" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-danger btn-sm delete-btn" 
-                                                data-toggle="modal" 
-                                                data-target="#deleteModal" 
+                                            <button type="button" class="btn btn-danger btn-sm delete-btn"
                                                 data-id="{{ $career->id }}"
                                                 data-title="{{ $career->title }}">
                                                 <i class="fas fa-trash"></i>
@@ -191,106 +189,52 @@
     </div>
 </section>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-danger">
-                <h5 class="modal-title text-white" id="deleteModalLabel">Delete Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this career?</p>
-                <p class="font-weight-bold" id="deleteItemName"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @section('scripts')
-<style>
-    .modal-backdrop {
-        opacity: 0.5 !important;
-    }
-    
-    .modal-dialog {
-        max-width: 500px;
-        margin: 1.75rem auto;
-        z-index: 1050;
-    }
-    
-    .modal-content {
-        border-radius: 0.3rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,.5);
-        position: relative;
-    }
-    
-    .modal {
-        z-index: 1040;
-    }
-    
-    .modal-header, .modal-body, .modal-footer {
-        position: relative;
-        z-index: 1060;
-    }
-    
-    .btn {
-        position: relative;
-        z-index: 1070;
-    }
-</style>
+
+@section('scripts')
+
+<!-- jQuery (if Otika app.min.js already loads, skip this) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-    $(document).ready(function() {
-        // Initialize select2 for better dropdown experience
-        $('select').select2();
-        
-        // Toggle search/filter panel
-        $('[data-collapse]').on('click', function(e) {
-            e.preventDefault();
-            const target = $(this).data('collapse');
-            $(target).collapse('toggle');
-        });
-        
-        // Handle delete button click
-        $('.delete-btn').on('click', function() {
-            const id = $(this).data('id');
-            const title = $(this).data('title');
-            
-            $('#deleteItemName').text(title);
-            
-            // Reset any previous event handlers
-            $('#confirmDeleteBtn').off('click');
-            
-            // Add new click handler for this specific item
-            $('#confirmDeleteBtn').on('click', function() {
+$(document).ready(function() {
+    $('.delete-btn').on('click', function(e) {
+        e.preventDefault();
+
+        const id = $(this).data('id');
+        const title = $(this).data('title');
+
+        Swal.fire({
+            title: 'Delete Career',
+            text: `Are you sure you want to delete "${title}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d'
+        }).then((result) => {
+            if (result.isConfirmed) {
                 $(`#delete-form-${id}`).submit();
-            });
-            
-            // Show the modal with specific options
-            $('#deleteModal').modal({
-                backdrop: true,
-                keyboard: true,
-                focus: true,
-                show: true
-            });
-        });
-        
-        // Ensure the modal can be closed properly
-        $('.close, button[data-dismiss="modal"]').on('click', function() {
-            $('#deleteModal').modal('hide');
+            }
         });
     });
-    
-    // Fix for modal backdrop issue
-    $(document).on('hidden.bs.modal', '.modal', function () {
-        $('.modal:visible').length && $(document.body).addClass('modal-open');
+
+    // Initialize select2
+    $('select').select2();
+
+    // Toggle search/filter panel
+    $('[data-collapse]').on('click', function(e) {
+        e.preventDefault();
+        const target = $(this).data('collapse');
+        $(target).collapse('toggle');
     });
+});
 </script>
-@endsection 
+
+@endsection

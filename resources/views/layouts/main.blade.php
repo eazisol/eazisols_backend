@@ -39,6 +39,7 @@
 
                 
                 @include('partials.footer')
+
                 
                 
             </div>
@@ -58,5 +59,7 @@
   <script src="{{ asset('assets/js/scripts.js') }}"></script>
   <!-- Custom JS File -->
   <script src="{{ asset('assets/js/custom.js') }}"></script>
+  @yield('scripts')
+
 </body>
 </html>
