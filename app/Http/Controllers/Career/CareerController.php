@@ -5,18 +5,60 @@ namespace App\Http\Controllers\Career;
 use App\Http\Controllers\Controller;
 use App\Models\Career;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CareerController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $careers = Career::all();
-        return view('careers.index', compact('careers'));
+        $query = Career::query();
+
+        // Search functionality
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                  ->orWhere('description', 'LIKE', "%{$search}%")
+                  ->orWhere('location', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Filter by type
+        if ($request->has('type') && $request->type != '') {
+            $query->ofType($request->type);
+        }
+
+        // Filter by location
+        if ($request->has('location') && $request->location != '') {
+            $query->inLocation($request->location);
+        }
+
+        // Filter by department removed
+
+        // Filter by status
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        // Sort options
+        $sort = $request->sort ?? 'created_at';
+        $direction = $request->direction ?? 'desc';
+        $query->orderBy($sort, $direction);
+
+        $careers = $query->paginate(10);
+        
+        // Get unique values for filters
+        $types = Career::select('type')->distinct()->pluck('type');
+        $locations = Career::select('location')->distinct()->pluck('location');
+        $statuses = Career::select('status')->distinct()->pluck('status');
+
+        return view('careers.index', compact('careers', 'types', 'locations', 'statuses'));
     }
 
     /**
@@ -40,11 +82,27 @@ class CareerController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'responsibilities' => 'nullable|string',
             'requirements' => 'required|string',
+            'benefits' => 'nullable|string',
             'location' => 'required|string|max:255',
             'type' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
+            // 'department' => 'nullable|string|max:255',
+            'experience_level' => 'nullable|string|max:255',
+            'education' => 'nullable|string|max:255',
+            'salary_range' => 'nullable|string|max:255',
+            'application_deadline' => 'nullable|date',
+            'status' => 'required|string|in:active,inactive,filled',
+            'featured' => 'nullable|boolean',
+            'vacancy_count' => 'nullable|integer|min:1',
+            // SEO fields removed
         ]);
+
+        // Generate slug from title
+        $validated['slug'] = Str::slug($validated['title']);
+        
+        // Handle featured checkbox
+        $validated['featured'] = $request->has('featured');
 
         Career::create($validated);
 
@@ -60,7 +118,14 @@ class CareerController extends Controller
      */
     public function show(Career $career)
     {
-        return view('careers.show', compact('career'));
+        // Get related careers (same type)
+        $relatedCareers = Career::where('id', '!=', $career->id)
+            ->where('type', $career->type)
+            ->where('status', 'active')
+            ->limit(3)
+            ->get();
+            
+        return view('careers.show', compact('career', 'relatedCareers'));
     }
 
     /**
@@ -86,11 +151,29 @@ class CareerController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'responsibilities' => 'nullable|string',
             'requirements' => 'required|string',
+            'benefits' => 'nullable|string',
             'location' => 'required|string|max:255',
             'type' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
+            // 'department' => 'nullable|string|max:255',
+            'experience_level' => 'nullable|string|max:255',
+            'education' => 'nullable|string|max:255',
+            'salary_range' => 'nullable|string|max:255',
+            'application_deadline' => 'nullable|date',
+            'status' => 'required|string|in:active,inactive,filled',
+            'featured' => 'nullable|boolean',
+            'vacancy_count' => 'nullable|integer|min:1',
+            // SEO fields removed
         ]);
+
+        // Update slug if title changed
+        if ($career->title !== $validated['title']) {
+            $validated['slug'] = Str::slug($validated['title']);
+        }
+        
+        // Handle featured checkbox
+        $validated['featured'] = $request->has('featured');
 
         $career->update($validated);
 
@@ -110,5 +193,35 @@ class CareerController extends Controller
 
         return redirect()->route('careers.index')
             ->with('success', 'Career deleted successfully.');
+    }
+    
+    /**
+     * Restore a soft-deleted career.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $career = Career::withTrashed()->findOrFail($id);
+        $career->restore();
+        
+        return redirect()->route('careers.index')
+            ->with('success', 'Career restored successfully.');
+    }
+    
+    /**
+     * Toggle the featured status of a career.
+     *
+     * @param  \App\Models\Career  $career
+     * @return \Illuminate\Http\Response
+     */
+    public function toggleFeatured(Career $career)
+    {
+        $career->featured = !$career->featured;
+        $career->save();
+        
+        return redirect()->back()
+            ->with('success', 'Career featured status updated successfully.');
     }
 } 

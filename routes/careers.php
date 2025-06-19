@@ -12,4 +12,6 @@ use App\Http\Controllers\Career\CareerController;
 |
 */
 
-Route::resource('careers', CareerController::class); 
+Route::resource('careers', CareerController::class);
+Route::patch('careers/{career}/toggle-featured', [CareerController::class, 'toggleFeatured'])->name('careers.toggle-featured');
+Route::get('careers/restore/{id}', [CareerController::class, 'restore'])->name('careers.restore'); 
