@@ -21,27 +21,11 @@
 <body>
     <div class="loader"></div>
     <div id="app">
-            <div class="main-wrapper main-wrapper-1">
-    
-                @include('partials.header')
-               
-
-                
-                  @include('partials.sidebar')
-               
-
-                
-                <div class="main-content">
+            
                     <section class="section">
                         @yield('content')
                     </section>
-                </div>
-
                 
-                @include('partials.footer')
-                
-                
-            </div>
     </div>
     
     {{-- Header and Navbar --}}
