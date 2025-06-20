@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppliedJob;
+use App\Models\Blog;
+use App\Models\Career;
+use App\Models\Query;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +27,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // Get counts for dashboard metrics
+        $data = [
+            'totalCareers' => Career::count(),
+            'totalAppliedJobs' => AppliedJob::count(),
+            'totalBlogs' => Blog::count(),
+            'totalQueries' => Query::count(),
+        ];
+
+        return view('dashboard', $data);
     }
 }

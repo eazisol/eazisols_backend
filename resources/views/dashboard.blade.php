@@ -12,9 +12,9 @@
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
-                          <h5 class="font-15">New Booking</h5>
-                          <h2 class="mb-3 font-18">258</h2>
-                          <p class="mb-0"><span class="col-green">10%</span> Increase</p>
+                          <h5 class="font-15">Total Careers</h5>
+                          <h2 class="mb-3 font-18">{{ $totalCareers }}</h2>
+                          <p class="mb-0"><span class="col-green">Job Postings</span></p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -34,9 +34,9 @@
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
-                          <h5 class="font-15"> Customers</h5>
-                          <h2 class="mb-3 font-18">1,287</h2>
-                          <p class="mb-0"><span class="col-orange">09%</span> Decrease</p>
+                          <h5 class="font-15">Total Applied Jobs</h5>
+                          <h2 class="mb-3 font-18">{{ $totalAppliedJobs }}</h2>
+                          <p class="mb-0"><span class="col-orange">Job Applications</span></p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -56,10 +56,9 @@
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
-                          <h5 class="font-15">New Project</h5>
-                          <h2 class="mb-3 font-18">128</h2>
-                          <p class="mb-0"><span class="col-green">18%</span>
-                            Increase</p>
+                          <h5 class="font-15">Total Blogs</h5>
+                          <h2 class="mb-3 font-18">{{ $totalBlogs }}</h2>
+                          <p class="mb-0"><span class="col-green">Published Articles</span></p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -79,9 +78,9 @@
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
-                          <h5 class="font-15">Revenue</h5>
-                          <h2 class="mb-3 font-18">$48,697</h2>
-                          <p class="mb-0"><span class="col-green">42%</span> Increase</p>
+                          <h5 class="font-15">Total Queries</h5>
+                          <h2 class="mb-3 font-18">{{ $totalQueries }}</h2>
+                          <p class="mb-0"><span class="col-green">Customer Inquiries</span></p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -99,7 +98,7 @@
             <div class="col-12 col-sm-12 col-lg-12">
               <div class="card ">
                 <div class="card-header">
-                  <h4>Revenue chart</h4>
+                  <h4>Project Summary</h4>
                   <div class="card-header-action">
                     <div class="dropdown">
                       <a href="#" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">Options</a>
