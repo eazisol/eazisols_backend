@@ -138,7 +138,7 @@ class AppliedJobController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function apiStore(Request $request)
+    public function applyJob(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'career_id' => 'required|exists:careers,id',

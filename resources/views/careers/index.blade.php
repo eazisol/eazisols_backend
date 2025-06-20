@@ -23,107 +23,6 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Search & Filter</h4>
-                        <div class="card-header-action">
-                            <a data-collapse="#search-filter-collapse" class="btn btn-icon btn-info" href="#"><i class="fas fa-plus"></i></a>
-                        </div>
-                    </div>
-                    <div class="collapse" id="search-filter-collapse">
-                        <div class="card-body">
-                            <form action="{{ route('careers.index') }}" method="GET">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Search</label>
-                                            <input type="text" name="search" class="form-control" placeholder="Search by title, description, etc." value="{{ request('search') }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Type</label>
-                                            <select name="type" class="form-control">
-                                                <option value="">All Types</option>
-                                                @foreach($types as $type)
-                                                    <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>{{ $type }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Location</label>
-                                            <select name="location" class="form-control">
-                                                <option value="">All Locations</option>
-                                                @foreach($locations as $location)
-                                                    <option value="{{ $location }}" {{ request('location') == $location ? 'selected' : '' }}>{{ $location }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    {{-- Department filter removed
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Department</label>
-                                            <select name="department" class="form-control">
-                                                <option value="">All Departments</option>
-                                                @foreach($departments as $department)
-                                                    @if($department)
-                                                        <option value="{{ $department }}" {{ request('department') == $department ? 'selected' : '' }}>{{ $department }}</option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    --}}
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Status</label>
-                                            <select name="status" class="form-control">
-                                                <option value="">All Statuses</option>
-                                                @foreach($statuses as $status)
-                                                    <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>{{ ucfirst($status) }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="form-group">
-                                            <label>Sort By</label>
-                                            <div class="d-flex">
-                                                <select name="sort" class="form-control mr-2">
-                                                    <option value="created_at" {{ request('sort', 'created_at') == 'created_at' ? 'selected' : '' }}>Created Date</option>
-                                                    <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>Title</option>
-                                                    <option value="location" {{ request('sort') == 'location' ? 'selected' : '' }}>Location</option>
-                                                    <option value="type" {{ request('sort') == 'type' ? 'selected' : '' }}>Type</option>
-                                                    <option value="application_deadline" {{ request('sort') == 'application_deadline' ? 'selected' : '' }}>Deadline</option>
-                                                </select>
-                                                <select name="direction" class="form-control">
-                                                    <option value="desc" {{ request('direction', 'desc') == 'desc' ? 'selected' : '' }}>Descending</option>
-                                                    <option value="asc" {{ request('direction') == 'asc' ? 'selected' : '' }}>Ascending</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 d-flex align-items-end">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary mr-2">Apply Filters</button>
-                                            <a href="{{ route('careers.index') }}" class="btn btn-light">Reset</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
                         <h4>All Careers</h4>
                     </div>
                     <div class="card-body">
@@ -246,13 +145,6 @@ $(document).ready(function() {
     if($.fn.select2) {
         $('select').select2();
     }
-
-    // Toggle search/filter panel
-    $('[data-collapse]').on('click', function(e) {
-        e.preventDefault();
-        const target = $(this).data('collapse');
-        $(target).collapse('toggle');
-    });
 });
 </script>
 

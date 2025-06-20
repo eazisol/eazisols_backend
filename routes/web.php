@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Query\QueryController;
+use App\Http\Controllers\AppliedJob\AppliedJobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,9 @@ Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.lo
 Route::post('/contact-us', [QueryController::class, 'storeContactQuery'])->name('queries.contact.store');
 Route::post('/cost-calculator', [QueryController::class, 'storeCostCalculatorQuery'])->name('queries.cost-calculator.store');
 
+// Public API route for job applications
+Route::post('/api/apply-for-job', [AppliedJobController::class, 'applyJob'])->name('applied-jobs.applyJob');
+
 // Email preview routes (only for development environment)
 if (app()->environment('local')) {
     Route::get('/email/preview/query-response', [\App\Http\Controllers\Query\EmailPreviewController::class, 'previewResponseEmail'])->name('email.preview.query-response');
@@ -47,7 +51,6 @@ if (app()->environment('local')) {
 // Include module route files
 Route::middleware(['web', 'auth'])->group(function () {
     require __DIR__.'/careers.php';
-    require __DIR__.'/applied_jobs.php';
     require __DIR__.'/blogs.php';
     require __DIR__.'/queries.php';
     require __DIR__.'/case_studies.php';
@@ -56,4 +59,10 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
     Route::post('/settings/test-email', [App\Http\Controllers\SettingsController::class, 'testEmail'])->name('settings.test-email');
+    
+    // Protected applied jobs routes (admin access only)
+    Route::get('/applied-jobs', [AppliedJobController::class, 'index'])->name('applied-jobs.index');
+    Route::get('/applied-jobs/{appliedJob}', [AppliedJobController::class, 'show'])->name('applied-jobs.show');
+    Route::put('/applied-jobs/{appliedJob}/status', [AppliedJobController::class, 'updateStatus'])->name('applied-jobs.update-status');
+    Route::delete('/applied-jobs/{appliedJob}', [AppliedJobController::class, 'destroy'])->name('applied-jobs.destroy');
 });
