@@ -176,7 +176,7 @@ class BlogsController extends Controller
             $validated['slug'] = $newSlug;
         }
         
-        // Handle thumbnail upload
+        // Handle thumbnail upload or removal
         if ($request->hasFile('thumbnail')) {
             // Delete old thumbnail if exists
             if ($blog->thumbnail && file_exists(public_path($blog->thumbnail))) {
@@ -187,6 +187,12 @@ class BlogsController extends Controller
             $fileName = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('uploads/blogs'), $fileName);
             $validated['thumbnail'] = 'uploads/blogs/' . $fileName;
+        } else if ($request->has('thumbnail_remove') && $request->thumbnail_remove == '1') {
+            // Remove thumbnail if requested
+            if ($blog->thumbnail && file_exists(public_path($blog->thumbnail))) {
+                unlink(public_path($blog->thumbnail));
+            }
+            $validated['thumbnail'] = null;
         }
 
         $blog->update($validated);

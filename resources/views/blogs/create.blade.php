@@ -33,17 +33,41 @@
                             @csrf
                             
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-4">
                                     <div class="form-group">
-                                        <label for="thumbnail">Thumbnail Image</label>
-                                        <input type="file" name="thumbnail" id="thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*">
-                                        <small class="form-text text-muted">Recommended size: 800x600px. Max 2MB.</small>
-                                        @error('thumbnail')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        {{-- <label for="thumbnail">Thumbnail Image</label> --}}
+                                        <input type="file" name="thumbnail" id="thumbnail" class="d-none" accept="image/*" onchange="previewThumbnail(this)">
+                                        
+                                        <div class="thumbnail">
+                                            <div class="upload-area" onclick="document.getElementById('thumbnail').click()">
+                                                <img id="thumbnail-preview-image" src="{{ asset('assets/img/image-.png') }}" 
+                                                    alt="Click to upload" class="upload-image img-fluid w-100" 
+                                                    style="cursor: pointer;">
+                                                <div class="upload-overlay">
+                                                    <i class="fas fa-cloud-upload-alt"></i>
+                                                    <p>Click to upload</p>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2 d-flex">
+                                                <button type="button" class="btn btn-sm btn-danger" onclick="removeThumbnail()" style="display: none;" id="remove-thumbnail-btn">
+                                                    <i class="fas fa-trash"></i> Remove
+                                                </button>
+                                                <span class="ml-2"></span>
+                                                <small class="form-text text-muted">800x600px (Max 2MB)</small>
+                                                
+                                            </div>
+                                            @error('thumbnail')
+                                                <div class="invalid-feedback d-block mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                            </div>
+
+                            
+
+                            <div class="row">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="title">Blog Title <span class="text-danger">*</span></label>
                                         <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}" required>
@@ -52,10 +76,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="category">Category <span class="text-danger">*</span></label>
                                         <input type="text" name="category" id="category" class="form-control @error('category') is-invalid @enderror" value="{{ old('category') }}" required>
@@ -65,7 +86,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="status">Status <span class="text-danger">*</span></label>
                                         <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
@@ -107,6 +128,70 @@
 @section('scripts')
 <link rel="stylesheet" href="{{ asset('assets/bundles/summernote/summernote-bs4.css') }}">
 <script src="{{ asset('assets/bundles/summernote/summernote-bs4.js') }}"></script>
+<style>
+    .upload-area {
+        position: relative;
+        display: block;
+        transition: all 0.3s ease;
+        border: 2px dashed #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        background: #f9f9f9;
+        /* margin: 0 auto; */
+        width: 200px;
+    }
+    .upload-area:hover {
+        border-color: #6777ef;
+    }
+    .upload-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .upload-overlay i {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    .upload-overlay p {
+        margin: 0;
+    }
+    .upload-area:hover .upload-overlay {
+        opacity: 0.9;
+    }
+    .upload-image {
+        box-shadow: none !important;
+        border: none;
+        background: transparent;
+        display: block;
+        max-width: 200px;
+        height: auto;
+        max-height: 200px;
+    }
+    .thumbnail-container {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    @media (min-width: 768px) {
+        .thumbnail-container {
+            max-width: 40%;
+        }
+    }
+    @media (min-width: 992px) {
+        .thumbnail-container {
+            max-width: 30%;
+        }
+    }
+</style>
 <script>
     $(document).ready(function() {
         // Initialize summernote with enhanced features for blog editing
@@ -139,6 +224,40 @@
                 }
             }
         });
+
+        // Initialize custom file input
+        $(".custom-file-input").on("change", function() {
+            let fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
     });
+    
+    // Function to preview the thumbnail
+    function previewThumbnail(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                var image = new Image();
+                image.src = e.target.result;
+                
+                image.onload = function() {
+                    $('#thumbnail-preview-image').attr('src', e.target.result);
+                    $('.upload-overlay').css('opacity', '0');
+                    $('#remove-thumbnail-btn').show();
+                }
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    // Function to remove the thumbnail
+    function removeThumbnail() {
+        $('#thumbnail').val('');
+        $('#thumbnail-preview-image').attr('src', '{{ asset('assets/img/image-.png') }}');
+        $('.upload-overlay').css('opacity', '0');
+        $('#remove-thumbnail-btn').hide();
+    }
 </script>
 @endsection 
