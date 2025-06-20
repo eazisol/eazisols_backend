@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Query\QueryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,10 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout');//login controller logout method
+
+// Public routes for query submissions
+Route::post('/contact-us', [QueryController::class, 'storeContactQuery'])->name('queries.contact.store');
+Route::post('/cost-calculator', [QueryController::class, 'storeCostCalculatorQuery'])->name('queries.cost-calculator.store');
 
 /*
 |--------------------------------------------------------------------------

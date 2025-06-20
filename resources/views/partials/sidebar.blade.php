@@ -44,7 +44,9 @@
             <li class="dropdown">
               <a class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>Queries</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="#">All Queries</a></li>
+                <li><a class="nav-link" href="{{ route('queries.index') }}">All Queries</a></li>
+                <li><a class="nav-link" href="{{ route('queries.index', ['type' => 'contact']) }}">Contact Queries</a></li>
+                <li><a class="nav-link" href="{{ route('queries.index', ['type' => 'cost_calculator']) }}">Cost Calculator Queries</a></li>
               </ul>
             </li>
             <li class="dropdown">

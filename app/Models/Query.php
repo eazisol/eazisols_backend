@@ -24,6 +24,7 @@ class Query extends Model
         'company_name',
         'subject',
         'message',
+        'type',
         'source',
         'status',
         'admin_notes',
@@ -37,6 +38,20 @@ class Query extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    /**
+     * Query types
+     */
+    const TYPE_CONTACT = 'contact';
+    const TYPE_COST_CALCULATOR = 'cost_calculator';
+
+    /**
+     * Status types
+     */
+    const STATUS_NEW = 'new';
+    const STATUS_IN_PROGRESS = 'in_progress';
+    const STATUS_RESOLVED = 'resolved';
+    const STATUS_CLOSED = 'closed';
 
     /**
      * Get the user that the query is assigned to.
@@ -76,5 +91,37 @@ class Query extends Model
     public function scopeResolved($query)
     {
         return $query->whereNotNull('resolved_at');
+    }
+
+    /**
+     * Scope a query to only include contact queries.
+     */
+    public function scopeContact($query)
+    {
+        return $query->where('type', self::TYPE_CONTACT);
+    }
+
+    /**
+     * Scope a query to only include cost calculator queries.
+     */
+    public function scopeCostCalculator($query)
+    {
+        return $query->where('type', self::TYPE_COST_CALCULATOR);
+    }
+
+    /**
+     * Check if query is a contact type.
+     */
+    public function isContact()
+    {
+        return $this->type === self::TYPE_CONTACT;
+    }
+
+    /**
+     * Check if query is a cost calculator type.
+     */
+    public function isCostCalculator()
+    {
+        return $this->type === self::TYPE_COST_CALCULATOR;
     }
 } 
