@@ -31,7 +31,8 @@ class Career extends Model
         'application_deadline',
         'status',         // active, inactive, filled
         'featured',       // boolean to highlight top positions
-        'vacancy_count'  // number of positions available
+        'vacancy_count',  // number of positions available
+        'category'        // career category
     ];
 
     /**

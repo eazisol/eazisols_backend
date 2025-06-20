@@ -37,10 +37,17 @@
                     </div>
 
                     <div class="row mb-3 px-4 pt-3">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <form action="{{ route('careers.index') }}" method="GET" class="form-inline">
+                                <div class="input-group mb-2 mr-sm-2">
+                                    <input type="text" name="search" class="form-control" placeholder="Search careers..." value="{{ request('search') }}">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+
                                 <div class="form-group mr-2 mb-2">
-                                    <select name="type" class="form-control">
+                                    <select name="type" class="form-control" style="min-width: 150px;">
                                         <option value="">All Types</option>
                                         @foreach($types as $type)
                                             <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>
@@ -51,7 +58,18 @@
                                 </div>
 
                                 <div class="form-group mr-2 mb-2">
-                                    <select name="status" class="form-control">
+                                    <select name="category" class="form-control" style="min-width: 150px;">
+                                        <option value="">All Categories</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
+                                                {{ $category }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group mr-2 mb-2">
+                                    <select name="status" class="form-control" style="min-width: 150px;">
                                         <option value="">All Statuses</option>
                                         @foreach($statuses as $status)
                                             <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
@@ -61,22 +79,67 @@
                                     </select>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                                <button type="submit" class="btn btn-primary mb-2 mr-2">
+                                    <i class="fas fa-filter mr-1"></i> Apply Filters
+                                </button>
+                                
+                                @if(request()->anyFilled(['search', 'type', 'category', 'status', 'location']))
+                                    <a href="{{ route('careers.index') }}" class="btn btn-light mb-2">
+                                        <i class="fas fa-times mr-1"></i> Clear Filters
+                                    </a>
+                                @endif
+                                
+                                <div class="ml-auto mb-2">
+                                    <div class="btn-group">
+                                        <a href="{{ route('careers.index', ['sort' => 'created_at', 'direction' => 'desc'] + request()->except(['sort', 'direction'])) }}"
+                                           class="btn {{ request('sort', 'created_at') == 'created_at' && request('direction', 'desc') == 'desc' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                            <i class="fas fa-sort-amount-down mr-1"></i> Newest
+                                        </a>
+                                        <a href="{{ route('careers.index', ['sort' => 'created_at', 'direction' => 'asc'] + request()->except(['sort', 'direction'])) }}"
+                                           class="btn {{ request('sort') == 'created_at' && request('direction') == 'asc' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                            <i class="fas fa-sort-amount-up mr-1"></i> Oldest
+                                        </a>
+                                    </div>
+                                </div>
                             </form>
                         </div>
-
-                        <div class="col-md-6 text-right">
-                            <div class="btn-group">
-                                <a href="{{ route('careers.index', ['sort' => 'created_at', 'direction' => 'desc'] + request()->except(['sort', 'direction'])) }}"
-                                   class="btn {{ request('sort', 'created_at') == 'created_at' && request('direction', 'desc') == 'desc' ? 'btn-primary' : 'btn-outline-primary' }}">
-                                    Newest First
-                                </a>
-                                <a href="{{ route('careers.index', ['sort' => 'created_at', 'direction' => 'asc'] + request()->except(['sort', 'direction'])) }}"
-                                   class="btn {{ request('sort') == 'created_at' && request('direction') == 'asc' ? 'btn-primary' : 'btn-outline-primary' }}">
-                                    Oldest First
-                                </a>
+                    </div>
+                    
+                    <div class="px-4">
+                        @if(request()->anyFilled(['search', 'type', 'category', 'status', 'location']))
+                            <div class="active-filters mb-3">
+                                <span class="font-weight-bold mr-2">Active Filters:</span>
+                                @if(request('search'))
+                                    <span class="badge badge-info mr-1">
+                                        Search: "{{ request('search') }}"
+                                    </span>
+                                @endif
+                                
+                                @if(request('type'))
+                                    <span class="badge badge-info mr-1">
+                                        Type: {{ request('type') }}
+                                    </span>
+                                @endif
+                                
+                                @if(request('category'))
+                                    <span class="badge badge-info mr-1">
+                                        Category: {{ request('category') }}
+                                    </span>
+                                @endif
+                                
+                                @if(request('status'))
+                                    <span class="badge badge-info mr-1">
+                                        Status: {{ ucfirst(request('status')) }}
+                                    </span>
+                                @endif
+                                
+                                @if(request('location'))
+                                    <span class="badge badge-info mr-1">
+                                        Location: {{ request('location') }}
+                                    </span>
+                                @endif
                             </div>
-                        </div>
+                        @endif
                     </div>
 
                     <div class="card-body">
@@ -94,6 +157,7 @@
                                         <th>Title</th>
                                         <th>Location</th>
                                         <th>Type</th>
+                                        <th>Category</th>
                                         <th>Deadline</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -106,6 +170,7 @@
                                         <td>{{ $career->title }}</td>
                                         <td>{{ $career->location }}</td>
                                         <td>{{ $career->type }}</td>
+                                        <td>{{ $career->category ?? 'N/A' }}</td>
                                         <td>{{ $career->application_deadline ? $career->application_deadline->format('M d, Y') : 'N/A' }}</td>
                                         <td>
                                             <div class="badge badge-{{ $career->status == 'active' ? 'success' : ($career->status == 'filled' ? 'warning' : 'danger') }}">

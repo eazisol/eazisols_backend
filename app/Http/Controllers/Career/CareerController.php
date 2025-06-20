@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Career;
 
 use App\Http\Controllers\Controller;
 use App\Models\Career;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -34,6 +35,11 @@ class CareerController extends Controller
             $query->ofType($request->type);
         }
 
+        // Filter by category
+        if ($request->has('category') && $request->category != '') {
+            $query->where('category', $request->category);
+        }
+
         // Filter by location
         if ($request->has('location') && $request->location != '') {
             $query->inLocation($request->location);
@@ -55,10 +61,11 @@ class CareerController extends Controller
         
         // Get unique values for filters
         $types = Career::select('type')->distinct()->pluck('type');
+        $categories = Category::where('type', 'career')->where('status', 'active')->pluck('name');
         $locations = Career::select('location')->distinct()->pluck('location');
         $statuses = Career::select('status')->distinct()->pluck('status');
 
-        return view('careers.index', compact('careers', 'types', 'locations', 'statuses'));
+        return view('careers.index', compact('careers', 'types', 'categories', 'locations', 'statuses'));
     }
 
     /**
@@ -68,7 +75,8 @@ class CareerController extends Controller
      */
     public function create()
     {
-        return view('careers.create');
+        $categories = Category::where('type', 'career')->where('status', 'active')->pluck('name', 'name');
+        return view('careers.create', compact('categories'));
     }
 
     /**
@@ -87,6 +95,7 @@ class CareerController extends Controller
             'benefits' => 'nullable|string',
             'location' => 'required|string|max:255',
             'type' => 'required|string|max:255',
+            'category' => 'nullable|string|max:255',
             // 'department' => 'nullable|string|max:255',
             'experience_level' => 'nullable|string|max:255',
             'education' => 'nullable|string|max:255',
@@ -136,7 +145,8 @@ class CareerController extends Controller
      */
     public function edit(Career $career)
     {
-        return view('careers.edit', compact('career'));
+        $categories = Category::where('type', 'career')->where('status', 'active')->pluck('name', 'name');
+        return view('careers.edit', compact('career', 'categories'));
     }
 
     /**
@@ -156,6 +166,7 @@ class CareerController extends Controller
             'benefits' => 'nullable|string',
             'location' => 'required|string|max:255',
             'type' => 'required|string|max:255',
+            'category' => 'nullable|string|max:255',
             // 'department' => 'nullable|string|max:255',
             'experience_level' => 'nullable|string|max:255',
             'education' => 'nullable|string|max:255',

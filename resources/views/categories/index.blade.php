@@ -121,9 +121,6 @@
                                             </td>
                                             <td>{{ $category->created_at->format('M d, Y') }}</td>
                                             <td>
-                                                <a href="{{ route('categories.show', $category) }}" class="btn btn-sm btn-info">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
                                                 <a href="{{ route('categories.edit', $category) }}" class="btn btn-sm btn-primary">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </a>
