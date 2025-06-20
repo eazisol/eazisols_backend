@@ -79,7 +79,14 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="category">Category <span class="text-danger">*</span></label>
-                                        <input type="text" name="category" id="category" class="form-control @error('category') is-invalid @enderror" value="{{ old('category') }}" required>
+                                        <select name="category" id="category" class="form-control @error('category') is-invalid @enderror" required>
+                                            <option value="">-- Select Category --</option>
+                                            @foreach($categories as $categoryName)
+                                                <option value="{{ $categoryName }}" {{ old('category') == $categoryName ? 'selected' : '' }}>
+                                                    {{ $categoryName }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                         @error('category')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

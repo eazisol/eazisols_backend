@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Blogs;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -47,7 +48,7 @@ class BlogsController extends Controller
         $blogs = $query->paginate(10);
         
         // Get unique values for filters
-        $categories = Blog::select('category')->distinct()->pluck('category');
+        $categories = Category::where('type', 'blog')->where('status', 'active')->pluck('name');
         $statuses = ['draft', 'published'];
 
         return view('blogs.index', compact('blogs', 'categories', 'statuses'));
@@ -60,7 +61,8 @@ class BlogsController extends Controller
      */
     public function create()
     {
-        return view('blogs.create');
+        $categories = Category::where('type', 'blog')->where('status', 'active')->pluck('name', 'name');
+        return view('blogs.create', compact('categories'));
     }
 
     /**
@@ -137,7 +139,8 @@ class BlogsController extends Controller
      */
     public function edit(Blog $blog)
     {
-        return view('blogs.edit', compact('blog'));
+        $categories = Category::where('type', 'blog')->where('status', 'active')->pluck('name', 'name');
+        return view('blogs.edit', compact('blog', 'categories'));
     }
 
     /**

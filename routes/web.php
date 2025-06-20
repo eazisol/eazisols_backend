@@ -53,6 +53,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     require __DIR__.'/blogs.php';
     require __DIR__.'/queries.php';
     require __DIR__.'/case_studies.php';
+    require __DIR__.'/categories.php';
     
     // Settings routes
     Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');

@@ -42,6 +42,15 @@
               </ul>
             </li>
             <li class="dropdown">
+              <a class="menu-toggle nav-link has-dropdown"><i data-feather="tag"></i><span>Categories</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{{ route('categories.index') }}">All Categories</a></li>
+                <li><a class="nav-link" href="{{ route('categories.create') }}">Add New Category</a></li>
+                {{-- <li><a class="nav-link" href="{{ route('categories.index', ['type' => 'blog']) }}">Blog Categories</a></li>
+                <li><a class="nav-link" href="{{ route('categories.index', ['type' => 'career']) }}">Career Categories</a></li> --}}
+              </ul>
+            </li>
+            <li class="dropdown">
               <a class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>Queries</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('queries.index') }}">All Queries</a></li>
