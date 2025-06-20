@@ -31,7 +31,7 @@
             <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Applied Jobs</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="#">All Applications</a></li>
+                <li><a class="nav-link" href="{{ route('applied-jobs.index') }}">All Applications</a></li>
               </ul>
             </li>
             <li class="dropdown">

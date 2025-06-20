@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AppliedJob\AppliedJobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Public API routes (no auth required)
+Route::post('/apply-for-job', [AppliedJobController::class, 'apiStore']);
+
+// Include other API routes
+// Route::prefix('v1')->group(function () {
+//     require __DIR__.'/api/careers.php';
+//     require __DIR__.'/api/blogs.php';
+//     require __DIR__.'/api/queries.php';
+//     require __DIR__.'/api/case_studies.php';
+// });
