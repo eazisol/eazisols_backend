@@ -54,7 +54,7 @@
                                         <tr>
                                             <th>Resume</th>
                                             <td>
-                                                <a href="{{ asset('storage/' . $appliedJob->resume) }}" class="btn btn-sm btn-primary" target="_blank">
+                                                <a href="{{ asset($appliedJob->resume) }}" class="btn btn-sm btn-primary" target="_blank">
                                                     <i class="fas fa-download"></i> Download Resume
                                                 </a>
                                             </td>

@@ -122,8 +122,9 @@ class AppliedJobController extends Controller
     public function destroy(AppliedJob $appliedJob)
     {
         // Delete resume file if it exists
-        if (Storage::exists('public/resumes/' . $appliedJob->resume)) {
-            Storage::delete('public/resumes/' . $appliedJob->resume);
+        $resumePath = public_path($appliedJob->resume);
+        if (file_exists($resumePath)) {
+            unlink($resumePath);
         }
         
         $appliedJob->delete();
@@ -173,8 +174,16 @@ class AppliedJobController extends Controller
         if ($request->hasFile('resume')) {
             $resumeFile = $request->file('resume');
             $resumeName = time() . '_' . $resumeFile->getClientOriginalName();
-            $resumePath = $resumeFile->storeAs('public/resumes', $resumeName);
-            $resumePath = str_replace('public/', '', $resumePath);
+            
+            // Create uploads/resume directory if it doesn't exist
+            $uploadPath = public_path('uploads/resume');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+            
+            // Move the file to public/uploads/resume directory
+            $resumeFile->move($uploadPath, $resumeName);
+            $resumePath = 'uploads/resume/' . $resumeName;
         } else {
             return response()->json([
                 'success' => false,
