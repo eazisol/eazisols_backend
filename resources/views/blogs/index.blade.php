@@ -179,6 +179,25 @@
 
 <script>
 $(document).ready(function() {
+    // Fix for sidebar and header issues
+    $("[data-toggle='sidebar']").trigger('click');
+    setTimeout(function() {
+        $("[data-toggle='sidebar']").trigger('click');
+    }, 100);
+    
+    // Initialize sidebar dropdown functionality
+    $('.main-sidebar .sidebar-menu li a.has-dropdown').on('click', function() {
+        var me = $(this);
+        me.parent().find('> .dropdown-menu').slideToggle(500);
+        return false;
+    });
+    
+    // Set active sidebar menu item
+    $('.main-sidebar .sidebar-menu li').removeClass('active');
+    $('.main-sidebar .sidebar-menu li a[href="' + window.location.href + '"]').parent().addClass('active');
+    $('.main-sidebar .sidebar-menu li a[href="' + window.location.pathname + '"]').parent().addClass('active');
+
+    // Original blog index page script
     $('.delete-btn').on('click', function(e) {
         e.preventDefault();
 
@@ -202,7 +221,9 @@ $(document).ready(function() {
     });
 
     // Initialize select2
-    $('select').select2();
+    if($.fn.select2) {
+        $('select').select2();
+    }
 
     // Toggle search/filter panel
     $('[data-collapse]').on('click', function(e) {

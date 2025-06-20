@@ -45,21 +45,43 @@
             </div>
     </div>
     
-    {{-- Header and Navbar --}}
-
-    
-
-    {{-- js --}}
+    <!-- General JS Scripts -->
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
-  <!-- JS Libraies -->
-  <script src="{{ asset('assets/bundles/apexcharts/apexcharts.min.js') }}"></script>
-  <!-- Page Specific JS File -->
-  <script src="{{ asset('assets/js/page/index.js') }}"></script>
-  <!-- Template JS File -->
-  <script src="{{ asset('assets/js/scripts.js') }}"></script>
-  <!-- Custom JS File -->
-  <script src="{{ asset('assets/js/custom.js') }}"></script>
-  @yield('scripts')
+    <!-- JS Libraries -->
+    <script src="{{ asset('assets/bundles/apexcharts/apexcharts.min.js') }}"></script>
+    <!-- Page Specific JS File -->
+    <script src="{{ asset('assets/js/page/index.js') }}"></script>
+    <!-- Template JS File -->
+    <script src="{{ asset('assets/js/scripts.js') }}"></script>
+    <!-- Custom JS File -->
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
+
+    <script>
+    $(document).ready(function() {
+        // Fix sidebar initialization issues
+        if (window.location.pathname.includes('/blogs') || window.location.pathname.includes('/careers')) {
+            // Only trigger for blogs and careers pages which have issues
+            setTimeout(function() {
+                // This helps reinitialize the sidebar
+                $('body').removeClass('sidebar-mini');
+                $('body').removeClass('sidebar-gone');
+                
+                if ($(window).outerWidth() <= 1024) {
+                    $('body').addClass('sidebar-gone');
+                }
+                
+                // Reset sidebar dropdown behavior
+                $('.main-sidebar .sidebar-menu li a.has-dropdown').off('click').on('click', function() {
+                    var me = $(this);
+                    me.parent().find('> .dropdown-menu').slideToggle(500);
+                    return false;
+                });
+            }, 200);
+        }
+    });
+    </script>
+    
+    @yield('scripts')
 
 </body>
 </html>
