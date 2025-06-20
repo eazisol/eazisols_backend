@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Blog\BlogController;
+use App\Http\Controllers\Blogs\BlogsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,4 +12,5 @@ use App\Http\Controllers\Blog\BlogController;
 |
 */
 
-// Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index'); 
+Route::resource('blogs', BlogsController::class);
+Route::get('blogs/restore/{id}', [BlogsController::class, 'restore'])->name('blogs.restore'); 

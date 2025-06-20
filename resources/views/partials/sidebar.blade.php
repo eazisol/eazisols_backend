@@ -19,36 +19,36 @@
           <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
             <li class="dropdown active">
-              <a href="{{ route('home') }}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
+              <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="briefcase"></i><span>Careers</span></a>
+              <a class="menu-toggle nav-link has-dropdown"><i data-feather="briefcase"></i><span>Careers</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('careers.index') }}">All Careers</a></li>
                 <li><a class="nav-link" href="{{ route('careers.create') }}">Add New Career</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Applied Jobs</span></a>
+              <a class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Applied Jobs</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('applied-jobs.index') }}">All Applications</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="edit"></i><span>Blogs</span></a>
+              <a class="menu-toggle nav-link has-dropdown"><i data-feather="edit"></i><span>Blogs</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="#">All Blogs</a></li>
-                <li><a class="nav-link" href="#">Add New Blog</a></li>
+                <li><a class="nav-link" href="{{ route('blogs.index') }}">All Blogs</a></li>
+                <li><a class="nav-link" href="{{ route('blogs.create') }}">Add New Blog</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>Queries</span></a>
+              <a class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>Queries</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="#">All Queries</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Case Studies</span></a>
+              <a  class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Case Studies</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="#">All Case Studies</a></li>
                 <li><a class="nav-link" href="#">Add New Case Study</a></li>
