@@ -25,7 +25,61 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>All Blogs</h4>
+                        <div class="card-header-form">
+                            <form action="{{ route('blogs.index') }}" method="GET">
+                                <div class="input-group">
+                                    <input type="text" name="search" class="form-control" placeholder="Search by title or category" value="{{ request('search') }}">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+
+                    <div class="row mb-3 px-4 pt-3">
+                        <div class="col-md-6">
+                            <form action="{{ route('blogs.index') }}" method="GET" class="form-inline">
+                                <div class="form-group mr-2 mb-2">
+                                    <select name="category" class="form-control">
+                                        <option value="">All Categories</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
+                                                {{ $category }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group mr-2 mb-2">
+                                    <select name="status" class="form-control">
+                                        <option value="">All Statuses</option>
+                                        @foreach($statuses as $status)
+                                            <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
+                                                {{ ucfirst($status) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                            </form>
+                        </div>
+
+                        <div class="col-md-6 text-right">
+                            <div class="btn-group">
+                                <a href="{{ route('blogs.index', ['sort' => 'created_at', 'direction' => 'desc'] + request()->except(['sort', 'direction'])) }}"
+                                   class="btn {{ request('sort', 'created_at') == 'created_at' && request('direction', 'desc') == 'desc' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                    Newest First
+                                </a>
+                                <a href="{{ route('blogs.index', ['sort' => 'created_at', 'direction' => 'asc'] + request()->except(['sort', 'direction'])) }}"
+                                   class="btn {{ request('sort') == 'created_at' && request('direction') == 'asc' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                    Oldest First
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card-body">
                         @if(session('success'))
                             <div class="alert alert-success">
@@ -84,7 +138,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <div class="mt-4">
                             {{ $blogs->appends(request()->query())->links() }}
                         </div>
@@ -94,7 +148,6 @@
         </div>
     </div>
 </section>
-
 @endsection
 
 @section('scripts')
@@ -106,25 +159,6 @@
 
 <script>
 $(document).ready(function() {
-    // Fix for sidebar and header issues
-    $("[data-toggle='sidebar']").trigger('click');
-    setTimeout(function() {
-        $("[data-toggle='sidebar']").trigger('click');
-    }, 100);
-    
-    // Initialize sidebar dropdown functionality
-    $('.main-sidebar .sidebar-menu li a.has-dropdown').on('click', function() {
-        var me = $(this);
-        me.parent().find('> .dropdown-menu').slideToggle(500);
-        return false;
-    });
-    
-    // Set active sidebar menu item
-    $('.main-sidebar .sidebar-menu li').removeClass('active');
-    $('.main-sidebar .sidebar-menu li a[href="' + window.location.href + '"]').parent().addClass('active');
-    $('.main-sidebar .sidebar-menu li a[href="' + window.location.pathname + '"]').parent().addClass('active');
-
-    // Original blog index page script
     $('.delete-btn').on('click', function(e) {
         e.preventDefault();
 
@@ -146,11 +180,6 @@ $(document).ready(function() {
             }
         });
     });
-
-    // Initialize select2
-    if($.fn.select2) {
-        $('select').select2();
-    }
 });
 </script>
-@endsection 
+@endsection
