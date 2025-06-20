@@ -56,6 +56,11 @@
                 <li><a class="nav-link" href="#">Add New Case Study</a></li>
               </ul>
             </li>
+            
+            <li class="menu-header">Configuration</li>
+            <li>
+              <a href="{{ route('settings.index') }}" class="nav-link"><i data-feather="settings"></i><span>Email Settings</span></a>
+            </li>
           </ul>
         </aside>
       </div>

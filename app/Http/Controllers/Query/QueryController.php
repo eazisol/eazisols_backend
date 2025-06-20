@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Setting;
 
 class QueryController extends Controller
 {
@@ -90,6 +91,8 @@ class QueryController extends Controller
             'admin_notes' => 'nullable|string',
         ]);
         
+        $oldStatus = $query->status;
+        
         // Update resolved_at timestamp if status is being set to resolved
         if (isset($validated['status']) && $validated['status'] === Query::STATUS_RESOLVED && $query->status !== Query::STATUS_RESOLVED) {
             $validated['resolved_at'] = now();
@@ -98,6 +101,26 @@ class QueryController extends Controller
         }
         
         $query->update($validated);
+        
+        // Send status update email if status has changed
+        if (isset($validated['status']) && $oldStatus !== $validated['status']) {
+            try {
+                $statusText = ucfirst(str_replace('_', ' ', $query->status));
+                
+                // Send status update email using MailHelper
+                \App\Helpers\MailHelper::send(
+                    $query->email,
+                    $query->name,
+                    'Status Update: ' . $statusText . ' - ' . ($query->subject ?? 'Your Inquiry'),
+                    'emails.query-status-update',
+                    ['query' => $query]
+                );
+                
+                return redirect()->route('queries.show', $query)->with('success', 'Query updated successfully and status update email sent.');
+            } catch (\Exception $e) {
+                return redirect()->route('queries.show', $query)->with('success', 'Query updated successfully but failed to send status email: ' . $e->getMessage());
+            }
+        }
         
         return redirect()->route('queries.show', $query)->with('success', 'Query updated successfully.');
     }
@@ -122,11 +145,48 @@ class QueryController extends Controller
             $query->save();
         }
         
-        // Here you would typically send an email to the customer
-        // This is a placeholder for email sending logic
-        // Mail::to($query->email)->send(new QueryResponse($query, $validated['message']));
-        
-        return redirect()->route('queries.show', $query)->with('success', 'Response has been sent to the customer via email.');
+        try {
+            // Send email to the customer using MailHelper
+            \App\Helpers\MailHelper::send(
+                $query->email,
+                $query->name,
+                'Response to Your Inquiry: ' . ($query->subject ?? 'Contact Form'),
+                'emails.query-response',
+                ['query' => $query, 'response' => $validated['message']]
+            );
+            
+            // Store the response in the database for record keeping
+            DB::transaction(function () use ($query, $validated) {
+                QueryResponse::create([
+                    'query_id' => $query->id,
+                    'user_id' => Auth::id(),
+                    'message' => $validated['message'],
+                    'is_admin' => true,
+                ]);
+            });
+            
+            return redirect()->route('queries.show', $query)->with('success', 'Response has been sent to the customer via email.');
+        } catch (\Exception $e) {
+            \Log::error('Query response email failed', [
+                'query_id' => $query->id,
+                'email' => $query->email,
+                'error' => $e->getMessage()
+            ]);
+            
+            // Store the response in the database despite email failure
+            DB::transaction(function () use ($query, $validated) {
+                QueryResponse::create([
+                    'query_id' => $query->id,
+                    'user_id' => Auth::id(),
+                    'message' => $validated['message'],
+                    'is_admin' => true,
+                ]);
+            });
+            
+            return redirect()->route('queries.show', $query)
+                ->with('error', 'Response saved but failed to send email: ' . $e->getMessage())
+                ->with('details', 'Check logs for more information. Make sure Mailtrap settings are correct.');
+        }
     }
 
     /**

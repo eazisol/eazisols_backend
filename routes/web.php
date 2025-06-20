@@ -32,6 +32,12 @@ Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.lo
 Route::post('/contact-us', [QueryController::class, 'storeContactQuery'])->name('queries.contact.store');
 Route::post('/cost-calculator', [QueryController::class, 'storeCostCalculatorQuery'])->name('queries.cost-calculator.store');
 
+// Email preview routes (only for development environment)
+if (app()->environment('local')) {
+    Route::get('/email/preview/query-response', [\App\Http\Controllers\Query\EmailPreviewController::class, 'previewResponseEmail'])->name('email.preview.query-response');
+    Route::get('/email/preview/query-status/{status?}', [\App\Http\Controllers\Query\EmailPreviewController::class, 'previewStatusEmail'])->name('email.preview.query-status');
+}
+
 /*
 |--------------------------------------------------------------------------
 | Module Routes
@@ -45,4 +51,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     require __DIR__.'/blogs.php';
     require __DIR__.'/queries.php';
     require __DIR__.'/case_studies.php';
+    
+    // Settings routes
+    Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
+    Route::post('/settings/test-email', [App\Http\Controllers\SettingsController::class, 'testEmail'])->name('settings.test-email');
 });
