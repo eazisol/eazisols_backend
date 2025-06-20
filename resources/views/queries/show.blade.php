@@ -101,6 +101,7 @@
                                 </select>
                             </div>
                             
+                            {{-- User assignment feature commented out as requested
                             <div class="form-group">
                                 <label>Assign To</label>
                                 <select class="form-control" name="assigned_to">
@@ -110,6 +111,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            --}}
                             
                             <div class="form-group">
                                 <label>Admin Notes</label>
@@ -156,48 +158,19 @@
                 
                 <div class="card">
                     <div class="card-header">
-                        <h4>Responses</h4>
+                        <h4>Send Response</h4>
                     </div>
                     <div class="card-body">
-                        @if($query->responses->count() > 0)
-                            <div class="chat-box">
-                                @foreach($query->responses as $response)
-                                    <div class="chat-message {{ $response->is_admin ? 'chat-message-right' : 'chat-message-left' }} mb-4">
-                                        <div class="chat-message-text">
-                                            <div class="text-muted font-weight-bold mb-1">
-                                                {{ $response->is_admin ? ($response->user ? $response->user->name : 'Admin') : $query->name }}
-                                                <span class="text-small">
-                                                    - {{ $response->created_at->format('M d, Y h:i A') }}
-                                                </span>
-                                            </div>
-                                            <div class="p-3 rounded {{ $response->is_admin ? 'bg-primary text-white' : 'bg-light' }}">
-                                                {!! nl2br(e($response->message)) !!}
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="alert alert-info">
-                                No responses yet.
-                            </div>
-                        @endif
-                        
-                        <form action="{{ route('queries.responses.store', $query) }}" method="POST" class="mt-4" enctype="multipart/form-data">
+                        <form action="{{ route('queries.responses.store', $query) }}" method="POST">
                             @csrf
                             
                             <div class="form-group">
-                                <label>Reply</label>
-                                <textarea class="form-control" name="message" rows="4" required></textarea>
+                                <label>Email Message</label>
+                                <textarea class="form-control" name="message" rows="6" required></textarea>
+                                <small class="form-text text-muted">This message will be sent to {{ $query->email }}</small>
                             </div>
                             
-                            <div class="form-group">
-                                <label>Attachments (optional)</label>
-                                <input type="file" class="form-control" name="attachments[]" multiple>
-                                <small class="form-text text-muted">You can select multiple files. Maximum size per file: 10MB</small>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary">Send Reply</button>
+                            <button type="submit" class="btn btn-primary">Send Email Response</button>
                         </form>
                     </div>
                 </div>
@@ -205,24 +178,4 @@
         </div>
     </div>
 </section>
-
-<style>
-    .chat-box {
-        max-height: 500px;
-        overflow-y: auto;
-    }
-    
-    .chat-message-right {
-        display: flex;
-        flex-direction: row-reverse;
-    }
-    
-    .chat-message-left {
-        display: flex;
-    }
-    
-    .chat-message-text {
-        max-width: 70%;
-    }
-</style>
 @endsection 

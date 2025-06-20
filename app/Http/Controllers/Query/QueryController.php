@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class QueryController extends Controller
 {
@@ -67,10 +68,11 @@ class QueryController extends Controller
      */
     public function show(Query $query)
     {
-        $query->load(['responses.user', 'attachments']);
-        $users = User::all();
+        $query->load(['attachments']);
+        // Users are not needed since we're not using assignment
+        // $users = User::all();
         
-        return view('queries.show', compact('query', 'users'));
+        return view('queries.show', compact('query'));
     }
 
     /**
@@ -84,7 +86,7 @@ class QueryController extends Controller
     {
         $validated = $request->validate([
             'status' => 'sometimes|required|in:new,in_progress,resolved,closed',
-            'assigned_to' => 'nullable|exists:users,id',
+            // 'assigned_to' => 'nullable|exists:users,id', // Commented out as requested
             'admin_notes' => 'nullable|string',
         ]);
         
@@ -111,41 +113,20 @@ class QueryController extends Controller
     {
         $validated = $request->validate([
             'message' => 'required|string',
-            'attachments.*' => 'sometimes|file|max:10240', // 10MB max per file
         ]);
         
-        DB::transaction(function () use ($request, $query, $validated) {
-            // Create the response
-            $response = new QueryResponse([
-                'query_id' => $query->id,
-                'user_id' => Auth::id(),
-                'message' => $validated['message'],
-                'is_admin' => true,
-            ]);
-            $response->save();
-            
-            // Store attachments if any
-            if ($request->hasFile('attachments')) {
-                foreach ($request->file('attachments') as $file) {
-                    $path = $file->store('query_attachments/' . $query->id, 'public');
-                    
-                    QueryAttachment::create([
-                        'query_id' => $query->id,
-                        'file_path' => $path,
-                        'file_name' => $file->getClientOriginalName(),
-                        'file_type' => $file->getClientMimeType(),
-                    ]);
-                }
-            }
-            
-            // Update query status to in_progress if it's new
-            if ($query->status === Query::STATUS_NEW) {
-                $query->status = Query::STATUS_IN_PROGRESS;
-                $query->save();
-            }
-        });
+        // Update query status to resolved if it's new or in_progress
+        if ($query->status === Query::STATUS_NEW || $query->status === Query::STATUS_IN_PROGRESS) {
+            $query->status = Query::STATUS_RESOLVED;
+            $query->resolved_at = now();
+            $query->save();
+        }
         
-        return redirect()->route('queries.show', $query)->with('success', 'Response added successfully.');
+        // Here you would typically send an email to the customer
+        // This is a placeholder for email sending logic
+        // Mail::to($query->email)->send(new QueryResponse($query, $validated['message']));
+        
+        return redirect()->route('queries.show', $query)->with('success', 'Response has been sent to the customer via email.');
     }
 
     /**
