@@ -33,21 +33,21 @@
                             @csrf
                             
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="title">Blog Title <span class="text-danger">*</span></label>
-                                        <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}" required>
-                                        @error('title')
+                                        <label for="thumbnail">Thumbnail Image</label>
+                                        <input type="file" name="thumbnail" id="thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*">
+                                        <small class="form-text text-muted">Recommended size: 800x600px. Max 2MB.</small>
+                                        @error('thumbnail')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
-                                
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="category">Category <span class="text-danger">*</span></label>
-                                        <input type="text" name="category" id="category" class="form-control @error('category') is-invalid @enderror" value="{{ old('category') }}" required>
-                                        @error('category')
+                                        <label for="title">Blog Title <span class="text-danger">*</span></label>
+                                        <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}" required>
+                                        @error('title')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -57,12 +57,9 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="status">Status <span class="text-danger">*</span></label>
-                                        <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
-                                            <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
-                                            <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>Published</option>
-                                        </select>
-                                        @error('status')
+                                        <label for="category">Category <span class="text-danger">*</span></label>
+                                        <input type="text" name="category" id="category" class="form-control @error('category') is-invalid @enderror" value="{{ old('category') }}" required>
+                                        @error('category')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -70,10 +67,12 @@
                                 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="thumbnail">Thumbnail Image</label>
-                                        <input type="file" name="thumbnail" id="thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*">
-                                        <small class="form-text text-muted">Recommended size: 800x600px. Max 2MB.</small>
-                                        @error('thumbnail')
+                                        <label for="status">Status <span class="text-danger">*</span></label>
+                                        <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
+                                            <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                                            <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>Published</option>
+                                        </select>
+                                        @error('status')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>

@@ -33,9 +33,24 @@
                         <form action="{{ route('blogs.update', $blog) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
+                            @if($blog->thumbnail)
+                                            <div class="mt-2">
+                                                <img src="{{ asset($blog->thumbnail) }}" alt="{{ $blog->title }}" class="img-thumbnail" style="max-width: 200px">
+                                            </div>
+                                        @endif
                             
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="thumbnail">Thumbnail Image</label>
+                                        <input type="file" name="thumbnail" id="thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*">
+                                        <small class="form-text text-muted">Recommended size: 800x600px. Max 2MB.</small>
+                                        @error('thumbnail')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="title">Blog Title <span class="text-danger">*</span></label>
                                         <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title', $blog->title) }}" required>
@@ -44,8 +59,10 @@
                                         @enderror
                                     </div>
                                 </div>
-                                
-                                <div class="col-md-4">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="category">Category <span class="text-danger">*</span></label>
                                         <input type="text" name="category" id="category" class="form-control @error('category') is-invalid @enderror" value="{{ old('category', $blog->category) }}" required>
@@ -54,9 +71,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
+                                
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="status">Status <span class="text-danger">*</span></label>
@@ -67,23 +82,6 @@
                                         @error('status')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="thumbnail">Thumbnail Image</label>
-                                        <input type="file" name="thumbnail" id="thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*">
-                                        <small class="form-text text-muted">Recommended size: 800x600px. Max 2MB.</small>
-                                        @error('thumbnail')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                        
-                                        @if($blog->thumbnail)
-                                            <div class="mt-2">
-                                                <img src="{{ asset($blog->thumbnail) }}" alt="{{ $blog->title }}" class="img-thumbnail" style="max-width: 200px">
-                                            </div>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
