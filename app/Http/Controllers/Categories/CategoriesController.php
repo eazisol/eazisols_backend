@@ -46,7 +46,7 @@ class CategoriesController extends Controller
         $categories = $query->paginate(10);
         
         // Get unique values for filters
-        $types = ['blog', 'career'];
+        $types = ['blog', 'career', 'case_study'];
         $statuses = ['active', 'inactive'];
 
         return view('categories.index', compact('categories', 'types', 'statuses'));
@@ -73,7 +73,7 @@ class CategoriesController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:categories',
-            'type' => 'required|string|in:blog,career',
+            'type' => 'required|string|in:blog,career,case_study',
             'status' => 'required|string|in:active,inactive',
         ]);
 
@@ -131,7 +131,7 @@ class CategoriesController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
-            'type' => 'required|string|in:blog,career',
+            'type' => 'required|string|in:blog,career,case_study',
             'status' => 'required|string|in:active,inactive',
         ]);
 

@@ -12,4 +12,4 @@ use App\Http\Controllers\CaseStudy\CaseStudyController;
 |
 */
 
-// Route::get('/case-studies', [CaseStudyController::class, 'index'])->name('case_studies.index'); 
+Route::resource('case_studies', CaseStudyController::class); 

@@ -63,6 +63,7 @@
                                             <option value="">-- Select Type --</option>
                                             <option value="blog" {{ old('type', $category->type) == 'blog' ? 'selected' : '' }}>Blog</option>
                                             <option value="career" {{ old('type', $category->type) == 'career' ? 'selected' : '' }}>Career</option>
+                                            <option value="case_study" {{ old('type', $category->type) == 'case_study' ? 'selected' : '' }}>Case Study</option>
                                         </select>
                                         @error('type')
                                             <div class="invalid-feedback">{{ $message }}</div>

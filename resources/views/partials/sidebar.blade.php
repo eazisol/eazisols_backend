@@ -61,8 +61,8 @@
             <li class="dropdown">
               <a  class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Case Studies</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="#">All Case Studies</a></li>
-                <li><a class="nav-link" href="#">Add New Case Study</a></li>
+                <li><a class="nav-link" href="{{ route('case_studies.index') }}">All Case Studies</a></li>
+                <li><a class="nav-link" href="{{ route('case_studies.create') }}">Add New Case Study</a></li>
               </ul>
             </li>
             
