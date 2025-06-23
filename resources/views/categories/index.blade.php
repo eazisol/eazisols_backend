@@ -25,9 +25,9 @@
                     
                     <div class="card-body">
                         <div class="row mb-3">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <form action="{{ route('categories.index') }}" method="GET" class="form-inline">
-                                    <div class="input-group mb-2 mr-2">
+                                    <div class="input-group mb-2 mr-sm-2">
                                         <input type="text" name="search" class="form-control" placeholder="Search categories..." value="{{ request('search') }}">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
@@ -35,7 +35,7 @@
                                     </div>
                                     
                                     <div class="form-group mb-2 mr-2">
-                                        <select name="type" class="form-control">
+                                        <select name="type" class="form-control" style="min-width: 150px;">
                                             <option value="">All Types</option>
                                             @foreach($types as $type)
                                                 <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>
@@ -46,7 +46,7 @@
                                     </div>
                                     
                                     <div class="form-group mb-2 mr-2">
-                                        <select name="status" class="form-control">
+                                        <select name="status" class="form-control" style="min-width: 150px;">
                                             <option value="">All Statuses</option>
                                             @foreach($statuses as $status)
                                                 <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
@@ -56,27 +56,55 @@
                                         </select>
                                     </div>
                                     
-                                    <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                                    <button type="submit" class="btn btn-primary mb-2 mr-2">
+                                        <i class="fas fa-filter mr-1"></i> Apply Filters
+                                    </button>
+                                    
                                     @if(request()->anyFilled(['search', 'type', 'status']))
-                                        <a href="{{ route('categories.index') }}" class="btn btn-light mb-2 ml-1">
-                                            <i class="fas fa-times"></i> Clear
+                                        <a href="{{ route('categories.index') }}" class="btn btn-light mb-2">
+                                            <i class="fas fa-times mr-1"></i> Clear Filters
                                         </a>
                                     @endif
+                                    
+                                    <div class="ml-auto mb-2">
+                                        <div class="btn-group">
+                                            <a href="{{ route('categories.index', ['sort' => 'created_at', 'direction' => 'desc'] + request()->except(['sort', 'direction'])) }}" 
+                                               class="btn {{ request('sort', 'created_at') == 'created_at' && request('direction', 'desc') == 'desc' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                                <i class="fas fa-sort-amount-down mr-1"></i> Newest
+                                            </a>
+                                            <a href="{{ route('categories.index', ['sort' => 'name', 'direction' => 'asc'] + request()->except(['sort', 'direction'])) }}" 
+                                               class="btn {{ request('sort') == 'name' && request('direction') == 'asc' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                                <i class="fas fa-sort-alpha-down mr-1"></i> A-Z
+                                            </a>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
-                            
-                            <div class="col-md-4 text-right">
-                                <div class="btn-group">
-                                    <a href="{{ route('categories.index', ['sort' => 'created_at', 'direction' => 'desc'] + request()->except(['sort', 'direction'])) }}" 
-                                       class="btn {{ request('sort', 'created_at') == 'created_at' && request('direction', 'desc') == 'desc' ? 'btn-primary' : 'btn-outline-primary' }}">
-                                        Newest
-                                    </a>
-                                    <a href="{{ route('categories.index', ['sort' => 'name', 'direction' => 'asc'] + request()->except(['sort', 'direction'])) }}" 
-                                       class="btn {{ request('sort') == 'name' && request('direction') == 'asc' ? 'btn-primary' : 'btn-outline-primary' }}">
-                                        A-Z
-                                    </a>
+                        </div>
+                        
+                        <div class="px-2">
+                            @if(request()->anyFilled(['search', 'type', 'status']))
+                                <div class="active-filters mb-3">
+                                    <span class="font-weight-bold mr-2">Active Filters:</span>
+                                    @if(request('search'))
+                                        <span class="badge badge-info mr-1">
+                                            Search: "{{ request('search') }}"
+                                        </span>
+                                    @endif
+                                    
+                                    @if(request('type'))
+                                        <span class="badge badge-info mr-1">
+                                            Type: {{ ucfirst(request('type')) }}
+                                        </span>
+                                    @endif
+                                    
+                                    @if(request('status'))
+                                        <span class="badge badge-info mr-1">
+                                            Status: {{ ucfirst(request('status')) }}
+                                        </span>
+                                    @endif
                                 </div>
-                            </div>
+                            @endif
                         </div>
 
                         @if(session('success'))

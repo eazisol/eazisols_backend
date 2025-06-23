@@ -29,10 +29,17 @@
                     </div>
                     <div class="card-body">
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <form action="{{ route('applied-jobs.index') }}" method="GET" class="form-inline">
+                                    <div class="input-group mb-2 mr-sm-2">
+                                        <input type="text" name="search" class="form-control" placeholder="Search by name, email or job title" value="{{ request('search') }}">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="form-group mr-2 mb-2">
-                                        <select name="career_id" class="form-control">
+                                        <select name="career_id" class="form-control" style="min-width: 150px;">
                                             <option value="">All Jobs</option>
                                             @foreach($careers as $id => $title)
                                                 <option value="{{ $id }}" {{ request('career_id') == $id ? 'selected' : '' }}>
@@ -42,7 +49,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group mr-2 mb-2">
-                                        <select name="status" class="form-control">
+                                        <select name="status" class="form-control" style="min-width: 150px;">
                                             <option value="">All Statuses</option>
                                             @foreach($statuses as $value => $label)
                                                 <option value="{{ $value }}" {{ request('status') == $value ? 'selected' : '' }}>
@@ -51,21 +58,56 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                                    
+                                    <button type="submit" class="btn btn-primary mb-2 mr-2">
+                                        <i class="fas fa-filter mr-1"></i> Apply Filters
+                                    </button>
+                                    
+                                    @if(request()->anyFilled(['search', 'career_id', 'status']))
+                                        <a href="{{ route('applied-jobs.index') }}" class="btn btn-light mb-2">
+                                            <i class="fas fa-times mr-1"></i> Clear Filters
+                                        </a>
+                                    @endif
+                                    
+                                    <div class="ml-auto mb-2">
+                                        <div class="btn-group">
+                                            <a href="{{ route('applied-jobs.index', ['sort' => 'created_at', 'direction' => 'desc'] + request()->except(['sort', 'direction'])) }}" 
+                                               class="btn {{ request('sort', 'created_at') == 'created_at' && request('direction', 'desc') == 'desc' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                                <i class="fas fa-sort-amount-down mr-1"></i> Newest
+                                            </a>
+                                            <a href="{{ route('applied-jobs.index', ['sort' => 'created_at', 'direction' => 'asc'] + request()->except(['sort', 'direction'])) }}" 
+                                               class="btn {{ request('sort') == 'created_at' && request('direction') == 'asc' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                                <i class="fas fa-sort-amount-up mr-1"></i> Oldest
+                                            </a>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
-                            <div class="col-md-6 text-right">
-                                <div class="btn-group">
-                                    <a href="{{ route('applied-jobs.index', ['sort' => 'created_at', 'direction' => 'desc'] + request()->except(['sort', 'direction'])) }}" 
-                                       class="btn {{ request('sort', 'created_at') == 'created_at' && request('direction', 'desc') == 'desc' ? 'btn-primary' : 'btn-outline-primary' }}">
-                                        Newest First
-                                    </a>
-                                    <a href="{{ route('applied-jobs.index', ['sort' => 'created_at', 'direction' => 'asc'] + request()->except(['sort', 'direction'])) }}" 
-                                       class="btn {{ request('sort') == 'created_at' && request('direction') == 'asc' ? 'btn-primary' : 'btn-outline-primary' }}">
-                                        Oldest First
-                                    </a>
+                        </div>
+                        
+                        <div class="px-2">
+                            @if(request()->anyFilled(['search', 'career_id', 'status']))
+                                <div class="active-filters mb-3">
+                                    <span class="font-weight-bold mr-2">Active Filters:</span>
+                                    @if(request('search'))
+                                        <span class="badge badge-info mr-1">
+                                            Search: "{{ request('search') }}"
+                                        </span>
+                                    @endif
+                                    
+                                    @if(request('career_id'))
+                                        <span class="badge badge-info mr-1">
+                                            Position: {{ $careers[request('career_id')] ?? 'Unknown' }}
+                                        </span>
+                                    @endif
+                                    
+                                    @if(request('status'))
+                                        <span class="badge badge-info mr-1">
+                                            Status: {{ $statuses[request('status')] ?? 'Unknown' }}
+                                        </span>
+                                    @endif
                                 </div>
-                            </div>
+                            @endif
                         </div>
                         
                         @if(session('success'))
