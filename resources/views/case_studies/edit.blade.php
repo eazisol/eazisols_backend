@@ -137,7 +137,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
@@ -146,7 +146,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             
                             <div class="row">
                                 <div class="col-md-6">

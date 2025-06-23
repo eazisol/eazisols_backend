@@ -41,9 +41,9 @@ class CaseStudyController extends Controller
         }
         
         // Filter by featured
-        if ($request->has('is_featured') && $request->is_featured != '') {
-            $query->where('is_featured', $request->is_featured);
-        }
+        // if ($request->has('is_featured') && $request->is_featured != '') {
+        //     $query->where('is_featured', $request->is_featured);
+        // }
 
         // Sort options
         $sort = $request->sort ?? 'created_at';
