@@ -57,7 +57,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        {{-- <th>ID</th> --}}
                                         <th>Name</th>
                                         <th>Type</th>
                                         <th>Subject</th>
@@ -70,7 +70,7 @@
                                 <tbody>
                                     @forelse($queries as $query)
                                         <tr>
-                                            <td>{{ $query->id }}</td>
+                                            {{-- <td>{{ $query->id }}</td> --}}
                                             <td>{{ $query->name }}</td>
                                             <td>
                                                 @if($query->type === 'contact')

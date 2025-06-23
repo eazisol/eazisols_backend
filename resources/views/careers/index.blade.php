@@ -148,7 +148,7 @@
                             <table class="table table-striped" id="careers-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        {{-- <th>ID</th> --}}
                                         <th>Title</th>
                                         <th>Location</th>
                                         <th>Type</th>
@@ -161,7 +161,7 @@
                                 <tbody>
                                     @foreach($careers as $career)
                                     <tr>
-                                        <td>{{ $career->id }}</td>
+                                        {{-- <td>{{ $career->id }}</td> --}}
                                         <td>{{ $career->title }}</td>
                                         <td>{{ $career->location }}</td>
                                         <td>{{ $career->type }}</td>

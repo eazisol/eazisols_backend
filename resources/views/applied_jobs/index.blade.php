@@ -120,7 +120,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        {{-- <th>ID</th> --}}
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Position Applied</th>
@@ -132,7 +132,7 @@
                                 <tbody>
                                     @forelse($appliedJobs as $application)
                                         <tr>
-                                            <td>{{ $application->id }}</td>
+                                            {{-- <td>{{ $application->id }}</td> --}}
                                             <td>{{ $application->name }}</td>
                                             <td>{{ $application->email }}</td>
                                             <td>{{ $application->career->title ?? 'N/A' }}</td>

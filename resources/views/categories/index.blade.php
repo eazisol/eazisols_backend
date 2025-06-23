@@ -122,7 +122,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        {{-- <th>ID</th> --}}
                                         <th>Name</th>
                                         <th>Slug</th>
                                         <th>Type</th>
@@ -134,7 +134,7 @@
                                 <tbody>
                                     @forelse($categories as $category)
                                         <tr>
-                                            <td>{{ $category->id }}</td>
+                                            {{-- <td>{{ $category->id }}</td> --}}
                                             <td>{{ $category->name }}</td>
                                             <td>{{ $category->slug }}</td>
                                             <td>

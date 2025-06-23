@@ -142,7 +142,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        {{-- <th>ID</th> --}}
                                         <th>Thumbnail</th>
                                         <th>Title</th>
                                         <th>Client</th>
@@ -155,7 +155,7 @@
                                 <tbody>
                                     @forelse($caseStudies as $caseStudy)
                                         <tr>
-                                            <td>{{ $caseStudy->id }}</td>
+                                            {{-- <td>{{ $caseStudy->id }}</td> --}}
                                             <td>
                                                 @if($caseStudy->thumbnail)
                                                     <img src="{{ asset($caseStudy->thumbnail) }}" alt="{{ $caseStudy->title }}" width="50" class="img-thumbnail">

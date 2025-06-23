@@ -123,7 +123,7 @@
                             <table class="table table-striped" id="blogs-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        {{-- <th>ID</th> --}}
                                         <th>Thumbnail</th>
                                         <th>Title</th>
                                         <th>Category</th>
@@ -135,7 +135,7 @@
                                 <tbody>
                                     @foreach($blogs as $blog)
                                     <tr>
-                                        <td>{{ $blog->id }}</td>
+                                        {{-- <td>{{ $blog->id }}</td> --}}
                                         <td>
                                             @if($blog->thumbnail)
                                                 <img src="{{ asset($blog->thumbnail) }}" alt="{{ $blog->title }}" width="50">
