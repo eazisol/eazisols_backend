@@ -16,33 +16,44 @@
                 <span class="logo-name">Eazisols</span>
             </a>
           </div>
+          <style>
+            /* Add pointer cursor to dropdown toggles */
+            .menu-toggle.nav-link.has-dropdown,
+            .menu-toggle.nav-link.has-dropdown.toggled {
+              cursor: pointer;
+            }
+            /* Ensure dropdowns also have pointer cursor on hover */
+            .dropdown-menu li a:hover {
+              cursor: pointer;
+            }
+          </style>
           <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
             <li class="dropdown active">
               <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown"><i data-feather="briefcase"></i><span>Careers</span></a>
+              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="briefcase"></i><span>Careers</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('careers.index') }}">All Jobs</a></li>
                 <li><a class="nav-link" href="{{ route('careers.create') }}">Add New Jobs</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Job Requests</span></a>
+              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="file-text"></i><span>Job Requests</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('applied-jobs.index') }}">All Applications</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown"><i data-feather="edit"></i><span>Blogs</span></a>
+              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="edit"></i><span>Blogs</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('blogs.index') }}">All Blogs</a></li>
                 <li><a class="nav-link" href="{{ route('blogs.create') }}">Add New Blog</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown"><i data-feather="tag"></i><span>Categories</span></a>
+              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="tag"></i><span>Categories</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('categories.index') }}">All Categories</a></li>
                 <li><a class="nav-link" href="{{ route('categories.create') }}">Add New Category</a></li>
@@ -51,7 +62,7 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>Queries</span></a>
+              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="message-circle"></i><span>Queries</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('queries.index') }}">All Queries</a></li>
                 <li><a class="nav-link" href="{{ route('queries.index', ['type' => 'contact']) }}">Contact Queries</a></li>
@@ -59,7 +70,7 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a  class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Case Studies</span></a>
+              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="book-open"></i><span>Case Studies</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('case_studies.index') }}">All Case Studies</a></li>
                 <li><a class="nav-link" href="{{ route('case_studies.create') }}">Add New Case Study</a></li>

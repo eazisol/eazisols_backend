@@ -78,6 +78,9 @@
                 });
             }, 200);
         }
+        
+        // Ensure menu toggle items have pointer cursor
+        $('.menu-toggle.nav-link.has-dropdown').css('cursor', 'pointer');
     });
     </script>
     

@@ -1,4 +1,21 @@
-
 /*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY3VzdG9tLmNzcyIsInNvdXJjZXMiOlsiY3VzdG9tLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiJ9 */
 
 /*# sourceMappingURL=custom.css.map */
+
+/* Custom CSS for sidebar navigation */
+.menu-toggle.nav-link.has-dropdown,
+.menu-toggle.nav-link.has-dropdown.toggled {
+  cursor: pointer !important;
+}
+
+/* Ensure dropdowns also have pointer cursor on hover */
+.dropdown-menu li a:hover {
+  cursor: pointer !important;
+}
+
+/* Add styling for active dropdown items */
+.sidebar-menu .dropdown.active > a,
+.sidebar-menu .dropdown-menu li.active > a {
+  font-weight: 700;
+  color: #6777ef !important;
+}
