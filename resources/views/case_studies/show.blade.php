@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'Case Studies')
 
 @section('content')
 <section class="section">

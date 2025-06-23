@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'Blogs')
 
 @section('content')
 <section class="section">
