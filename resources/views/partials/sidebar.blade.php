@@ -1,3 +1,51 @@
+<?php
+// Helper function to check if a route is currently active
+function isActiveRoute($route, $output = 'active') {
+    if (is_array($route)) {
+        foreach ($route as $r) {
+            if (Route::currentRouteName() == $r) return $output;
+        }
+    } else {
+        if (Route::currentRouteName() == $route) return $output;
+    }
+    return '';
+}
+
+// Helper function to check if current route contains a string
+function routeContains($string, $output = 'active') {
+    if (Request::is("*{$string}*")) return $output;
+    return '';
+}
+
+// Define sections and their routes for easier management
+$sections = [
+    'dashboard' => ['dashboard', 'home'],
+    'careers' => ['careers.*'],
+    'applied-jobs' => ['applied-jobs.*'],
+    'blogs' => ['blogs.*'],
+    'categories' => ['categories.*'],
+    'queries' => ['queries.*'],
+    'case_studies' => ['case_studies.*'],
+    'settings' => ['settings.*']
+];
+
+// Determine which section is active
+$activeSection = '';
+foreach ($sections as $section => $routes) {
+    foreach ($routes as $route) {
+        if (str_contains($route, '.*')) {
+            $baseName = str_replace('.*', '', $route);
+            if (strpos(Route::currentRouteName(), $baseName) === 0) {
+                $activeSection = $section;
+                break 2;
+            }
+        } else if (Route::currentRouteName() == $route) {
+            $activeSection = $section;
+            break 2;
+        }
+    }
+}
+?>
 <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
@@ -29,56 +77,80 @@
           </style>
           <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
-            <li class="dropdown active">
+            <li class="dropdown {{ $activeSection == 'dashboard' ? 'active' : '' }}">
               <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
             </li>
-            <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="briefcase"></i><span>Careers</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{ route('careers.index') }}">All Jobs</a></li>
-                <li><a class="nav-link" href="{{ route('careers.create') }}">Add New Jobs</a></li>
+            <li class="dropdown {{ $activeSection == 'careers' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'careers' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="briefcase"></i><span>Careers</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'careers' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('careers.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('careers.index') }}">All Jobs</a>
+                </li>
+                <li class="{{ request()->routeIs('careers.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('careers.create') }}">Add New Jobs</a>
+                </li>
               </ul>
             </li>
-            <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="file-text"></i><span>Job Requests</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{ route('applied-jobs.index') }}">All Applications</a></li>
+            <li class="dropdown {{ $activeSection == 'applied-jobs' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'applied-jobs' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="file-text"></i><span>Job Requests</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'applied-jobs' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('applied-jobs.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('applied-jobs.index') }}">All Applications</a>
+                </li>
               </ul>
             </li>
-            <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="edit"></i><span>Blogs</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{ route('blogs.index') }}">All Blogs</a></li>
-                <li><a class="nav-link" href="{{ route('blogs.create') }}">Add New Blog</a></li>
+            <li class="dropdown {{ $activeSection == 'blogs' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'blogs' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="edit"></i><span>Blogs</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'blogs' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('blogs.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('blogs.index') }}">All Blogs</a>
+                </li>
+                <li class="{{ request()->routeIs('blogs.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('blogs.create') }}">Add New Blog</a>
+                </li>
               </ul>
             </li>
-            <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="tag"></i><span>Categories</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{ route('categories.index') }}">All Categories</a></li>
-                <li><a class="nav-link" href="{{ route('categories.create') }}">Add New Category</a></li>
+            <li class="dropdown {{ $activeSection == 'categories' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'categories' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="tag"></i><span>Categories</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'categories' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('categories.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('categories.index') }}">All Categories</a>
+                </li>
+                <li class="{{ request()->routeIs('categories.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('categories.create') }}">Add New Category</a>
+                </li>
                 {{-- <li><a class="nav-link" href="{{ route('categories.index', ['type' => 'blog']) }}">Blog Categories</a></li>
                 <li><a class="nav-link" href="{{ route('categories.index', ['type' => 'career']) }}">Career Categories</a></li> --}}
               </ul>
             </li>
-            <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="message-circle"></i><span>Queries</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{ route('queries.index') }}">All Queries</a></li>
-                <li><a class="nav-link" href="{{ route('queries.index', ['type' => 'contact']) }}">Contact Queries</a></li>
-                <li><a class="nav-link" href="{{ route('queries.index', ['type' => 'cost_calculator']) }}">Cost Calculator Queries</a></li>
+            <li class="dropdown {{ $activeSection == 'queries' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'queries' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="message-circle"></i><span>Queries</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'queries' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('queries.index') && !request('type') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('queries.index') }}">All Queries</a>
+                </li>
+                <li class="{{ request()->routeIs('queries.index') && request('type') == 'contact' ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('queries.index', ['type' => 'contact']) }}">Contact Queries</a>
+                </li>
+                <li class="{{ request()->routeIs('queries.index') && request('type') == 'cost_calculator' ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('queries.index', ['type' => 'cost_calculator']) }}">Cost Calculator Queries</a>
+                </li>
               </ul>
             </li>
-            <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown" style="cursor: pointer;"><i data-feather="book-open"></i><span>Case Studies</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{ route('case_studies.index') }}">All Case Studies</a></li>
-                <li><a class="nav-link" href="{{ route('case_studies.create') }}">Add New Case Study</a></li>
+            <li class="dropdown {{ $activeSection == 'case_studies' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'case_studies' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="book-open"></i><span>Case Studies</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'case_studies' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('case_studies.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('case_studies.index') }}">All Case Studies</a>
+                </li>
+                <li class="{{ request()->routeIs('case_studies.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('case_studies.create') }}">Add New Case Study</a>
+                </li>
               </ul>
             </li>
             
             <li class="menu-header">Configuration</li>
-            <li>
+            <li class="{{ $activeSection == 'settings' ? 'active' : '' }}">
               <a href="{{ route('settings.index') }}" class="nav-link"><i data-feather="settings"></i><span>Email Settings</span></a>
             </li>
           </ul>

@@ -19,3 +19,20 @@
   font-weight: 700;
   color: #6777ef !important;
 }
+
+/* Style active items with a subtle left border */
+.sidebar-menu li.active > a {
+  border-left: 3px solid #6777ef;
+  
+}
+
+/* Ensure the dropdown menu item that is active has distinct styling */
+.sidebar-menu .dropdown-menu li.active > a {
+  background-color: rgba(103, 119, 239, 0.1);
+}
+
+/* Add subtle hover effects */
+.sidebar-menu .dropdown-menu li a:hover {
+  background-color: rgba(103, 119, 239, 0.05);
+  color: #6777ef !important;
+}

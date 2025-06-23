@@ -69,18 +69,25 @@
                 if ($(window).outerWidth() <= 1024) {
                     $('body').addClass('sidebar-gone');
                 }
-                
-                // Reset sidebar dropdown behavior
-                $('.main-sidebar .sidebar-menu li a.has-dropdown').off('click').on('click', function() {
-                    var me = $(this);
-                    me.parent().find('> .dropdown-menu').slideToggle(500);
-                    return false;
-                });
             }, 200);
         }
         
         // Ensure menu toggle items have pointer cursor
         $('.menu-toggle.nav-link.has-dropdown').css('cursor', 'pointer');
+        
+        // Preserve the active state of dropdown menus
+        $('.dropdown.active > .dropdown-menu').show();
+        
+        // Prevent the default sidebar toggle behavior from closing active dropdowns
+        $('.main-sidebar .sidebar-menu li a.has-dropdown').off('click').on('click', function() {
+            var me = $(this);
+            var parent = me.parent();
+            
+            parent.siblings().find('> .dropdown-menu').slideUp(500);
+            parent.find('> .dropdown-menu').slideToggle(500);
+            
+            return false;
+        });
     });
     </script>
     
