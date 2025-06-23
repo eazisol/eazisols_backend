@@ -24,12 +24,12 @@
             <li class="dropdown">
               <a class="menu-toggle nav-link has-dropdown"><i data-feather="briefcase"></i><span>Careers</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{ route('careers.index') }}">All Careers</a></li>
-                <li><a class="nav-link" href="{{ route('careers.create') }}">Add New Career</a></li>
+                <li><a class="nav-link" href="{{ route('careers.index') }}">All Jobs</a></li>
+                <li><a class="nav-link" href="{{ route('careers.create') }}">Add New Jobs</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Applied Jobs</span></a>
+              <a class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Job Requests</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('applied-jobs.index') }}">All Applications</a></li>
               </ul>
