@@ -66,14 +66,16 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="category">Category</label>
-                                        <input type="text" name="category" id="category" class="form-control @error('category') is-invalid @enderror" value="{{ old('category') }}" list="category-list">
-                                        <datalist id="category-list">
+                                        <label for="category_id">Category</label>
+                                        <select name="category_id" id="category_id" class="form-control @error('category_id') is-invalid @enderror">
+                                            <option value="">-- Select Category --</option>
                                             @foreach($categories as $category)
-                                                <option value="{{ $category }}">
+                                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
                                             @endforeach
-                                        </datalist>
-                                        @error('category')
+                                        </select>
+                                        @error('category_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>

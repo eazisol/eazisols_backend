@@ -31,8 +31,8 @@ class CaseStudyController extends Controller
         }
 
         // Filter by category
-        if ($request->has('category') && $request->category != '') {
-            $query->where('category', $request->category);
+        if ($request->has('category_id') && $request->category_id != '') {
+            $query->where('category_id', $request->category_id);
         }
 
         // Filter by status
@@ -55,7 +55,7 @@ class CaseStudyController extends Controller
         // Get categories from the Categories table
         $categories = Category::where('type', 'case_study')
                      ->where('status', 'active')
-                     ->pluck('name');
+                     ->get();
                      
         $statuses = ['active', 'inactive'];
         $featured = [0 => 'No', 1 => 'Yes'];
@@ -73,7 +73,7 @@ class CaseStudyController extends Controller
         // Get categories from Categories table
         $categories = Category::where('type', 'case_study')
                      ->where('status', 'active')
-                     ->pluck('name');
+                     ->get();
         
         return view('case_studies.create', compact('categories'));
     }
@@ -90,7 +90,7 @@ class CaseStudyController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:case_studies',
             'client_name' => 'nullable|string|max:255',
-            'category' => 'nullable|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
             'short_summary' => 'nullable|string|max:500',
             'description' => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -115,6 +115,14 @@ class CaseStudyController extends Controller
             return back()
                 ->withInput()
                 ->withErrors(['slug' => 'This slug already exists. Please choose a different slug.']);
+        }
+        
+        // Get category name for backward compatibility
+        if (isset($validated['category_id']) && $validated['category_id']) {
+            $category = Category::find($validated['category_id']);
+            if ($category) {
+                $validated['category'] = $category->name;
+            }
         }
         
         // Handle thumbnail upload
@@ -167,7 +175,7 @@ class CaseStudyController extends Controller
         // Get categories from Categories table
         $categories = Category::where('type', 'case_study')
                      ->where('status', 'active')
-                     ->pluck('name');
+                     ->get();
         
         return view('case_studies.edit', compact('caseStudy', 'categories'));
     }
@@ -185,7 +193,7 @@ class CaseStudyController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:case_studies,slug,' . $caseStudy->id,
             'client_name' => 'nullable|string|max:255',
-            'category' => 'nullable|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
             'short_summary' => 'nullable|string|max:500',
             'description' => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -212,6 +220,16 @@ class CaseStudyController extends Controller
             return back()
                 ->withInput()
                 ->withErrors(['slug' => 'This slug already exists. Please choose a different slug.']);
+        }
+        
+        // Get category name for backward compatibility
+        if (isset($validated['category_id']) && $validated['category_id']) {
+            $category = Category::find($validated['category_id']);
+            if ($category) {
+                $validated['category'] = $category->name;
+            }
+        } else {
+            $validated['category'] = null;
         }
         
         // Handle thumbnail upload or removal

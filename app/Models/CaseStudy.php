@@ -15,6 +15,7 @@ class CaseStudy extends Model
         'slug',
         'client_name',
         'category',
+        'category_id',
         'short_summary',
         'description',
         'thumbnail',
@@ -50,5 +51,13 @@ class CaseStudy extends Model
                 $caseStudy->slug = Str::slug($caseStudy->title);
             }
         });
+    }
+    
+    /**
+     * Get the category that the case study belongs to.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

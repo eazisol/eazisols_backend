@@ -35,11 +35,11 @@
                                     </div>
                                     
                                     <div class="form-group mb-2 mr-2">
-                                        <select name="category" class="form-control" style="min-width: 150px;">
+                                        <select name="category_id" class="form-control" style="min-width: 150px;">
                                             <option value="">All Categories</option>
                                             @foreach($categories as $category)
-                                                <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
-                                                    {{ ucfirst($category) }}
+                                                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                                    {{ ucfirst($category->name) }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -71,7 +71,7 @@
                                         <i class="fas fa-filter mr-1"></i> Apply Filters
                                     </button>
                                     
-                                    @if(request()->anyFilled(['search', 'category', 'status', 'is_featured']))
+                                    @if(request()->anyFilled(['search', 'category_id', 'status', 'is_featured']))
                                         <a href="{{ route('case_studies.index') }}" class="btn btn-light mb-2">
                                             <i class="fas fa-times mr-1"></i> Clear Filters
                                         </a>
@@ -94,7 +94,7 @@
                         </div>
                         
                         <div class="px-2">
-                            @if(request()->anyFilled(['search', 'category', 'status', 'is_featured']))
+                            @if(request()->anyFilled(['search', 'category_id', 'status', 'is_featured']))
                                 <div class="active-filters mb-3">
                                     <span class="font-weight-bold mr-2">Active Filters:</span>
                                     @if(request('search'))
@@ -103,9 +103,12 @@
                                         </span>
                                     @endif
                                     
-                                    @if(request('category'))
+                                    @if(request('category_id'))
+                                        @php
+                                            $selectedCategory = $categories->where('id', request('category_id'))->first();
+                                        @endphp
                                         <span class="badge badge-info mr-1">
-                                            Category: {{ ucfirst(request('category')) }}
+                                            Category: {{ $selectedCategory ? ucfirst($selectedCategory->name) : '' }}
                                         </span>
                                     @endif
                                     
@@ -163,7 +166,15 @@
                                             </td>
                                             <td>{{ $caseStudy->title }}</td>
                                             <td>{{ $caseStudy->client_name ?? 'N/A' }}</td>
-                                            <td>{{ $caseStudy->category ?? 'N/A' }}</td>
+                                            <td>
+                                                @if($caseStudy->category)
+                                                    {{ $caseStudy->category }}
+                                                @elseif($caseStudy->category_id && $caseStudy->category())
+                                                    {{ $caseStudy->category->name ?? 'N/A' }}
+                                                @else
+                                                    N/A
+                                                @endif
+                                            </td>
                                             <td>
                                                 <span class="badge badge-{{ $caseStudy->status == 'active' ? 'success' : 'danger' }}">
                                                     {{ ucfirst($caseStudy->status) }}

@@ -48,7 +48,15 @@
                                     </tr>
                                     <tr>
                                         <th>Category</th>
-                                        <td>{{ $caseStudy->category ?? 'N/A' }}</td>
+                                        <td>
+                                            @if($caseStudy->category_id && $caseStudy->category)
+                                                {{ $caseStudy->category->name }}
+                                            @elseif($caseStudy->category)
+                                                {{ $caseStudy->category }}
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Project URL</th>
