@@ -53,9 +53,15 @@
                                             
                                             @if($setting->type === 'select' && $setting->options)
                                                 <select class="form-control" id="{{ $setting->key }}" name="{{ $setting->key }}">
-                                                    @foreach(json_decode($setting->options, true) as $value => $label)
+                                                    @php
+                                                        $options = is_array($setting->options) ? $setting->options : json_decode($setting->options, true);
+                                                    @endphp
+                                                    
+                                                    @foreach($options as $value => $label)
                                                         <option value="{{ $value }}" {{ $setting->value == $value ? 'selected' : '' }}>{{ $label }}</option>
                                                     @endforeach
+
+                                                        
                                                 </select>
                                             @elseif($setting->type === 'password')
                                                 <input type="password" class="form-control" id="{{ $setting->key }}" name="{{ $setting->key }}" value="{{ $setting->value }}">
