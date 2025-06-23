@@ -4,9 +4,9 @@
 <section class="section">
     <div class="section-header">
         <h1>Careers</h1>
-        <div class="section-header-button">
+        {{-- <div class="section-header-button">
             <a href="{{ route('careers.create') }}" class="btn btn-primary">Add New</a>
-        </div>
+        </div> --}}
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
             <div class="breadcrumb-item">Careers</div>
@@ -14,25 +14,20 @@
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">Careers</h2>
+        {{-- <h2 class="section-title">Careers</h2>
         <p class="section-lead">
             Manage all career opportunities here.
-        </p>
+        </p> --}}
 
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
                         <h4>All Careers</h4>
-                        <div class="card-header-form">
-                            <form action="{{ route('careers.index') }}" method="GET">
-                                <div class="input-group">
-                                    <input type="text" name="search" class="form-control" placeholder="Search by title or location" value="{{ request('search') }}">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                                    </div>
-                                </div>
-                            </form>
+                        <div class="card-header-action">
+                            <a href="{{ route('careers.create') }}" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add New Careers
+                            </a>
                         </div>
                     </div>
 
