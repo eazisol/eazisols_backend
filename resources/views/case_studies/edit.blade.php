@@ -2,6 +2,13 @@
 @section('title', 'Case Studies')
 
 @section('content')
+<style>
+.gallery-thumb {
+    width: 100px;
+    height: 100px;
+    /* object-fit: cover; */
+}
+</style>
 <section class="section">
     <div class="section-header">
         <h1>Edit Case Study</h1>
@@ -174,19 +181,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="images">Gallery Images</label>
-                                        <div class="custom-file">
-                                            <input type="file" name="images[]" class="custom-file-input @error('images.*') is-invalid @enderror" id="images" accept="image/*" multiple>
-                                            <label class="custom-file-label" for="images">Choose files</label>
-                                            <small class="form-text text-muted">You can select multiple images (Max: 2MB each)</small>
-                                            @error('images.*')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
+                               
                             </div>
                             
                             @if($caseStudy->images && count($caseStudy->images) > 0)
@@ -194,9 +189,9 @@
                                     <label>Current Gallery Images</label>
                                     <div class="row">
                                         @foreach($caseStudy->images as $index => $image)
-                                            <div class="col-md-3 mb-3">
+                                            <div class="col-md-2 mb-3">
                                                 <div class="card">
-                                                    <img src="{{ asset($image) }}" class="card-img-top" alt="Gallery image">
+                                                    <img src="{{ asset($image) }}" class="card-img-top gallery-thumb" alt="Gallery image">
                                                     <div class="card-body p-2">
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox" name="remove_images[]" id="remove_image_{{ $index }}" value="{{ $index }}">
@@ -211,6 +206,19 @@
                                     </div>
                                 </div>
                             @endif
+                            
+                                    <div class="form-group">
+                                        <label for="images">Gallery Images</label>
+                                        <div class="custom-file">
+                                            <input type="file" name="images[]" class="custom-file-input @error('images.*') is-invalid @enderror" id="images" accept="image/*" multiple>
+                                            <label class="custom-file-label" for="images">Choose files</label>
+                                            <small class="form-text text-muted">You can select multiple images (Max: 2MB each)</small>
+                                            @error('images.*')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                
 
                             <div class="form-group">
                                 <label for="short_summary">Short Summary</label>
