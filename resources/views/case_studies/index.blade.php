@@ -148,7 +148,6 @@
                                         <th>Client</th>
                                         <th>Category</th>
                                         <th>Status</th>
-                                        <th>Featured</th>
                                         <th>Created At</th>
                                         <th>Actions</th>
                                     </tr>
@@ -180,13 +179,7 @@
                                                     {{ ucfirst($caseStudy->status) }}
                                                 </span>
                                             </td>
-                                            <td>
-                                                @if($caseStudy->is_featured)
-                                                    <span class="badge badge-primary">Yes</span>
-                                                @else
-                                                    <span class="badge badge-light">No</span>
-                                                @endif
-                                            </td>
+                                            
                                             <td>{{ $caseStudy->created_at->format('M d, Y') }}</td>
                                             <td>
                                                 <a href="{{ route('case_studies.edit', $caseStudy) }}" class="btn btn-sm btn-primary">
