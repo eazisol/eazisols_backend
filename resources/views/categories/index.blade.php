@@ -188,13 +188,13 @@
         $('.delete-btn').on('click', function() {
             let id = $(this).data('id');
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Delete Category',
+                text: "Are you sure you want to delete?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Delete',
             }).then((result) => {
                 if (result.isConfirmed) {
                     $(this).closest('form').submit();

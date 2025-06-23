@@ -18,7 +18,7 @@ use App\Http\Controllers\AppliedJob\AppliedJobController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->middleware('auth');
