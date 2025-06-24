@@ -226,20 +226,39 @@
 @endsection
 
 @section('scripts')
+<link rel="stylesheet" href="{{ asset('assets/bundles/summernote/summernote-bs4.css') }}">
+<script src="{{ asset('assets/bundles/summernote/summernote-bs4.js') }}"></script>
 <script>
     $(document).ready(function() {
-        // Initialize summernote for rich text editing
+        // Initialize summernote with enhanced features for rich text editing
         $('.summernote').summernote({
-            height: 300,
+            height: 400,
             toolbar: [
                 ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
+                ['font', ['bold', 'underline', 'italic', 'clear']],
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
-                ['insert', ['link']],
+                ['insert', ['link', 'picture', 'video']],
                 ['view', ['fullscreen', 'codeview', 'help']]
-            ]
+            ],
+            callbacks: {
+                onImageUpload: function(files) {
+                    // Handle image uploads
+                    for(let i=0; i < files.length; i++) {
+                        // You could implement AJAX image upload here
+                        // This is a simple example that inserts the image directly
+                        let reader = new FileReader();
+                        reader.onloadend = function() {
+                            let image = $('<img>').attr('src', reader.result);
+                            $('.summernote').summernote('insertNode', image[0]);
+                        }
+                        reader.readAsDataURL(files[i]);
+                    }
+                }
+            }
         });
         
         // Toggle SEO panel
