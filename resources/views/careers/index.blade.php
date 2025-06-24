@@ -27,7 +27,7 @@
                         <h4>All Jobs</h4>
                         <div class="card-header-action">
                             <a href="{{ route('careers.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add New Jobs
+                                <i class="fas fa-plus"></i> Add New Job
                             </a>
                         </div>
                     </div>

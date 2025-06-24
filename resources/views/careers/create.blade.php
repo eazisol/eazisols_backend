@@ -4,7 +4,7 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Create Career</h1>
+        <h1>Create Job</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="{{ route('home') }}">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="{{ route('careers.index') }}">Careers</a></div>
@@ -18,7 +18,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Career Details</h4>
+                        <h4>Job Details</h4>
                     </div>
                     <div class="card-body">
                         @if ($errors->any())
@@ -210,7 +210,7 @@
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-lg">
-                                    Create Career
+                                    Create Job
                                 </button>
                                 <a href="{{ route('careers.index') }}" class="btn btn-light btn-lg ml-2">
                                     Cancel
