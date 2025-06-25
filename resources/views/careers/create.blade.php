@@ -87,7 +87,14 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="location">Location <span class="text-danger">*</span></label>
-                                        <input type="text" name="location" id="location" class="form-control @error('location') is-invalid @enderror" value="{{ old('location') }}" required>
+                                        <select name="location" id="location" class="form-control @error('location') is-invalid @enderror" required>
+                                            <option value="">-- Select Location --</option>
+                                            @foreach($locations as $location)
+                                                <option value="{{ $location->address_line_1 }}, {{ $location->city }}" {{ old('location') == $location->address_line_1.', '.$location->city ? 'selected' : '' }}>
+                                                    {{ $location->address_line_1 }}, {{ $location->city }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                         @error('location')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

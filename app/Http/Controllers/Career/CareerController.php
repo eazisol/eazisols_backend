@@ -76,7 +76,8 @@ class CareerController extends Controller
     public function create()
     {
         $categories = Category::where('type', 'career')->where('status', 'active')->pluck('name', 'name');
-        return view('careers.create', compact('categories'));
+        $locations = \App\Models\Location::orderBy('city')->get();
+        return view('careers.create', compact('categories', 'locations'));
     }
 
     /**
@@ -146,7 +147,8 @@ class CareerController extends Controller
     public function edit(Career $career)
     {
         $categories = Category::where('type', 'career')->where('status', 'active')->pluck('name', 'name');
-        return view('careers.edit', compact('career', 'categories'));
+        $locations = \App\Models\Location::orderBy('city')->get();
+        return view('careers.edit', compact('career', 'categories', 'locations'));
     }
 
     /**
