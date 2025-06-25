@@ -124,13 +124,13 @@
     $(document).ready(function() {
         $('.delete-btn').click(function() {
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Delete Location',
+                text: "Are you sure you want to delete?",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Delete'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $(this).closest('form').submit();

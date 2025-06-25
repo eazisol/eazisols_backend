@@ -205,7 +205,7 @@ $(document).ready(function() {
             confirmButtonText: 'Delete',
             cancelButtonText: 'Cancel',
             confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d'
+            cancelButtonColor: '#3085d6'
         }).then((result) => {
             if (result.isConfirmed) {
                 $(`#delete-form-${id}`).submit();

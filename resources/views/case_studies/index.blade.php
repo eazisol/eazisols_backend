@@ -226,8 +226,8 @@
                 text: "Are you sure you want to delete?",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
                 confirmButtonText: 'Delete'
             }).then((result) => {
                 if (result.isConfirmed) {
