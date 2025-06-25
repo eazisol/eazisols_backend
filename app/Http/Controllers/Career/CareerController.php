@@ -90,7 +90,7 @@ class CareerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:careers,title',
             'description' => 'required|string',
             'responsibilities' => 'nullable|string',
             'requirements' => 'required|string',
@@ -109,8 +109,18 @@ class CareerController extends Controller
             // SEO fields removed
         ]);
 
-        // Generate slug from title
-        $validated['slug'] = Str::slug($validated['title']);
+        // Generate unique slug from title
+        $baseSlug = Str::slug($validated['title']);
+        $slug = $baseSlug;
+        $counter = 1;
+        
+        // Check if slug exists and append counter until we find a unique one
+        while (Career::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+        
+        $validated['slug'] = $slug;
         
         // Handle featured checkbox
         $validated['featured'] = $request->has('featured');
@@ -162,7 +172,7 @@ class CareerController extends Controller
     public function update(Request $request, Career $career)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:careers,title,'.$career->id,
             'description' => 'required|string',
             'responsibilities' => 'nullable|string',
             'requirements' => 'required|string',
@@ -183,7 +193,17 @@ class CareerController extends Controller
 
         // Update slug if title changed
         if ($career->title !== $validated['title']) {
-            $validated['slug'] = Str::slug($validated['title']);
+            $baseSlug = Str::slug($validated['title']);
+            $slug = $baseSlug;
+            $counter = 1;
+            
+            // Check if slug exists and append counter until we find a unique one
+            while (Career::where('slug', $slug)->where('id', '!=', $career->id)->exists()) {
+                $slug = $baseSlug . '-' . $counter;
+                $counter++;
+            }
+            
+            $validated['slug'] = $slug;
         }
         
         // Handle featured checkbox
