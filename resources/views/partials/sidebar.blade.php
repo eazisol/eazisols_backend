@@ -24,6 +24,7 @@ $sections = [
     'applied-jobs' => ['applied-jobs.*'],
     'blogs' => ['blogs.*'],
     'categories' => ['categories.*'],
+    'locations' => ['locations.*'],
     'queries' => ['queries.*'],
     'case_studies' => ['case_studies.*'],
     'settings' => ['settings.*']
@@ -121,6 +122,17 @@ foreach ($sections as $section => $routes) {
                 </li>
                 {{-- <li><a class="nav-link" href="{{ route('categories.index', ['type' => 'blog']) }}">Blog Categories</a></li>
                 <li><a class="nav-link" href="{{ route('categories.index', ['type' => 'career']) }}">Career Categories</a></li> --}}
+              </ul>
+            </li>
+            <li class="dropdown {{ $activeSection == 'locations' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'locations' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="map-pin"></i><span>Locations</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'locations' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('locations.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('locations.index') }}">All Locations</a>
+                </li>
+                <li class="{{ request()->routeIs('locations.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('locations.create') }}">Add New Location</a>
+                </li>
               </ul>
             </li>
             <li class="dropdown {{ $activeSection == 'queries' ? 'active' : '' }}">
