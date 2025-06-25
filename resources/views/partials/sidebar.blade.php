@@ -24,10 +24,9 @@ $sections = [
     'applied-jobs' => ['applied-jobs.*'],
     'blogs' => ['blogs.*'],
     'categories' => ['categories.*'],
-    'locations' => ['locations.*'],
     'queries' => ['queries.*'],
     'case_studies' => ['case_studies.*'],
-    'settings' => ['settings.*']
+    'settings' => ['settings.*', 'locations.*']
 ];
 
 // Determine which section is active
@@ -124,17 +123,6 @@ foreach ($sections as $section => $routes) {
                 <li><a class="nav-link" href="{{ route('categories.index', ['type' => 'career']) }}">Career Categories</a></li> --}}
               </ul>
             </li>
-            <li class="dropdown {{ $activeSection == 'locations' ? 'active' : '' }}">
-              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'locations' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="map-pin"></i><span>Locations</span></a>
-              <ul class="dropdown-menu" style="{{ $activeSection == 'locations' ? 'display: block;' : '' }}">
-                <li class="{{ request()->routeIs('locations.index') ? 'active' : '' }}">
-                  <a class="nav-link" href="{{ route('locations.index') }}">All Locations</a>
-                </li>
-                <li class="{{ request()->routeIs('locations.create') ? 'active' : '' }}">
-                  <a class="nav-link" href="{{ route('locations.create') }}">Add New Location</a>
-                </li>
-              </ul>
-            </li>
             <li class="dropdown {{ $activeSection == 'queries' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'queries' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="message-circle"></i><span>Queries</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'queries' ? 'display: block;' : '' }}">
@@ -162,8 +150,19 @@ foreach ($sections as $section => $routes) {
             </li>
             
             <li class="menu-header">Configuration</li>
-            <li class="{{ $activeSection == 'settings' ? 'active' : '' }}">
-              <a href="{{ route('settings.index') }}" class="nav-link"><i data-feather="settings"></i><span>Email Settings</span></a>
+            <li class="dropdown {{ $activeSection == 'settings' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'settings' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="settings"></i><span>Settings</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'settings' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('settings.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('settings.index') }}">Email Settings</a>
+                </li>
+                <li class="{{ request()->routeIs('locations.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('locations.index') }}">Location Settings</a>
+                </li>
+                {{-- <li class="{{ request()->routeIs('locations.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('locations.create') }}">Add New Location</a>
+                </li> --}}
+              </ul>
             </li>
           </ul>
         </aside>
