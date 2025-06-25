@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Career;
 
 use App\Http\Controllers\Controller;
 use App\Models\Career;
+use App\Models\AppliedJob;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -202,6 +203,18 @@ class CareerController extends Controller
      */
     public function destroy(Career $career)
     {
+        $careerId = $career->id;
+
+        // Get all applied jobs for this career
+         // Delete all applied jobs for this career
+        AppliedJob::where('career_id', $careerId)->delete();
+
+        // Optional: Debug output
+        // echo "<pre>";
+        // print_r($appliedJobs);
+        // echo "</pre>";
+        // exit;
+        // $appliedJobs->delete();
         $career->delete();
 
         return redirect()->route('careers.index')
