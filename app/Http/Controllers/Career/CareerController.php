@@ -270,4 +270,75 @@ class CareerController extends Controller
         return redirect()->back()
             ->with('success', 'Career featured status updated successfully.');
     }
+
+    /**
+     * API endpoint to get all active careers/jobs
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function apiGetAll(Request $request)
+    {
+        $query = Career::query();
+
+        // Filter by status (default to active jobs only)
+        $status = $request->query('status', 'active');
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        // Filter by location
+        if ($request->has('location')) {
+            $query->inLocation($request->query('location'));
+        }
+
+        // Filter by type
+        if ($request->has('type')) {
+            $query->ofType($request->query('type'));
+        }
+
+        // Filter by category
+        if ($request->has('category')) {
+            $query->where('category', $request->query('category'));
+        }
+
+        // Sort options
+        $sort = $request->query('sort', 'created_at');
+        $direction = $request->query('direction', 'desc');
+        $query->orderBy($sort, $direction);
+
+        // Featured jobs first if requested
+        if ($request->has('featured') && $request->query('featured') === 'true') {
+            $query->orderBy('featured', 'desc');
+        }
+
+        // Pagination
+        $perPage = $request->query('per_page', 10);
+        $careers = $query->paginate($perPage);
+
+        return response()->json([
+            'success' => true,
+            'data' => $careers,
+            'meta' => [
+                'total' => $careers->total(),
+                'per_page' => $careers->perPage(),
+                'current_page' => $careers->currentPage(),
+                'last_page' => $careers->lastPage(),
+            ]
+        ]);
+    }
+
+    /**
+     * API endpoint to get a specific career/job
+     *
+     * @param  \App\Models\Career  $career
+     * @return \Illuminate\Http\Response
+     */
+    public function apiGetOne(Career $career)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $career
+        ]);
+    }
 } 

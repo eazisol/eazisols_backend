@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Career\CareerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Jobs/Careers API routes
+Route::get('/careers', [CareerController::class, 'apiGetAll']);
+Route::get('/careers/{career}', [CareerController::class, 'apiGetOne']);
