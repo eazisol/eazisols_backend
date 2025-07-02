@@ -37,4 +37,43 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get all attendance records for the user.
+     */
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    /**
+     * Get all leave requests for the user.
+     */
+    public function leaves()
+    {
+        return $this->hasMany(Leave::class);
+    }
+
+    /**
+     * Get the attendance record for the specified date.
+     */
+    public function getAttendanceForDate($date)
+    {
+        return $this->attendances()->where('date', $date)->first();
+    }
+
+    /**
+     * Check if the user is on leave for the specified date.
+     */
+    public function isOnLeaveForDate($date)
+    {
+        return $this->leaves()
+            ->where('status', Leave::STATUS_APPROVED)
+            ->where(function($query) use ($date) {
+                $query->where(function($q) use ($date) {
+                    $q->where('start_date', '<=', $date)
+                      ->where('end_date', '>=', $date);
+                });
+            })->exists();
+    }
 }

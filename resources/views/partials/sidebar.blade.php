@@ -27,7 +27,9 @@ $sections = [
     'queries' => ['queries.*'],
     'case_studies' => ['case_studies.*'],
     'settings' => ['settings.*', 'locations.*'],
-    'users' => ['users.*']
+    'users' => ['users.*'],
+    'attendances' => ['attendances.*'],
+    'leaves' => ['leaves.*']
 ];
 
 // Determine which section is active
@@ -149,7 +151,34 @@ foreach ($sections as $section => $routes) {
                 </li>
               </ul>
             </li>
-            
+            <li class="dropdown {{ $activeSection == 'attendances' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'attendances' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="clock"></i><span>Attendance</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'attendances' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('attendances.dashboard') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('attendances.dashboard') }}">My Attendance</a>
+                </li>
+                <li class="{{ request()->routeIs('attendances.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('attendances.index') }}">Attendance Register</a>
+                </li>
+                <li class="{{ request()->routeIs('attendances.report') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('attendances.report') }}">Reports</a>
+                </li>
+              </ul>
+            </li>
+            <li class="dropdown {{ $activeSection == 'leaves' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'leaves' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="calendar"></i><span>Leave Management</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'leaves' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('leaves.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('leaves.index') }}">Leave Requests</a>
+                </li>
+                <li class="{{ request()->routeIs('leaves.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('leaves.create') }}">Apply for Leave</a>
+                </li>
+                <li class="{{ request()->routeIs('leaves.calendar') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('leaves.calendar') }}">Leave Calendar</a>
+                </li>
+              </ul>
+            </li>
             <li class="menu-header">Configuration</li>
             <li class="dropdown {{ $activeSection == 'users' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'users' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="users"></i><span>Users</span></a>

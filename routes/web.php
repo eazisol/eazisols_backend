@@ -59,6 +59,20 @@ Route::middleware(['web', 'auth'])->group(function () {
     // User management routes
     Route::resource('users', App\Http\Controllers\UserController::class);
     
+    // Attendance routes
+    Route::get('/attendance', [App\Http\Controllers\AttendanceController::class, 'index'])->name('attendances.index');
+    Route::get('/attendance/dashboard', [App\Http\Controllers\AttendanceController::class, 'dashboard'])->name('attendances.dashboard');
+    Route::post('/attendance/check-in', [App\Http\Controllers\AttendanceController::class, 'checkIn'])->name('attendances.check-in');
+    Route::post('/attendance/check-out', [App\Http\Controllers\AttendanceController::class, 'checkOut'])->name('attendances.check-out');
+    Route::post('/attendance/mark', [App\Http\Controllers\AttendanceController::class, 'markAttendance'])->name('attendances.mark');
+    Route::post('/attendance/import', [App\Http\Controllers\AttendanceController::class, 'import'])->name('attendances.import');
+    Route::get('/attendance/report', [App\Http\Controllers\AttendanceController::class, 'report'])->name('attendances.report');
+
+    // Leave routes
+    Route::resource('leaves', App\Http\Controllers\LeaveController::class);
+    Route::put('/leaves/{leave}/status', [App\Http\Controllers\LeaveController::class, 'updateStatus'])->name('leaves.update-status');
+    Route::get('/leaves-calendar', [App\Http\Controllers\LeaveController::class, 'calendar'])->name('leaves.calendar');
+    
     // Settings routes
     Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
