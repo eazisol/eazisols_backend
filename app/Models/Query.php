@@ -17,20 +17,26 @@ class Query extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'company_name',
-        'subject',
-        'message',
-        'type',
-        'source',
-        'status',
-        'admin_notes',
-        'assigned_to',
-        'resolved_at',
-    ];
+   protected $fillable = [
+    'full_name',
+    'email',
+    'phone',
+    'company',
+    'description',
+    'services',
+    'industry',
+    'other_industry',
+    'stage',
+    'timeline',
+    'budget',
+    'subject',
+    'type',
+    'source',
+    'status',
+    'assigned_to',
+    'resolved_at',
+];
+
 
     protected $dates = [
         'resolved_at',

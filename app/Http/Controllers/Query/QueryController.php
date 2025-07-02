@@ -268,47 +268,62 @@ class QueryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function storeCostCalculatorQuery(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'company_name' => 'nullable|string|max:255',
-            'message' => 'required|string',
-            'attachments.*' => 'sometimes|file|max:10240', // 10MB max per file
+{
+    $validated = $request->validate([
+        'fullName' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'phone' => 'nullable|string|max:20',
+        'company' => 'nullable|string|max:255',
+        'description' => 'required|string',
+        'services' => 'nullable|string|max:255',
+        'industry' => 'nullable|string|max:255',
+        'otherIndustry' => 'nullable|string|max:255',
+        'stage' => 'nullable|string|max:255',
+        'timeline' => 'nullable|string|max:255',
+        'budget' => 'nullable|string|max:255',
+        'file' => 'nullable|file|max:10240', // 10MB
+    ]);
+
+    $query = null;
+
+    DB::transaction(function () use ($request, $validated, &$query) {
+        // Save query record
+        $query = Query::create([
+            'full_name'      => $validated['fullName'],
+            'email'          => $validated['email'],
+            'phone'          => $validated['phone'] ?? null,
+            'company'        => $validated['company'] ?? null,
+            'description'    => $validated['description'],
+            'services'       => $validated['services'] ?? null,
+            'industry'       => $validated['industry'] ?? null,
+            'other_industry' => $validated['otherIndustry'] ?? null,
+            'stage'          => $validated['stage'] ?? null,
+            'timeline'       => $validated['timeline'] ?? null,
+            'budget'         => $validated['budget'] ?? null,
+            'subject'        => 'Cost Calculator Inquiry',
+            'type'           => Query::TYPE_COST_CALCULATOR,
+            'source'         => 'cost_calculator',
+            'status'         => Query::STATUS_NEW,
         ]);
-        
-        $query = null;
-        
-        DB::transaction(function () use ($request, $validated, &$query) {
-            // Create the query
-            $query = Query::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'] ?? null,
-                'company_name' => $validated['company_name'] ?? null,
-                'subject' => 'Cost Calculator Inquiry',
-                'message' => $validated['message'],
-                'type' => Query::TYPE_COST_CALCULATOR,
-                'source' => 'cost_calculator',
-                'status' => Query::STATUS_NEW,
+
+        // Store file if attached
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $path = $file->store('query_attachments/' . $query->id, 'public');
+
+            QueryAttachment::create([
+                'query_id'  => $query->id,
+                'file_path' => $path,
+                'file_name' => $file->getClientOriginalName(),
+                'file_type' => $file->getClientMimeType(),
             ]);
-            
-            // Store attachments if any
-            if ($request->hasFile('attachments')) {
-                foreach ($request->file('attachments') as $file) {
-                    $path = $file->store('query_attachments/' . $query->id, 'public');
-                    
-                    QueryAttachment::create([
-                        'query_id' => $query->id,
-                        'file_path' => $path,
-                        'file_name' => $file->getClientOriginalName(),
-                        'file_type' => $file->getClientMimeType(),
-                    ]);
-                }
-            }
-        });
-        
-        return response()->json(['success' => true, 'message' => 'Your inquiry has been sent successfully. We will get back to you soon.']);
-    }
+        }
+    });
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Your inquiry has been sent successfully. We will get back to you soon.'
+    ]);
+}
+
 } 
