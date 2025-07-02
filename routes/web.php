@@ -56,6 +56,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     require __DIR__.'/categories.php';
     require __DIR__.'/locations.php';
     
+    // User management routes
+    Route::resource('users', App\Http\Controllers\UserController::class);
+    
     // Settings routes
     Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');

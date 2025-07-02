@@ -26,7 +26,8 @@ $sections = [
     'categories' => ['categories.*'],
     'queries' => ['queries.*'],
     'case_studies' => ['case_studies.*'],
-    'settings' => ['settings.*', 'locations.*']
+    'settings' => ['settings.*', 'locations.*'],
+    'users' => ['users.*']
 ];
 
 // Determine which section is active
@@ -150,6 +151,17 @@ foreach ($sections as $section => $routes) {
             </li>
             
             <li class="menu-header">Configuration</li>
+            <li class="dropdown {{ $activeSection == 'users' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'users' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="users"></i><span>Users</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'users' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('users.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('users.index') }}">All Users</a>
+                </li>
+                <li class="{{ request()->routeIs('users.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('users.create') }}">Add New User</a>
+                </li>
+              </ul>
+            </li>
             <li class="dropdown {{ $activeSection == 'settings' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'settings' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="settings"></i><span>Settings</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'settings' ? 'display: block;' : '' }}">
