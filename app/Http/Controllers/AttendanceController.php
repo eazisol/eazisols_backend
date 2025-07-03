@@ -149,6 +149,12 @@ class AttendanceController extends Controller
         $today = Carbon::today()->format('Y-m-d');
         $now = Carbon::now();
         
+        // Log current time for debugging
+        \Log::info('Check In', [
+            'server_time' => $now->format('Y-m-d H:i:s'),
+            'timezone' => config('app.timezone'),
+        ]);
+        
         // Check if already checked in
         $attendance = $user->getAttendanceForDate($today);
         
@@ -194,6 +200,12 @@ class AttendanceController extends Controller
         $user = Auth::user();
         $today = Carbon::today()->format('Y-m-d');
         $now = Carbon::now();
+        
+        // Log current time for debugging
+        \Log::info('Check Out', [
+            'server_time' => $now->format('Y-m-d H:i:s'),
+            'timezone' => config('app.timezone'),
+        ]);
         
         // Check if already checked in
         $attendance = $user->getAttendanceForDate($today);
@@ -272,20 +284,35 @@ class AttendanceController extends Controller
             'user_id' => $user->id,
             'date' => $date,
             'status' => $status,
-            'raw_status' => $request->status
+            'raw_status' => $request->status,
+            'timezone' => config('app.timezone'),
         ]);
         
         $attendance->status = $status;
         
         // Handle check-in and check-out times
         if ($request->filled('check_in_time')) {
-            $checkInTime = Carbon::parse($date . ' ' . $request->check_in_time);
+            // Create a Carbon instance in the application's timezone
+            $checkInTime = Carbon::parse($date . ' ' . $request->check_in_time, config('app.timezone'));
             $attendance->check_in_time = $checkInTime;
+            
+            \Log::info('Check-in time set', [
+                'input_time' => $request->check_in_time,
+                'parsed_time' => $checkInTime->format('Y-m-d H:i:s'),
+                'timezone' => $checkInTime->timezone->getName(),
+            ]);
         }
         
         if ($request->filled('check_out_time')) {
-            $checkOutTime = Carbon::parse($date . ' ' . $request->check_out_time);
+            // Create a Carbon instance in the application's timezone
+            $checkOutTime = Carbon::parse($date . ' ' . $request->check_out_time, config('app.timezone'));
             $attendance->check_out_time = $checkOutTime;
+            
+            \Log::info('Check-out time set', [
+                'input_time' => $request->check_out_time,
+                'parsed_time' => $checkOutTime->format('Y-m-d H:i:s'),
+                'timezone' => $checkOutTime->timezone->getName(),
+            ]);
         }
         
         $attendance->save();
@@ -294,7 +321,9 @@ class AttendanceController extends Controller
         \Log::info('Attendance saved', [
             'id' => $attendance->id,
             'status' => $attendance->status,
-            'status_from_db' => Attendance::find($attendance->id)->status
+            'status_from_db' => Attendance::find($attendance->id)->status,
+            'check_in' => $attendance->check_in_time ? $attendance->check_in_time->format('Y-m-d H:i:s') : null,
+            'check_out' => $attendance->check_out_time ? $attendance->check_out_time->format('Y-m-d H:i:s') : null,
         ]);
         
         return redirect()

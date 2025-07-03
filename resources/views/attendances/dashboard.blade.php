@@ -70,14 +70,14 @@
                                 @if($todayAttendance->check_in_time)
                                 <div class="d-flex align-items-center mb-2">
                                     <h6 class="mr-2">Check In:</h6>
-                                    <span>{{ $todayAttendance->check_in_time->format('h:i A') }}</span>
+                                    <span>{{ $todayAttendance->check_in_time->setTimezone(config('app.timezone'))->format('h:i A') }}</span>
                                 </div>
                                 @endif
                                 
                                 @if($todayAttendance->check_out_time)
                                 <div class="d-flex align-items-center">
                                     <h6 class="mr-2">Check Out:</h6>
-                                    <span>{{ $todayAttendance->check_out_time->format('h:i A') }}</span>
+                                    <span>{{ $todayAttendance->check_out_time->setTimezone(config('app.timezone'))->format('h:i A') }}</span>
                                 </div>
                                 @endif
                             </div>
@@ -199,10 +199,10 @@
                                                 @endswitch
                                             </td>
                                             <td>
-                                                {{ $attendance->check_in_time ? $attendance->check_in_time->format('h:i A') : 'N/A' }}
+                                                {{ $attendance->check_in_time ? $attendance->check_in_time->setTimezone(config('app.timezone'))->format('h:i A') : 'N/A' }}
                                             </td>
                                             <td>
-                                                {{ $attendance->check_out_time ? $attendance->check_out_time->format('h:i A') : 'N/A' }}
+                                                {{ $attendance->check_out_time ? $attendance->check_out_time->setTimezone(config('app.timezone'))->format('h:i A') : 'N/A' }}
                                             </td>
                                             <td>
                                                 @if($attendance->check_in_time && $attendance->check_out_time)

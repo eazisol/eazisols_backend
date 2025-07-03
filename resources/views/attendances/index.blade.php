@@ -215,11 +215,11 @@
                                                         }
                                                         
                                                         if ($attendance->check_in_time) {
-                                                            $tooltip .= ' (In: ' . Carbon\Carbon::parse($attendance->check_in_time)->format('h:i A') . ')';
+                                                            $tooltip .= ' (In: ' . Carbon\Carbon::parse($attendance->check_in_time)->setTimezone(config('app.timezone'))->format('h:i A') . ')';
                                                         }
                                                         
                                                         if ($attendance->check_out_time) {
-                                                            $tooltip .= ' (Out: ' . Carbon\Carbon::parse($attendance->check_out_time)->format('h:i A') . ')';
+                                                            $tooltip .= ' (Out: ' . Carbon\Carbon::parse($attendance->check_out_time)->setTimezone(config('app.timezone'))->format('h:i A') . ')';
                                                         }
                                                     } elseif ($isOnLeave) {
                                                         $bgColor = 'bg-info';
