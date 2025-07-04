@@ -22,18 +22,20 @@
                     <tr>
                         <th>ID</th>
                         <th>User ID</th>
-                        <th>Date</th>
+                        <th>Date (Original)</th>
+                        <th>Date String</th>
                         <th>Status</th>
                         <th>Check In</th>
                         <th>Check Out</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($rawAttendances as $att)
+                    @foreach($allAttendances as $att)
                     <tr>
                         <td>{{ $att->id }}</td>
                         <td>{{ $att->user_id }} ({{ optional(\App\Models\User::find($att->user_id))->name }})</td>
-                        <td>{{ $att->date }}</td>
+                        <td><code>{{ $att->date }}</code></td>
+                        <td><code>{{ $att->date_string }}</code></td>
                         <td><code>{{ $att->status }}</code></td>
                         <td>{{ $att->check_in_time }}</td>
                         <td>{{ $att->check_out_time }}</td>
@@ -41,6 +43,15 @@
                     @endforeach
                 </tbody>
             </table>
+            
+            <hr>
+            
+            <p><strong>Calendar Dates:</strong></p>
+            <ul>
+                @foreach($calendar as $date => $details)
+                <li><code>{{ $date }}</code></li>
+                @endforeach
+            </ul>
         </div>
     </div>
 </div>
@@ -160,11 +171,14 @@
                                             <td>{{ $user->name }}</td>
                                             @foreach($calendar as $date => $details)
                                                 @php
-                                                    // Find attendance for this user and date
-                                                    $attendance = $allAttendances
-                                                        ->where('user_id', $user->id)
-                                                        ->where('date', $date)
-                                                        ->first();
+                                                    // Find attendance for this user and date - Fixed version
+                                                    $attendance = null;
+                                                    foreach($allAttendances as $record) {
+                                                        if ($record->user_id == $user->id && $record->date_string == $date) {
+                                                            $attendance = $record;
+                                                            break;
+                                                        }
+                                                    }
                                                     
                                                     $isOnLeave = $leaves->filter(function($leave) use ($date, $user) {
                                                         return $leave->user_id == $user->id && 

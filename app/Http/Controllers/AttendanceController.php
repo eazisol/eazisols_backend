@@ -39,6 +39,17 @@ class AttendanceController extends Controller
             ])
             ->orderBy('date', 'asc')
             ->get();
+            
+        // Convert date attributes to strings for easier comparison in the view
+        $allAttendances = $allAttendances->map(function($attendance) {
+            // Make sure date is accessible as a string for comparison in the view
+            if ($attendance->date instanceof \Carbon\Carbon) {
+                $attendance->date_string = $attendance->date->format('Y-m-d');
+            } else {
+                $attendance->date_string = $attendance->date;
+            }
+            return $attendance;
+        });
         
         // Add raw query for debugging
         $rawAttendances = DB::select('SELECT * FROM attendances');
@@ -52,7 +63,7 @@ class AttendanceController extends Controller
                 return [
                     'id' => $att->id,
                     'user_id' => $att->user_id,
-                    'date' => $att->date->format('Y-m-d'),
+                    'date' => $att->date instanceof \Carbon\Carbon ? $att->date->format('Y-m-d') : $att->date,
                     'status' => $att->status
                 ];
             })
