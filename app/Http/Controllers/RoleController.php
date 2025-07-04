@@ -43,10 +43,12 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::all()->groupBy(function ($permission) {
-            $parts = explode('_', $permission->key);
-            return $parts[0] . '_' . $parts[1]; // Group by module
-        });
+        $permissions = Permission::where('key', '!=', 'dash_dashboard')
+            ->get()
+            ->groupBy(function ($permission) {
+                $parts = explode('_', $permission->key);
+                return $parts[0] . '_' . $parts[1]; // Group by module
+            });
         
         return view('roles.create', compact('permissions'));
     }
@@ -61,13 +63,24 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:roles,name',
-            'permissions' => 'required|array',
+            'permissions' => 'array',
         ]);
 
         DB::beginTransaction();
         try {
             $role = Role::create(['name' => $request->name]);
-            $role->permissions()->attach($request->permissions);
+            
+            // Always include dashboard permission
+            $dashboardPermission = Permission::where('key', 'dash_dashboard')->first();
+            $permissionsToAttach = $request->permissions ?? [];
+            
+            if ($dashboardPermission) {
+                if (!in_array($dashboardPermission->id, $permissionsToAttach)) {
+                    $permissionsToAttach[] = $dashboardPermission->id;
+                }
+            }
+            
+            $role->permissions()->attach($permissionsToAttach);
             
             DB::commit();
             return redirect()->route('roles.index')->with('success', 'Role created successfully');
@@ -86,10 +99,12 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
-        $permissions = Permission::all()->groupBy(function ($permission) {
-            $parts = explode('_', $permission->key);
-            return $parts[0] . '_' . $parts[1]; // Group by module
-        });
+        $permissions = Permission::where('key', '!=', 'dash_dashboard')
+            ->get()
+            ->groupBy(function ($permission) {
+                $parts = explode('_', $permission->key);
+                return $parts[0] . '_' . $parts[1]; // Group by module
+            });
         
         $rolePermissions = $role->permissions->pluck('id')->toArray();
         
@@ -107,7 +122,7 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:roles,name,' . $id,
-            'permissions' => 'required|array',
+            'permissions' => 'array',
         ]);
 
         DB::beginTransaction();
@@ -115,7 +130,17 @@ class RoleController extends Controller
             $role = Role::findOrFail($id);
             $role->update(['name' => $request->name]);
             
-            $role->permissions()->sync($request->permissions);
+            // Always include dashboard permission
+            $dashboardPermission = Permission::where('key', 'dash_dashboard')->first();
+            $permissionsToSync = $request->permissions ?? [];
+            
+            if ($dashboardPermission) {
+                if (!in_array($dashboardPermission->id, $permissionsToSync)) {
+                    $permissionsToSync[] = $dashboardPermission->id;
+                }
+            }
+            
+            $role->permissions()->sync($permissionsToSync);
             
             DB::commit();
             return redirect()->route('roles.index')->with('success', 'Role updated successfully');

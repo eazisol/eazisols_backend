@@ -36,34 +36,38 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Permissions</label>
+                                <label>Permissions <small class="text-muted">(Dashboard access is enabled by default)</small></label>
                                 @if($permissions->count() > 0)
                                     @error('permissions')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                     
-                                    <div class="row">
-                                        @foreach($permissions as $module => $modulePermissions)
-                                            <div class="col-md-6 mb-4">
-                                                <div class="card">
-                                                    <div class="card-header bg-light">
-                                                        <h4>{{ ucfirst(str_replace('_', ' ', $module)) }}</h4>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="form-group">
-                                                            <div class="selectgroup selectgroup-pills">
-                                                                @foreach($modulePermissions as $permission)
-                                                                    <label class="selectgroup-item">
-                                                                        <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" class="selectgroup-input" {{ (is_array(old('permissions')) && in_array($permission->id, old('permissions'))) ? 'checked' : '' }}>
-                                                                        <span class="selectgroup-button">{{ str_replace($module.'_', '', $permission->key) }}</span>
-                                                                    </label>
-                                                                @endforeach
-                                                            </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Module</th>
+                                                    <th>Permissions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($permissions as $module => $modulePermissions)
+                                                <tr>
+                                                    <td class="font-weight-bold">{{ ucfirst(str_replace('_', ' ', $module)) }}</td>
+                                                    <td>
+                                                        <div class="selectgroup selectgroup-pills">
+                                                            @foreach($modulePermissions as $permission)
+                                                                <label class="selectgroup-item mr-1">
+                                                                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" class="selectgroup-input" {{ (is_array(old('permissions')) && in_array($permission->id, old('permissions'))) ? 'checked' : '' }}>
+                                                                    <span class="selectgroup-button">{{ str_replace($module.'_', '', $permission->key) }}</span>
+                                                                </label>
+                                                            @endforeach
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 @else
                                     <div class="alert alert-info">

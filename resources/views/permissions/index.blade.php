@@ -13,85 +13,65 @@
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">Manage Permissions</h2>
-        <p class="section-lead">Manage system permissions that can be assigned to roles.</p>
-
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
                         <h4>Permissions List</h4>
                         <div class="card-header-action">
-                            <a href="{{ route('permissions.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add New Permission
+                            <a href="{{ route('permissions.create') }}" class="btn btn-icon btn-primary">
+                                <i class="fas fa-plus"></i> New Permission
                             </a>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         @if (session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
+                            <div class="alert alert-success m-3">{{ session('success') }}</div>
                         @endif
                         @if (session('error'))
-                            <div class="alert alert-danger">{{ session('error') }}</div>
+                            <div class="alert alert-danger m-3">{{ session('error') }}</div>
                         @endif
 
                         @if($permissions->count() > 0)
-                            <div class="accordion" id="permissionsAccordion">
-                                @foreach($permissions as $module => $modulePermissions)
-                                    <div class="card">
-                                        <div class="card-header" id="heading{{ Str::slug($module) }}">
-                                            <h2 class="mb-0">
-                                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" 
-                                                        data-target="#collapse{{ Str::slug($module) }}" aria-expanded="true" 
-                                                        aria-controls="collapse{{ Str::slug($module) }}">
-                                                    <strong>{{ ucfirst(str_replace('_', ' ', $module)) }}</strong> 
-                                                    <span class="badge badge-info">{{ $modulePermissions->count() }}</span>
-                                                </button>
-                                            </h2>
-                                        </div>
-
-                                        <div id="collapse{{ Str::slug($module) }}" class="collapse" 
-                                             aria-labelledby="heading{{ Str::slug($module) }}" 
-                                             data-parent="#permissionsAccordion">
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-striped">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>Key</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach($modulePermissions as $permission)
-                                                                <tr>
-                                                                    <td>{{ $permission->id }}</td>
-                                                                    <td>{{ $permission->key }}</td>
-                                                                    <td>
-                                                                        <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-sm btn-info">
-                                                                            <i class="fas fa-edit"></i> Edit
-                                                                        </a>
-                                                                        <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST" class="d-inline">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this permission?')">
-                                                                                <i class="fas fa-trash"></i> Delete
-                                                                            </button>
-                                                                        </form>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
+                            <div class="table-responsive">
+                                <table class="table table-striped mb-0" id="permissions-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Module</th>
+                                            <th>Permission Key</th>
+                                            <th class="text-center" style="width: 120px">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($permissions as $module => $modulePermissions)
+                                            @foreach($modulePermissions as $permission)
+                                                <tr>
+                                                    @if($loop->first)
+                                                    <td class="font-weight-bold" rowspan="{{ count($modulePermissions) }}">
+                                                        {{ ucfirst(str_replace('_', ' ', $module)) }}
+                                                    </td>
+                                                    @endif
+                                                    <td>{{ $permission->key }}</td>
+                                                    <td class="text-center">
+                                                        <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-sm btn-primary mr-1">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this permission?')">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         @else
-                            <div class="alert alert-info">
+                            <div class="alert alert-info m-3">
                                 No permissions found. Please create some permissions.
                             </div>
                         @endif
@@ -106,8 +86,17 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-        // Show the first module by default
-        $('#permissionsAccordion .collapse:first').addClass('show');
+        $('#permissions-table').DataTable({
+            "ordering": true,
+            "info": false,
+            "paging": true,
+            "pageLength": 25,
+            "lengthChange": false,
+            "searching": true,
+            "columnDefs": [
+                { "orderable": false, "targets": 2 }
+            ]
+        });
     });
 </script>
 @endsection 
