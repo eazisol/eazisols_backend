@@ -27,7 +27,7 @@ $sections = [
     'queries' => ['queries.*'],
     'case_studies' => ['case_studies.*'],
     'settings' => ['settings.*', 'locations.*'],
-    'users' => ['users.*'],
+    'users' => ['users.*', 'roles.*', 'permissions.*'],
     'attendances' => ['attendances.*'],
     'leaves' => ['leaves.*']
 ];
@@ -80,9 +80,16 @@ foreach ($sections as $section => $routes) {
           </style>
           <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
+            
+            {{-- Dashboard --}}
+            @if(auth()->user()->hasPermission('dash_dashboard'))
             <li class="dropdown {{ $activeSection == 'dashboard' ? 'active' : '' }}">
               <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
             </li>
+            @endif
+
+            {{-- Careers --}}
+            @if(auth()->user()->hasPermission('dash_careers'))
             <li class="dropdown {{ $activeSection == 'careers' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'careers' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="briefcase"></i><span>Careers</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'careers' ? 'display: block;' : '' }}">
@@ -94,6 +101,10 @@ foreach ($sections as $section => $routes) {
                 </li>
               </ul>
             </li>
+            @endif
+
+            {{-- Job Requests --}}
+            @if(auth()->user()->hasPermission('dash_applied_jobs'))
             <li class="dropdown {{ $activeSection == 'applied-jobs' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'applied-jobs' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="file-text"></i><span>Job Requests</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'applied-jobs' ? 'display: block;' : '' }}">
@@ -102,6 +113,10 @@ foreach ($sections as $section => $routes) {
                 </li>
               </ul>
             </li>
+            @endif
+
+            {{-- Blogs --}}
+            @if(auth()->user()->hasPermission('dash_blogs'))
             <li class="dropdown {{ $activeSection == 'blogs' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'blogs' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="edit"></i><span>Blogs</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'blogs' ? 'display: block;' : '' }}">
@@ -113,6 +128,10 @@ foreach ($sections as $section => $routes) {
                 </li>
               </ul>
             </li>
+            @endif
+
+            {{-- Categories --}}
+            @if(auth()->user()->hasPermission('dash_categories'))
             <li class="dropdown {{ $activeSection == 'categories' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'categories' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="tag"></i><span>Categories</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'categories' ? 'display: block;' : '' }}">
@@ -122,10 +141,12 @@ foreach ($sections as $section => $routes) {
                 <li class="{{ request()->routeIs('categories.create') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('categories.create') }}">Add New Category</a>
                 </li>
-                {{-- <li><a class="nav-link" href="{{ route('categories.index', ['type' => 'blog']) }}">Blog Categories</a></li>
-                <li><a class="nav-link" href="{{ route('categories.index', ['type' => 'career']) }}">Career Categories</a></li> --}}
               </ul>
             </li>
+            @endif
+
+            {{-- Queries --}}
+            @if(auth()->user()->hasPermission('dash_queries'))
             <li class="dropdown {{ $activeSection == 'queries' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'queries' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="message-circle"></i><span>Queries</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'queries' ? 'display: block;' : '' }}">
@@ -140,6 +161,10 @@ foreach ($sections as $section => $routes) {
                 </li>
               </ul>
             </li>
+            @endif
+
+            {{-- Case Studies --}}
+            @if(auth()->user()->hasPermission('dash_case_studies'))
             <li class="dropdown {{ $activeSection == 'case_studies' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'case_studies' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="book-open"></i><span>Case Studies</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'case_studies' ? 'display: block;' : '' }}">
@@ -151,6 +176,10 @@ foreach ($sections as $section => $routes) {
                 </li>
               </ul>
             </li>
+            @endif
+
+            {{-- Attendance --}}
+            @if(auth()->user()->hasPermission('dash_attendance'))
             <li class="dropdown {{ $activeSection == 'attendances' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'attendances' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="clock"></i><span>Attendance</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'attendances' ? 'display: block;' : '' }}">
@@ -165,6 +194,10 @@ foreach ($sections as $section => $routes) {
                 </li>
               </ul>
             </li>
+            @endif
+
+            {{-- Leave Management --}}
+            @if(auth()->user()->hasPermission('dash_leaves'))
             <li class="dropdown {{ $activeSection == 'leaves' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'leaves' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="calendar"></i><span>Leave Management</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'leaves' ? 'display: block;' : '' }}">
@@ -179,7 +212,12 @@ foreach ($sections as $section => $routes) {
                 </li>
               </ul>
             </li>
+            @endif
+
             <li class="menu-header">Configuration</li>
+            
+            {{-- Users --}}
+            @if(auth()->user()->hasPermission('dash_users'))
             <li class="dropdown {{ $activeSection == 'users' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'users' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="users"></i><span>Users</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'users' ? 'display: block;' : '' }}">
@@ -189,8 +227,22 @@ foreach ($sections as $section => $routes) {
                 <li class="{{ request()->routeIs('users.create') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('users.create') }}">Add New User</a>
                 </li>
+                @if(auth()->user()->hasPermission('dash_roles'))
+                <li class="{{ request()->routeIs('roles.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
+                </li>
+                @endif
+                @if(auth()->user()->hasPermission('dash_permissions'))
+                <li class="{{ request()->routeIs('permissions.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('permissions.index') }}">Permissions</a>
+                </li>
+                @endif
               </ul>
             </li>
+            @endif
+
+            {{-- Settings --}}
+            @if(auth()->user()->hasPermission('dash_settings'))
             <li class="dropdown {{ $activeSection == 'settings' ? 'active' : '' }}">
               <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'settings' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="settings"></i><span>Settings</span></a>
               <ul class="dropdown-menu" style="{{ $activeSection == 'settings' ? 'display: block;' : '' }}">
@@ -200,11 +252,10 @@ foreach ($sections as $section => $routes) {
                 <li class="{{ request()->routeIs('locations.index') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('locations.index') }}">Location Settings</a>
                 </li>
-                {{-- <li class="{{ request()->routeIs('locations.create') ? 'active' : '' }}">
-                  <a class="nav-link" href="{{ route('locations.create') }}">Add New Location</a>
-                </li> --}}
               </ul>
             </li>
+            @endif
+
           </ul>
         </aside>
       </div>

@@ -209,7 +209,7 @@ class QueryController extends Controller
     public function storeContactQuery(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'fullName' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
             'company_name' => 'nullable|string|max:255',
@@ -223,15 +223,16 @@ class QueryController extends Controller
         DB::transaction(function () use ($request, $validated, &$query) {
             // Create the query
             $query = Query::create([
-                'name' => $validated['name'],
+                'full_name' => $validated['fullName'],
                 'email' => $validated['email'],
                 'phone' => $validated['phone'] ?? null,
-                'company_name' => $validated['company_name'] ?? null,
+                'company' => $validated['company_name'] ?? null,
                 'subject' => $validated['subject'] ?? null,
                 'message' => $validated['message'],
                 'type' => Query::TYPE_CONTACT,
                 'source' => 'website',
                 'status' => Query::STATUS_NEW,
+                'description' => $validated['message'], // Use message as description because of cost-calculator
             ]);
             
             // Store attachments if any

@@ -84,3 +84,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::put('/applied-jobs/{appliedJob}/status', [AppliedJobController::class, 'updateStatus'])->name('applied-jobs.update-status');
     Route::delete('/applied-jobs/{appliedJob}', [AppliedJobController::class, 'destroy'])->name('applied-jobs.destroy');
 });
+
+// Roles and Permissions routes
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('roles', 'App\Http\Controllers\RoleController');
+    Route::resource('permissions', 'App\Http\Controllers\PermissionController');
+});

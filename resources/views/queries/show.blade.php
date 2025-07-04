@@ -67,7 +67,7 @@
                             <strong>Date:</strong> {{ $query->created_at->format('M d, Y h:i A') }}
                         </div>
                         <div class="mb-2">
-                            <strong>Name:</strong> {{ $query->name }}
+                            <strong>Name:</strong> {{ $query->full_name }}
                         </div>
                         <div class="mb-2">
                             <strong>Email:</strong> <a href="mailto:{{ $query->email }}">{{ $query->email }}</a>
@@ -77,9 +77,9 @@
                                 <strong>Phone:</strong> <a href="tel:{{ $query->phone }}">{{ $query->phone }}</a>
                             </div>
                         @endif
-                        @if($query->company_name)
+                        @if($query->company)
                             <div class="mb-2">
-                                <strong>Company:</strong> {{ $query->company_name }}
+                                <strong>Company:</strong> {{ $query->company }}
                             </div>
                         @endif
                         <div class="mb-2">
@@ -142,7 +142,7 @@
                     </div>
                     <div class="card-body">
                         <div class="alert alert-light mb-4">
-                            {!! nl2br(e($query->message)) !!}
+                            {!! nl2br(e($query->description)) !!}
                         </div>
                         
                         @if($query->attachments->count() > 0)

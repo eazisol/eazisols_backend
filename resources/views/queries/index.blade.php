@@ -71,7 +71,7 @@
                                     @forelse($queries as $query)
                                         <tr>
                                             {{-- <td>{{ $query->id }}</td> --}}
-                                            <td>{{ $query->name }}</td>
+                                            <td>{{ $query->full_name}}</td>
                                             <td>
                                                 @if($query->type === 'contact')
                                                     <span class="badge badge-primary">Contact</span>

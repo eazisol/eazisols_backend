@@ -65,6 +65,7 @@
                                             <th>ID</th>
                                             <th>Name</th>
                                             <th>Email</th>
+                                            <th>Role</th>
                                             <th>Created At</th>
                                             <th>Actions</th>
                                         </tr>
@@ -75,6 +76,11 @@
                                                 <td>{{ $user->id }}</td>
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
+                                                <td>
+                                                    <span class="badge badge-info">
+                                                        {{ $user->role->name ?? 'N/A' }}
+                                                    </span>
+                                                </td>
                                                 <td>{{ $user->created_at->format('d M Y') }}</td>
                                                 <td>
                                                     <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-primary">
