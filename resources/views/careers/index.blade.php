@@ -25,11 +25,13 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>All Jobs</h4>
+                        @if(auth()->user()->hasPermission('dash_careers_edit'))
                         <div class="card-header-action">
                             <a href="{{ route('careers.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> Add New Job
                             </a>
                         </div>
+                        @endif
                     </div>
 
                     <div class="row mb-3 px-4 pt-3">
@@ -156,7 +158,9 @@
                                         <th>Category</th>
                                         <th>Deadline</th>
                                         <th>Status</th>
+                                        @if(auth()->user()->hasPermission('dash_careers_edit'))
                                         <th>Action</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -173,6 +177,7 @@
                                                 {{ ucfirst($career->status) }}
                                             </div>
                                         </td>
+                                        @if(auth()->user()->hasPermission('dash_careers_edit'))
                                         <td>
                                             <a href="{{ route('careers.edit', $career) }}" class="btn btn-primary btn-sm" title="Edit">
                                                 <i class="fas fa-edit"></i>
@@ -187,6 +192,7 @@
                                                 @method('DELETE')
                                             </form>
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>

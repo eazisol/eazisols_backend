@@ -96,9 +96,11 @@ foreach ($sections as $section => $routes) {
                 <li class="{{ request()->routeIs('careers.index') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('careers.index') }}">All Jobs</a>
                 </li>
+                @if(auth()->user()->hasPermission('dash_careers_edit'))
                 <li class="{{ request()->routeIs('careers.create') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('careers.create') }}">Add New Jobs</a>
                 </li>
+                @endif
               </ul>
             </li>
             @endif
