@@ -45,10 +45,10 @@
                                 </div>
 
                                 <div class="form-group mr-2 mb-2">
-                                    <select name="type" class="form-control" style="min-width: 150px;">
+                                    <select name="work_type" class="form-control" style="min-width: 150px;">
                                         <option value="">All Types</option>
                                         @foreach($types as $type)
-                                            <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>
+                                            <option value="{{ $type }}" {{ request('work_type') == $type ? 'selected' : '' }}>
                                                 {{ $type }}
                                             </option>
                                         @endforeach
@@ -61,6 +61,17 @@
                                         @foreach($categories as $category)
                                             <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
                                                 {{ $category }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group mr-2 mb-2">
+                                    <select name="department" class="form-control" style="min-width: 150px;">
+                                        <option value="">All Departments</option>
+                                        @foreach($departments as $department)
+                                            <option value="{{ $department }}" {{ request('department') == $department ? 'selected' : '' }}>
+                                                {{ $department }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -113,15 +124,21 @@
                                     </span>
                                 @endif
                                 
-                                @if(request('type'))
+                                @if(request('work_type'))
                                     <span class="badge badge-info mr-1">
-                                        Type: {{ request('type') }}
+                                        Type: {{ request('work_type') }}
                                     </span>
                                 @endif
                                 
                                 @if(request('category'))
                                     <span class="badge badge-info mr-1">
                                         Category: {{ request('category') }}
+                                    </span>
+                                @endif
+                                
+                                @if(request('department'))
+                                    <span class="badge badge-info mr-1">
+                                        Department: {{ request('department') }}
                                     </span>
                                 @endif
                                 
@@ -155,6 +172,7 @@
                                         <th>Title</th>
                                         <th>Location</th>
                                         <th>Type</th>
+                                        {{-- <th>Department</th> --}}
                                         <th>Category</th>
                                         <th>Deadline</th>
                                         <th>Status</th>
@@ -169,7 +187,8 @@
                                         {{-- <td>{{ $career->id }}</td> --}}
                                         <td>{{ $career->title }}</td>
                                         <td>{{ $career->location }}</td>
-                                        <td>{{ $career->type }}</td>
+                                        <td>{{ $career->work_type }}</td>
+                                        {{-- <td>{{ $career->department ?? 'N/A' }}</td> --}}
                                         <td>{{ $career->category ?? 'N/A' }}</td>
                                         <td>{{ $career->application_deadline ? $career->application_deadline->format('M d, Y') : 'N/A' }}</td>
                                         <td>

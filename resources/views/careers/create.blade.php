@@ -45,27 +45,60 @@
                                     </div>
                                 </div>
                                 
-                                {{-- Department field removed --}}
-                            </div>
+                                <div class="col-md-6">
+                                   <div class="form-group">
+                                       <label for="department">Department</label>
+                                       <select name="department" id="department" class="form-control @error('department') is-invalid @enderror">
+                                           <option value="">-- Select Department --</option>
+                                           <option value="Software Development / Engineering" {{ old('department') == 'Software Development / Engineering' ? 'selected' : '' }}>Software Development / Engineering</option>
+                                           <option value="Quality Assurance (QA)" {{ old('department') == 'Quality Assurance (QA)' ? 'selected' : '' }}>Quality Assurance (QA)</option>
+                                           <option value="UI/UX Design" {{ old('department') == 'UI/UX Design' ? 'selected' : '' }}>UI/UX Design</option>
+                                           <option value="Project Management" {{ old('department') == 'Project Management' ? 'selected' : '' }}>Project Management</option>
+                                           <option value="IT / Infrastructure" {{ old('department') == 'IT / Infrastructure' ? 'selected' : '' }}>IT / Infrastructure</option>
+                                           <option value="Human Resources (HR)" {{ old('department') == 'Human Resources (HR)' ? 'selected' : '' }}>Human Resources (HR)</option>
+                                           <option value="Finance & Accounts" {{ old('department') == 'Finance & Accounts' ? 'selected' : '' }}>Finance & Accounts</option>
+                                           <option value="Sales & Marketing" {{ old('department') == 'Sales & Marketing' ? 'selected' : '' }}>Sales & Marketing</option>
+                                           <option value="Customer Support / Client Services" {{ old('department') == 'Customer Support / Client Services' ? 'selected' : '' }}>Customer Support / Client Services</option>
+                                       </select>
+                                       @error('department')
+                                           <div class="invalid-feedback">{{ $message }}</div>
+                                       @enderror
+                                   </div>
+                               </div>
+                           </div>
 
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="type">Employment Type <span class="text-danger">*</span></label>
-                                        <select name="type" id="type" class="form-control @error('type') is-invalid @enderror" required>
-                                            <option value="">Select Type</option>
-                                            <option value="Full-time" {{ old('type') == 'Full-time' ? 'selected' : '' }}>Full-time</option>
-                                            <option value="Part-time" {{ old('type') == 'Part-time' ? 'selected' : '' }}>Part-time</option>
-                                            <option value="Contract" {{ old('type') == 'Contract' ? 'selected' : '' }}>Contract</option>
-                                            <option value="Temporary" {{ old('type') == 'Temporary' ? 'selected' : '' }}>Temporary</option>
-                                            <option value="Internship" {{ old('type') == 'Internship' ? 'selected' : '' }}>Internship</option>
-                                            <option value="Remote" {{ old('type') == 'Remote' ? 'selected' : '' }}>Remote</option>
-                                        </select>
-                                        @error('type')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
+                           <div class="row">
+                               <div class="col-md-4">
+                                   <div class="form-group">
+                                       <label for="work_type">Work Type <span class="text-danger">*</span></label>
+                                       <select name="work_type" id="work_type" class="form-control @error('work_type') is-invalid @enderror" required>
+                                           <option value="">Select Type</option>
+                                           <option value="Full-time" {{ old('work_type') == 'Full-time' ? 'selected' : '' }}>Full-time</option>
+                                           <option value="Part-time" {{ old('work_type') == 'Part-time' ? 'selected' : '' }}>Part-time</option>
+                                           <option value="Contract" {{ old('work_type') == 'Contract' ? 'selected' : '' }}>Contract</option>
+                                           <option value="Temporary" {{ old('work_type') == 'Temporary' ? 'selected' : '' }}>Temporary</option>
+                                           <option value="Internship" {{ old('work_type') == 'Internship' ? 'selected' : '' }}>Internship</option>
+                                       </select>
+                                       @error('work_type')
+                                           <div class="invalid-feedback">{{ $message }}</div>
+                                       @enderror
+                                   </div>
+                               </div>
+                               
+                               <div class="col-md-4">
+                                   <div class="form-group">
+                                       <label for="workplace_type">Workplace Type</label>
+                                       <select name="workplace_type" id="workplace_type" class="form-control @error('workplace_type') is-invalid @enderror">
+                                           <option value="">-- Select Workplace Type --</option>
+                                           <option value="remote" {{ old('workplace_type') == 'remote' ? 'selected' : '' }}>Remote</option>
+                                           <option value="on-site" {{ old('workplace_type') == 'on-site' ? 'selected' : '' }}>On-site</option>
+                                           <option value="both" {{ old('workplace_type') == 'both' ? 'selected' : '' }}>Both</option>
+                                       </select>
+                                       @error('workplace_type')
+                                           <div class="invalid-feedback">{{ $message }}</div>
+                                       @enderror
+                                   </div>
+                               </div>
                                 
                                 <div class="col-md-4">
                                     <div class="form-group">

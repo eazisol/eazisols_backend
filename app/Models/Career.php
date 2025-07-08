@@ -23,8 +23,10 @@ class Career extends Model
         'requirements',
         'benefits',
         'location',
-        'type',           // Full-time, Part-time, Contract, Remote, etc.
+        'work_type',           // Full-time, Part-time, Contract, Remote, etc.
         // 'department',
+        'workplace_type',   // new
+        'department',
         'experience_level',
         'education',
         'salary_range',
@@ -95,7 +97,7 @@ class Career extends Model
      */
     public function scopeOfType($query, $type)
     {
-        return $query->where('type', $type);
+        return $query->where('work_type', $type);
     }
 
     /**

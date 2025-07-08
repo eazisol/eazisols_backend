@@ -32,8 +32,8 @@ class CareerController extends Controller
         }
 
         // Filter by type
-        if ($request->has('type') && $request->type != '') {
-            $query->ofType($request->type);
+        if ($request->has('work_type') && $request->work_type != '') {
+            $query->ofType($request->work_type);
         }
 
         // Filter by category
@@ -46,7 +46,10 @@ class CareerController extends Controller
             $query->inLocation($request->location);
         }
 
-        // Filter by department removed
+        // Filter by department
+        if ($request->has('department') && $request->department != '') {
+            $query->where('department', $request->department);
+        }
 
         // Filter by status
         if ($request->has('status') && $request->status != '') {
@@ -61,12 +64,13 @@ class CareerController extends Controller
         $careers = $query->paginate(10);
         
         // Get unique values for filters
-        $types = Career::select('type')->distinct()->pluck('type');
+        $types = Career::select('work_type')->distinct()->pluck('work_type');
         $categories = Category::where('type', 'career')->where('status', 'active')->pluck('name');
         $locations = Career::select('location')->distinct()->pluck('location');
         $statuses = Career::select('status')->distinct()->pluck('status');
+        $departments = Career::select('department')->distinct()->pluck('department');
 
-        return view('careers.index', compact('careers', 'types', 'categories', 'locations', 'statuses'));
+        return view('careers.index', compact('careers', 'types', 'categories', 'locations', 'statuses', 'departments'));
     }
 
     /**
@@ -96,9 +100,10 @@ class CareerController extends Controller
             'requirements' => 'required|string',
             'benefits' => 'nullable|string',
             'location' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'work_type' => 'required|string|max:255',
+            'workplace_type' => 'required|string|max:255',
+            'department' => 'required|string|max:255',
             'category' => 'nullable|string|max:255',
-            // 'department' => 'nullable|string|max:255',
             'experience_level' => 'nullable|string|max:255',
             'education' => 'nullable|string|max:255',
             'salary_range' => 'nullable|string|max:255',
@@ -106,7 +111,6 @@ class CareerController extends Controller
             'status' => 'required|string|in:active,inactive,filled',
             'featured' => 'nullable|boolean',
             'vacancy_count' => 'nullable|integer|min:1',
-            // SEO fields removed
         ]);
 
         // Generate unique slug from title
@@ -178,9 +182,10 @@ class CareerController extends Controller
             'requirements' => 'required|string',
             'benefits' => 'nullable|string',
             'location' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'work_type' => 'required|string|max:255',
+            'workplace_type' => 'required|string|max:255',
+            'department' => 'required|string|max:255',
             'category' => 'nullable|string|max:255',
-            // 'department' => 'nullable|string|max:255',
             'experience_level' => 'nullable|string|max:255',
             'education' => 'nullable|string|max:255',
             'salary_range' => 'nullable|string|max:255',
@@ -188,7 +193,6 @@ class CareerController extends Controller
             'status' => 'required|string|in:active,inactive,filled',
             'featured' => 'nullable|boolean',
             'vacancy_count' => 'nullable|integer|min:1',
-            // SEO fields removed
         ]);
 
         // Update slug if title changed
