@@ -21,7 +21,6 @@
                     <div class="card-header">
                         <h4>All Leave Requests</h4>
                         <div class="card-header-action">
-                            <a href="{{ route('leaves.create') }}" class="btn btn-primary">Apply for Leave</a>
                         </div>
                     </div>
                     <div class="card-body">

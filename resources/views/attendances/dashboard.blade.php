@@ -160,6 +160,7 @@
                     <div class="card-header">
                         <h4>Recent Attendance</h4>
                         <div class="card-header-action">
+                            <a href="{{ route('leaves.create') }}" class="btn btn-primary mr-2">Apply for Leave</a>
                             <a href="{{ route('attendances.index') }}" class="btn btn-primary">View All</a>
                         </div>
                     </div>

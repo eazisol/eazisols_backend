@@ -10,7 +10,7 @@
         <h1>Apply for Leave</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="{{ route('leaves.index') }}">Leave Requests</a></div>
+            <div class="breadcrumb-item"><a href="{{ route('attendances.dashboard') }}">My Attendance</a></div>
             <div class="breadcrumb-item">Apply for Leave</div>
         </div>
     </div>
