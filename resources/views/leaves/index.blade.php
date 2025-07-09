@@ -137,7 +137,7 @@
                                                         </div>
                                                     @endif
                                                     
-                                                    @if(Auth::id() === $leave->user_id || $isAdmin)
+                                                    {{-- @if(Auth::id() === $leave->user_id || $isAdmin)
                                                         <a href="{{ route('leaves.edit', $leave) }}" class="btn btn-sm btn-primary">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
@@ -149,7 +149,7 @@
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
                                                         </form>
-                                                    @endif
+                                                    @endif --}}
                                                 @endif
                                             </td>
                                         </tr>

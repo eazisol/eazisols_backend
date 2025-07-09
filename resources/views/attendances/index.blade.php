@@ -6,7 +6,7 @@
 
 @section('content')
 <!-- Debug information - will only show to admins -->
-@if(auth()->check() && auth()->user()->id === 1)
+{{-- @if(auth()->check() && auth()->user()->id === 1)
 <div class="container mb-3">
     <div class="card">
         <div class="card-header bg-primary text-white">
@@ -55,7 +55,7 @@
         </div>
     </div>
 </div>
-@endif
+@endif --}}
 
 <section class="section">
     <div class="section-header">
