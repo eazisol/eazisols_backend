@@ -281,56 +281,56 @@ class CareerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function apiGetAll(Request $request)
-    {
-        $query = Career::query();
+    public function apiGetAll(Request $request){
+    $query = Career::query();
 
-        // Filter by status (default to active jobs only)
-        $status = $request->query('status', 'active');
-        if ($status !== 'all') {
-            $query->where('status', $status);
-        }
-
-        // Filter by location
-        if ($request->has('location')) {
-            $query->inLocation($request->query('location'));
-        }
-
-        // Filter by type
-        if ($request->has('type')) {
-            $query->ofType($request->query('type'));
-        }
-
-        // Filter by category
-        if ($request->has('category')) {
-            $query->where('category', $request->query('category'));
-        }
-
-        // Sort options
-        $sort = $request->query('sort', 'created_at');
-        $direction = $request->query('direction', 'desc');
-        $query->orderBy($sort, $direction);
-
-        // Featured jobs first if requested
-        if ($request->has('featured') && $request->query('featured') === 'true') {
-            $query->orderBy('featured', 'desc');
-        }
-
-        // Pagination
-        $perPage = $request->query('per_page', 10);
-        $careers = $query->paginate($perPage);
-
-        return response()->json([
-            'success' => true,
-            'data' => $careers,
-            'meta' => [
-                'total' => $careers->total(),
-                'per_page' => $careers->perPage(),
-                'current_page' => $careers->currentPage(),
-                'last_page' => $careers->lastPage(),
-            ]
-        ]);
+    // Filter by status (optional - you can remove if not needed)
+    $status = $request->query('status', 'active');
+    if ($status !== 'all') {
+        $query->where('status', $status);
     }
+
+    // Filter by work_type
+    if ($request->has('work_type')) {
+        $query->where('work_type', $request->query('work_type'));
+    }
+
+    // Filter by workplace_type
+    if ($request->has('workplace_type')) {
+        $query->where('workplace_type', $request->query('workplace_type'));
+    }
+
+    // Filter by location
+    if ($request->has('location')) {
+        $query->where('location', $request->query('location'));
+    }
+
+    // Filter by department
+    if ($request->has('department')) {
+        $query->where('department', $request->query('department'));
+    }
+
+    // Sorting (optional)
+    $sort = $request->query('sort', 'created_at');
+    $direction = $request->query('direction', 'desc');
+    $query->orderBy($sort, $direction);
+
+    // Pagination
+    $perPage = $request->query('per_page', 10);
+    $careers = $query->paginate($perPage, ['id', 'title', 'work_type', 'workplace_type', 'location', 'department']); // Select only required fields
+
+    return response()->json([
+        'success' => true,
+        'data' => $careers->items(),
+        'meta' => [
+            'total' => $careers->total(),
+            'per_page' => $careers->perPage(),
+            'current_page' => $careers->currentPage(),
+            'last_page' => $careers->lastPage(),
+        ]
+    ]);
+}
+
 
     /**
      * API endpoint to get a specific career/job
@@ -338,11 +338,26 @@ class CareerController extends Controller
      * @param  \App\Models\Career  $career
      * @return \Illuminate\Http\Response
      */
-    public function apiGetOne(Career $career)
-    {
+    // public function apiGetOne(Career $career)
+    // {
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $career
+    //     ]);
+    // }
+    public function apiGetOne($career){
+    $career = Career::find($career);
+
+    if (!$career) {
         return response()->json([
-            'success' => true,
-            'data' => $career
-        ]);
+            'success' => false,
+            'message' => 'Career not found'
+        ], 404);
+    }
+
+    return response()->json([
+        'success' => true,
+        'data' => $career
+    ]);
     }
 } 
