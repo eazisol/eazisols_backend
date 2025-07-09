@@ -59,7 +59,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Employee</label>
                                     <div class="col-sm-9">
-                                        <p class="form-control-static">{{ $leave->user->name }}</p>
+                                        <p class="form-control-static">{{ $leave->user ? $leave->user->name : 'N/A' }}</p>
                                     </div>
                                 </div>
                             @endif
@@ -67,21 +67,21 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Start Date</label>
                                 <div class="col-sm-9">
-                                    <p class="form-control-static">{{ $leave->start_date->format('d M Y') }}</p>
+                                    <p class="form-control-static">{{ $leave->start_date ? $leave->start_date->format('d M Y') : 'N/A' }}</p>
                                 </div>
                             </div>
                             
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">End Date</label>
                                 <div class="col-sm-9">
-                                    <p class="form-control-static">{{ $leave->end_date->format('d M Y') }}</p>
+                                    <p class="form-control-static">{{ $leave->end_date ? $leave->end_date->format('d M Y') : 'N/A' }}</p>
                                 </div>
                             </div>
                             
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Duration</label>
                                 <div class="col-sm-9">
-                                    <p class="form-control-static">{{ $leave->duration }} day(s)</p>
+                                    <p class="form-control-static">{{ ($leave->start_date && $leave->end_date) ? $leave->duration . ' day(s)' : 'N/A' }}</p>
                                 </div>
                             </div>
                             
@@ -95,15 +95,15 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Applied On</label>
                                 <div class="col-sm-9">
-                                    <p class="form-control-static">{{ $leave->created_at->format('d M Y, h:i A') }}</p>
+                                    <p class="form-control-static">{{ $leave->created_at ? $leave->created_at->format('d M Y, h:i A') : 'N/A' }}</p>
                                 </div>
                             </div>
                             
-                            @if($leave->created_at->ne($leave->updated_at))
+                            @if($leave->created_at && $leave->updated_at && $leave->created_at->ne($leave->updated_at))
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Last Updated</label>
                                     <div class="col-sm-9">
-                                        <p class="form-control-static">{{ $leave->updated_at->format('d M Y, h:i A') }}</p>
+                                        <p class="form-control-static">{{ $leave->updated_at ? $leave->updated_at->format('d M Y, h:i A') : 'N/A' }}</p>
                                     </div>
                                 </div>
                             @endif
@@ -142,7 +142,7 @@
                                 </div>
                             @endif
                             
-                            @if(Auth::id() === $leave->user_id || Auth::id() === 1)
+                            {{-- @if(Auth::id() === $leave->user_id || Auth::id() === 1)
                                 <div class="buttons mb-3">
                                     <a href="{{ route('leaves.edit', $leave) }}" class="btn btn-primary btn-block">
                                         <i class="fas fa-edit"></i> Edit Request
@@ -157,7 +157,7 @@
                                         </button>
                                     </form>
                                 </div>
-                            @endif
+                            @endif --}}
                         @endif
                         
                         <div class="buttons mt-3">

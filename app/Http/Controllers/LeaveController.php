@@ -118,8 +118,13 @@ class LeaveController extends Controller
      * @param  \App\Models\Leave  $leave
      * @return \Illuminate\Http\Response
      */
-    public function show(Leave $leave)
+    public function show($id)
     {
+        $leave = Leave::with('user')->find($id);
+
+        if (!$leave) {
+            abort(404);
+        }
         // Regular users can only view their own leave requests
         if (Auth::id() !== $leave->user_id && Auth::id() !== 1) {
             abort(403);
