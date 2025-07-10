@@ -17,11 +17,13 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>All Case Studies</h4>
+                        @if(auth()->user()->hasPermission('dash_case_studies_edit'))
                         <div class="card-header-action">
                             <a href="{{ route('case_studies.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> Add New Case Study
                             </a>
                         </div>
+                        @endif
                     </div>
                     
                     <div class="card-body">
@@ -183,6 +185,7 @@
                                             
                                             <td>{{ $caseStudy->created_at->format('M d, Y') }}</td>
                                             <td>
+                                                @if(auth()->user()->hasPermission('dash_case_studies_edit'))
                                                 <a href="{{ route('case_studies.edit', $caseStudy) }}" class="btn btn-sm btn-primary">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </a>
@@ -193,6 +196,7 @@
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @empty

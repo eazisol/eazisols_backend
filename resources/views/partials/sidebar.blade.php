@@ -125,9 +125,11 @@ foreach ($sections as $section => $routes) {
                 <li class="{{ request()->routeIs('blogs.index') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('blogs.index') }}">All Blogs</a>
                 </li>
+                @if(auth()->user()->hasPermission('dash_blogs_edit'))
                 <li class="{{ request()->routeIs('blogs.create') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('blogs.create') }}">Add New Blog</a>
                 </li>
+                @endif
               </ul>
             </li>
             @endif
@@ -140,9 +142,11 @@ foreach ($sections as $section => $routes) {
                 <li class="{{ request()->routeIs('categories.index') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('categories.index') }}">All Categories</a>
                 </li>
+                @if(auth()->user()->hasPermission('dash_categories_edit'))
                 <li class="{{ request()->routeIs('categories.create') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('categories.create') }}">Add New Category</a>
                 </li>
+                @endif
               </ul>
             </li>
             @endif
@@ -173,9 +177,11 @@ foreach ($sections as $section => $routes) {
                 <li class="{{ request()->routeIs('case_studies.index') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('case_studies.index') }}">All Case Studies</a>
                 </li>
+                @if(auth()->user()->hasPermission('dash_case_studies_edit'))
                 <li class="{{ request()->routeIs('case_studies.create') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('case_studies.create') }}">Add New Case Study</a>
                 </li>
+                @endif
               </ul>
             </li>
             @endif

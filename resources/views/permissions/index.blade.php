@@ -46,11 +46,14 @@
                                         @foreach($permissions as $module => $modulePermissions)
                                             @foreach($modulePermissions as $permission)
                                                 <tr>
-                                                    @if($loop->first)
+                                                    {{-- @if($loop->first)
                                                     <td class="font-weight-bold" rowspan="{{ count($modulePermissions) }}">
                                                         {{ ucfirst(str_replace('_', ' ', $module)) }}
                                                     </td>
-                                                    @endif
+                                                    @endif --}}
+                                                    <td class="font-weight-bold">
+                                                        {{ ucfirst(str_replace('_', ' ', $module)) }}
+                                                    </td>
                                                     <td>{{ $permission->key }}</td>
                                                     <td class="text-center">
                                                         <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-sm btn-primary mr-1">

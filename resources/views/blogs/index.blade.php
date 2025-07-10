@@ -22,11 +22,13 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>All Blogs</h4>
+                        @if(auth()->user()->hasPermission('dash_blogs_edit'))
                         <div class="card-header-action">
                             <a href="{{ route('blogs.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> Add New Blogs
                             </a>
                         </div>
+                        @endif
                     </div>
 
                     <div class="row mb-3 px-4 pt-3">
@@ -130,6 +132,7 @@
                                         <th>Status</th>
                                         <th>Created Date</th>
                                         <th>Action</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -151,6 +154,7 @@
                                             </div>
                                         </td>
                                         <td>{{ $blog->created_at->format('M d, Y') }}</td>
+                                        @if(auth()->user()->hasPermission('dash_blogs_edit'))
                                         <td>
                                             <a href="{{ route('blogs.edit', $blog) }}" class="btn btn-primary btn-sm" title="Edit">
                                                 <i class="fas fa-edit"></i>
@@ -165,6 +169,7 @@
                                                 @method('DELETE')
                                             </form>
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>

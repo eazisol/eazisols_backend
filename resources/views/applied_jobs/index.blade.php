@@ -151,6 +151,7 @@
                                                 <a href="{{ route('applied-jobs.show', $application) }}" class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
+                                                @if(auth()->user()->hasPermission('dash_applied_jobs_delete'))
                                                 <form action="{{ route('applied-jobs.destroy', $application) }}" method="POST" class="d-inline delete-form">
                                                     @csrf
                                                     @method('DELETE')
@@ -158,6 +159,7 @@
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @empty
