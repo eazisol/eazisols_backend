@@ -142,9 +142,15 @@ class AttendanceController extends Controller
             ->orderBy('start_date', 'asc')
             ->get();
         
+        // Get leave history (approved/rejected)
+        $leaveHistory = $user->leaves()
+            ->whereIn('status', [Leave::STATUS_APPROVED, Leave::STATUS_REJECTED])
+            ->orderBy('start_date', 'desc')
+            ->get();
+            
         return view('attendances.dashboard', compact(
-            'user', 'today', 'todayAttendance', 'stats', 
-            'recentAttendances', 'pendingLeaves'
+            'user', 'today', 'todayAttendance', 'stats',
+            'recentAttendances', 'pendingLeaves', 'leaveHistory'
         ));
     }
     
