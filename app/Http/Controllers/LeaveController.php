@@ -363,4 +363,20 @@ class LeaveController extends Controller
         
         return view('leaves.calendar', compact('users', 'leaves', 'calendar', 'month', 'year'));
     }
-} 
+
+    /**
+     * Display the leave history for the authenticated user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function history(Request $request)
+    {
+        $user = Auth::user();
+        $leaves = $user->leaves()
+            ->orderBy('start_date', 'desc')
+            ->paginate(10);
+
+        return view('leaves.history', compact('leaves'));
+    }
+}

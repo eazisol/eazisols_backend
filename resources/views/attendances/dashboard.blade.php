@@ -69,14 +69,14 @@
                                 
                                 @if($todayAttendance->check_in_time)
                                 <div class="d-flex align-items-center mb-2">
-                                    <h6 class="mr-2">Check In:</h6>
+                                    <h6 class="mr-2" style="margin-bottom:initial">Check In:</h6>
                                     <span>{{ $todayAttendance->check_in_time->setTimezone(config('app.timezone'))->format('h:i A') }}</span>
                                 </div>
                                 @endif
                                 
                                 @if($todayAttendance->check_out_time)
                                 <div class="d-flex align-items-center">
-                                    <h6 class="mr-2">Check Out:</h6>
+                                    <h6 class="mr-2" style="margin-bottom:initial">Check Out:</h6>
                                     <span>{{ $todayAttendance->check_out_time->setTimezone(config('app.timezone'))->format('h:i A') }}</span>
                                 </div>
                                 @endif
@@ -261,53 +261,6 @@
                                             <td>{{ \Illuminate\Support\Str::limit($leave->reason, 50) }}</td>
                                             <td>
                                                 <span class="badge badge-warning">Pending</span>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        @if(count($leaveHistory) > 0)
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Leave History</h4>
-                        <div class="card-header-action">
-                            <a href="{{ route('leaves.index') }}" class="btn btn-primary">View All</a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
-                                        <th>Duration</th>
-                                        <th>Reason</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($leaveHistory as $leave)
-                                        <tr>
-                                            <td>{{ $leave->start_date->format('d M Y') }}</td>
-                                            <td>{{ $leave->end_date->format('d M Y') }}</td>
-                                            <td>{{ $leave->duration }} day(s)</td>
-                                            <td>{{ \Illuminate\Support\Str::limit($leave->reason, 50) }}</td>
-                                            <td>
-                                                @if($leave->status === 'approved')
-                                                    <span class="badge badge-success">Approved</span>
-                                                @else
-                                                    <span class="badge badge-danger">Rejected</span>
-                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

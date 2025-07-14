@@ -142,15 +142,9 @@ class AttendanceController extends Controller
             ->orderBy('start_date', 'asc')
             ->get();
         
-        // Get leave history (approved/rejected)
-        $leaveHistory = $user->leaves()
-            ->whereIn('status', [Leave::STATUS_APPROVED, Leave::STATUS_REJECTED])
-            ->orderBy('start_date', 'desc')
-            ->get();
-            
         return view('attendances.dashboard', compact(
             'user', 'today', 'todayAttendance', 'stats',
-            'recentAttendances', 'pendingLeaves', 'leaveHistory'
+            'recentAttendances', 'pendingLeaves'
         ));
     }
     
@@ -504,5 +498,53 @@ class AttendanceController extends Controller
         $attendancesByUser = $attendances->groupBy('user_id');
         
         return view('attendances.report', compact('attendances', 'attendancesByUser', 'stats', 'startDate', 'endDate', 'userId'));
+    }
+/**
+     * Add a public holiday for all users.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addPublicHoliday(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'holiday_name' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = Carbon::parse($request->end_date);
+        $users = User::all();
+
+        DB::beginTransaction();
+        try {
+            for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
+                foreach ($users as $user) {
+                    Attendance::updateOrCreate(
+                        [
+                            'user_id' => $user->id,
+                            'date' => $date->format('Y-m-d'),
+                        ],
+                        [
+                            'status' => 'public_holiday',
+                            'notes' => $request->holiday_name,
+                        ]
+                    );
+                }
+            }
+            DB::commit();
+            return redirect()->back()->with('success', 'Public holiday added successfully.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Failed to add public holiday. ' . $e->getMessage());
+        }
     }
 } 

@@ -217,9 +217,12 @@ foreach ($sections as $section => $routes) {
                 </li>
                 <li class="{{ request()->routeIs('leaves.calendar') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('leaves.calendar') }}">Leave Calendar</a>
-                </li>
-              </ul>
-            </li>
+              </li>
+              <li class="{{ request()->routeIs('leaves.history') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('leaves.history') }}">Leave History</a>
+              </li>
+            </ul>
+          </li>
             @endif
 
             <li class="menu-header">Configuration</li>

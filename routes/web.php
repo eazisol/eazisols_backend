@@ -66,9 +66,11 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/attendance/check-out', [App\Http\Controllers\AttendanceController::class, 'checkOut'])->name('attendances.check-out');
     Route::post('/attendance/mark', [App\Http\Controllers\AttendanceController::class, 'markAttendance'])->name('attendances.mark');
     Route::post('/attendance/import', [App\Http\Controllers\AttendanceController::class, 'import'])->name('attendances.import');
+    Route::post('/attendance/add-public-holiday', [App\Http\Controllers\AttendanceController::class, 'addPublicHoliday'])->name('attendances.add_public_holiday');
     Route::get('/attendance/report', [App\Http\Controllers\AttendanceController::class, 'report'])->name('attendances.report');
 
     // Leave routes
+    Route::get('/leaves/history', [App\Http\Controllers\LeaveController::class, 'history'])->name('leaves.history');
     Route::resource('leaves', App\Http\Controllers\LeaveController::class);
     Route::put('/leaves/{leave}/status', [App\Http\Controllers\LeaveController::class, 'updateStatus'])->name('leaves.update-status');
     Route::get('/leaves-calendar', [App\Http\Controllers\LeaveController::class, 'calendar'])->name('leaves.calendar');

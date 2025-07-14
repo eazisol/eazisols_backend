@@ -20,6 +20,7 @@ class Attendance extends Model
         'status',
         'check_in_time',
         'check_out_time',
+        'notes',
     ];
 
     /**
@@ -41,6 +42,7 @@ class Attendance extends Model
     const STATUS_LEAVE = 'leave';
     const STATUS_HALF_DAY = 'half-day';
     const STATUS_LATE = 'late';
+    const STATUS_PUBLIC_HOLIDAY = 'public_holiday';
 
     /**
      * Get the user that owns the attendance record.
@@ -88,6 +90,14 @@ class Attendance extends Model
     public function scopeLate($query)
     {
         return $query->where('status', self::STATUS_LATE);
+    }
+
+    /**
+     * Scope a query to only include public holiday attendance.
+     */
+    public function scopePublicHoliday($query)
+    {
+        return $query->where('status', self::STATUS_PUBLIC_HOLIDAY);
     }
 
     /**

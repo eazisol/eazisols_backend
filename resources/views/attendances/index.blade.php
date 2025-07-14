@@ -103,6 +103,9 @@
                             <button class="btn btn-info" data-toggle="modal" data-target="#importAttendanceModal">
                                 <i class="fas fa-file-import"></i> Import Attendance
                             </button>
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#addPublicHolidayModal">
+                                <i class="fas fa-calendar-alt"></i> Add Public Holiday
+                            </button>
                         </div>
 
                         @if(session('success'))
@@ -149,6 +152,10 @@
                                 <div class="legend-item mr-3 mb-2">
                                     <span class="legend-color" style="background-color: #e9ecef;"></span>
                                     <span class="legend-text">Weekend</span>
+                                </div>
+                                <div class="legend-item mr-3 mb-2">
+                                    <span class="legend-color" style="background-color: #6c757d;"></span>
+                                    <span class="legend-text">Public Holiday</span>
                                 </div>
                             </div>
                         </div>
@@ -221,6 +228,11 @@
                                                                 $tooltip = 'Late';
                                                                 $icon = 'fa-clock';
                                                                 break;
+                                                           case 'public_holiday':
+                                                               $bgColor = 'bg-secondary';
+                                                               $tooltip = $attendance->notes ?: 'Public Holiday';
+                                                               $icon = 'fa-calendar-check';
+                                                               break;
                                                             default:
                                                                 $bgColor = 'bg-secondary';
                                                                 $tooltip = 'Unknown: ' . $attendance->status;
@@ -346,6 +358,41 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Public Holiday Modal -->
+<div class="modal fade" id="addPublicHolidayModal" tabindex="-1" role="dialog" aria-labelledby="addPublicHolidayModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPublicHolidayModalLabel">Add Public Holiday</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('attendances.add_public_holiday') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Holiday Name</label>
+                        <input type="text" class="form-control" name="holiday_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" class="form-control" name="start_date" value="{{ date('Y-m-d') }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" class="form-control" name="end_date" value="{{ date('Y-m-d') }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Holiday</button>
                 </div>
             </form>
         </div>

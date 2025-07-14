@@ -161,8 +161,8 @@
                         @endif
                         
                         <div class="buttons mt-3">
-                            <a href="{{ route('leaves.index') }}" class="btn btn-secondary btn-block">
-                                <i class="fas fa-arrow-left"></i> Back to List
+                            <a href="{{ url()->previous() }}" class="btn btn-secondary btn-block">
+                                <i class="fas fa-arrow-left"></i> Back
                             </a>
                         </div>
                     </div>
