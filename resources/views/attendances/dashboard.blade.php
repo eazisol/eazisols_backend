@@ -40,6 +40,7 @@
                     <div class="card-header">
                         <h4>Today's Attendance</h4>
                         <div class="card-header-action">
+                                                        <a href="{{ route('leaves.create') }}" class="btn btn-primary mr-2">Apply for Leave</a>
                             <span class="badge badge-primary">{{ $today->format('d M Y') }}</span>
                         </div>
                     </div>
@@ -117,37 +118,35 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4 col-6 mb-3">
-                                <div class="text-center">
-                                    <div class="font-weight-bold text-success mb-1">Present</div>
-                                    <div class="h3">{{ $stats['present'] }}</div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-6 mb-3">
-                                <div class="text-center">
-                                    <div class="font-weight-bold text-danger mb-1">Absent</div>
-                                    <div class="h3">{{ $stats['absent'] }}</div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-6 mb-3">
-                                <div class="text-center">
-                                    <div class="font-weight-bold text-info mb-1">Leave</div>
-                                    <div class="h3">{{ $stats['leave'] }}</div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-6 mb-3">
-                                <div class="text-center">
-                                    <div class="font-weight-bold text-warning mb-1">Half Day</div>
-                                    <div class="h3">{{ $stats['half_day'] }}</div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-6 mb-3">
-                                <div class="text-center">
-                                    <div class="font-weight-bold text-warning mb-1">Late</div>
-                                    <div class="h3">{{ $stats['late'] }}</div>
-                                </div>
-                            </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="font-weight-bold">Present</td>
+                                        <td class="text-center"><span class="badge badge-success">{{ $stats['present'] }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-bold">Absent</td>
+                                        <td class="text-center"><span class="badge badge-danger">{{ $stats['absent'] }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-bold">Leave</td>
+                                        <td class="text-center"><span class="badge badge-info">{{ $stats['leave'] }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-bold">Half Day</td>
+                                        <td class="text-center"><span class="badge badge-warning">{{ $stats['half_day'] }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-bold">Late</td>
+                                        <td class="text-center"><span class="badge badge-warning">{{ $stats['late'] }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-bold">Annual Leaves Remaining</td>
+                                        <td class="text-center"><span class="badge badge-primary">{{ $remainingAnnualLeaves }}/24</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -158,10 +157,29 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Recent Attendance</h4>
+                        <h4>Attendance History</h4>
                         <div class="card-header-action">
-                            <a href="{{ route('leaves.create') }}" class="btn btn-primary mr-2">Apply for Leave</a>
-                            <a href="{{ route('attendances.index') }}" class="btn btn-primary">View All</a>
+
+                            
+                            <form action="{{ route('attendances.dashboard') }}" method="GET" class="form-inline">
+                                <div class="form-group mr-2">
+                                    <select name="month" class="form-control">
+                                        @for ($m = 1; $m <= 12; $m++)
+                                            <option value="{{ $m }}" {{ $m == $month ? 'selected' : '' }}>
+                                                {{ \Carbon\Carbon::create()->month($m)->format('F') }}
+                                            </option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="form-group mr-2">
+                                    <select name="year" class="form-control">
+                                        @for ($y = \Carbon\Carbon::now()->year; $y >= \Carbon\Carbon::now()->year - 5; $y--)
+                                            <option value="{{ $y }}" {{ $y == $year ? 'selected' : '' }}>{{ $y }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                            </form>
                         </div>
                     </div>
                     <div class="card-body">

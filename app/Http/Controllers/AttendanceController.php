@@ -104,24 +104,26 @@ class AttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $user = Auth::user();
         $today = Carbon::today();
-        $month = Carbon::now()->month;
-        $year = Carbon::now()->year;
-        
+
+        // Get month and year from request, default to current month/year
+        $month = $request->query('month', Carbon::now()->month);
+        $year = $request->query('year', Carbon::now()->year);
+
         // Get today's attendance
         $todayAttendance = $user->getAttendanceForDate($today);
-        
-        // Get attendance stats for current month
-        $startDate = Carbon::createFromDate($year, $month, 1);
+
+        // Get attendance stats for the selected month
+        $startDate = Carbon::createFromDate($year, $month, 1)->startOfMonth();
         $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
-        
+
         $monthAttendances = $user->attendances()
             ->whereBetween('date', [$startDate, $endDate])
             ->get();
-        
+
         $stats = [
             'present' => $monthAttendances->where('status', Attendance::STATUS_PRESENT)->count(),
             'absent' => $monthAttendances->where('status', Attendance::STATUS_ABSENT)->count(),
@@ -129,22 +131,33 @@ class AttendanceController extends Controller
             'half_day' => $monthAttendances->where('status', Attendance::STATUS_HALF_DAY)->count(),
             'late' => $monthAttendances->where('status', Attendance::STATUS_LATE)->count(),
         ];
-        
-        // Get recent attendance records
+
+        // Calculate annual leaves
+        $totalAnnualLeaves = 24;
+        $approvedLeavesThisYear = $user->leaves()
+            ->where('status', Leave::STATUS_APPROVED)
+            ->whereYear('start_date', Carbon::now()->year) // Use current year for annual calculation
+            ->get()
+            ->sum('duration');
+
+        $remainingAnnualLeaves = $totalAnnualLeaves - $approvedLeavesThisYear;
+
+        // Get attendance records for the selected month
         $recentAttendances = $user->attendances()
+            ->whereBetween('date', [$startDate, $endDate])
             ->orderBy('date', 'desc')
-            ->limit(10)
             ->get();
-        
+
         // Get pending leave requests
         $pendingLeaves = $user->leaves()
             ->where('status', Leave::STATUS_PENDING)
             ->orderBy('start_date', 'asc')
             ->get();
-        
+
         return view('attendances.dashboard', compact(
             'user', 'today', 'todayAttendance', 'stats',
-            'recentAttendances', 'pendingLeaves'
+            'recentAttendances', 'pendingLeaves', 'remainingAnnualLeaves',
+            'month', 'year'
         ));
     }
     
