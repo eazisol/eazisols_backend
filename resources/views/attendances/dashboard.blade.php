@@ -194,6 +194,9 @@
                                                     @case('half-day')
                                                         <span class="badge badge-warning">Half Day</span>
                                                         @break
+                                                    @case('public_holiday')
+                                                        <span class="badge badge-primary">Public Holiday</span>
+                                                        @break
                                                     @case('late')
                                                         <span class="badge badge-warning">Late</span>
                                                         @break

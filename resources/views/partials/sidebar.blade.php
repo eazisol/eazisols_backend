@@ -88,6 +88,31 @@ foreach ($sections as $section => $routes) {
             </li>
             @endif
 
+            {{-- Users --}}
+            @if(auth()->user()->hasPermission('dash_users'))
+            <li class="dropdown {{ $activeSection == 'users' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'users' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="users"></i><span>Users</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'users' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('users.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('users.index') }}">All Users</a>
+                </li>
+                <li class="{{ request()->routeIs('users.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('users.create') }}">Add New User</a>
+                </li>
+                @if(auth()->user()->hasPermission('dash_roles'))
+                <li class="{{ request()->routeIs('roles.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
+                </li>
+                @endif
+                @if(auth()->user()->hasPermission('dash_permissions'))
+                <li class="{{ request()->routeIs('permissions.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('permissions.index') }}">Permissions</a>
+                </li>
+                @endif
+              </ul>
+            </li>
+            @endif
+
             {{-- Careers --}}
             @if(auth()->user()->hasPermission('dash_careers'))
             <li class="dropdown {{ $activeSection == 'careers' ? 'active' : '' }}">
@@ -197,9 +222,9 @@ foreach ($sections as $section => $routes) {
                 <li class="{{ request()->routeIs('attendances.index') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('attendances.index') }}">Attendance Register</a>
                 </li>
-                <li class="{{ request()->routeIs('attendances.report') ? 'active' : '' }}">
+                {{-- <li class="{{ request()->routeIs('attendances.report') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('attendances.report') }}">Reports</a>
-                </li>
+                </li> --}}
               </ul>
             </li>
             @endif
@@ -215,9 +240,9 @@ foreach ($sections as $section => $routes) {
                 <li class="{{ request()->routeIs('leaves.create') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('leaves.create') }}">Apply for Leave</a>
                 </li>
-                <li class="{{ request()->routeIs('leaves.calendar') ? 'active' : '' }}">
+                {{-- <li class="{{ request()->routeIs('leaves.calendar') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('leaves.calendar') }}">Leave Calendar</a>
-              </li>
+              </li> --}}
               <li class="{{ request()->routeIs('leaves.history') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('leaves.history') }}">Leave History</a>
               </li>
@@ -227,30 +252,7 @@ foreach ($sections as $section => $routes) {
 
             <li class="menu-header">Configuration</li>
             
-            {{-- Users --}}
-            @if(auth()->user()->hasPermission('dash_users'))
-            <li class="dropdown {{ $activeSection == 'users' ? 'active' : '' }}">
-              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'users' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="users"></i><span>Users</span></a>
-              <ul class="dropdown-menu" style="{{ $activeSection == 'users' ? 'display: block;' : '' }}">
-                <li class="{{ request()->routeIs('users.index') ? 'active' : '' }}">
-                  <a class="nav-link" href="{{ route('users.index') }}">All Users</a>
-                </li>
-                <li class="{{ request()->routeIs('users.create') ? 'active' : '' }}">
-                  <a class="nav-link" href="{{ route('users.create') }}">Add New User</a>
-                </li>
-                @if(auth()->user()->hasPermission('dash_roles'))
-                <li class="{{ request()->routeIs('roles.index') ? 'active' : '' }}">
-                  <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
-                </li>
-                @endif
-                @if(auth()->user()->hasPermission('dash_permissions'))
-                <li class="{{ request()->routeIs('permissions.index') ? 'active' : '' }}">
-                  <a class="nav-link" href="{{ route('permissions.index') }}">Permissions</a>
-                </li>
-                @endif
-              </ul>
-            </li>
-            @endif
+            
 
             {{-- Settings --}}
             @if(auth()->user()->hasPermission('dash_settings'))
