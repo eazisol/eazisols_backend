@@ -87,5 +87,14 @@ class User extends Authenticatable
     {
         return $this->role && $this->role->permissions->contains('key', $key);
     }
+    public function empPersonalDetail()
+    {
+        return $this->hasOne(EmpPersonalDetail::class);
+    }
+    public function emergencyContacts()
+    {
+        return $this->hasMany(EmpEmergencyContact::class);
+    }
+
 
 }

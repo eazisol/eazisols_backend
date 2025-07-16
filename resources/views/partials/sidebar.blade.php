@@ -22,6 +22,7 @@ $sections = [
     'dashboard' => ['dashboard', 'home'],
     'careers' => ['careers.*'],
     'applied-jobs' => ['applied-jobs.*'],
+    'employees' => ['employees.*'],
     'blogs' => ['blogs.*'],
     'categories' => ['categories.*'],
     'queries' => ['queries.*'],
@@ -138,6 +139,21 @@ foreach ($sections as $section => $routes) {
                 <li class="{{ request()->routeIs('applied-jobs.index') ? 'active' : '' }}">
                   <a class="nav-link" href="{{ route('applied-jobs.index') }}">All Applications</a>
                 </li>
+              </ul>
+            </li>
+            @endif
+
+            {{-- Employees --}}
+            @if(auth()->user()->hasPermission('dash_users'))
+            <li class="dropdown {{ $activeSection == 'employees' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'employees' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="users"></i><span>Employees</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'employees' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('employees.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('employees.index') }}">All Employees</a>
+                </li>
+                {{-- <li class="{{ request()->routeIs('employees.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('employees.create') }}">Add New Employee</a>
+                </li> --}}
               </ul>
             </li>
             @endif

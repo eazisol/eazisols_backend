@@ -92,3 +92,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles', 'App\Http\Controllers\RoleController');
     Route::resource('permissions', 'App\Http\Controllers\PermissionController');
 });
+use App\Http\Controllers\Employee\EmployeeController;
+
+Route::resource('employees', EmployeeController::class);
