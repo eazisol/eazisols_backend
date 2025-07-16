@@ -115,7 +115,7 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employee = User::with('empPersonalDetail')->findOrFail($id);
+        $employee = User::with('empPersonalDetail', 'emergencyContacts')->findOrFail($id);
         return view('employees.edit', compact('employee'));
     }
 
@@ -144,6 +144,11 @@ class EmployeeController extends Controller
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'country' => 'nullable|string|max:255',
+            // Emergency Contact Validation
+            'contact_name' => 'nullable|string|max:255',
+            'relationship' => 'nullable|string|max:255',
+            'phone_number' => 'nullable|string|max:20',
+            'alternate_phone' => 'nullable|string|max:20',
         ]);
 
         $employee->update([
@@ -172,6 +177,20 @@ class EmployeeController extends Controller
                 'country' => $validated['country'],
             ]
         );
+
+        // Update or create emergency contact
+        if ($request->filled('contact_name')) {
+            $employee->emergencyContacts()->updateOrCreate(
+                ['user_id' => $employee->id],
+                [
+                    'contact_name' => $validated['contact_name'],
+                    'relationship' => $validated['relationship'],
+                    'phone_number' => $validated['phone_number'],
+                    'alternate_phone' => $validated['alternate_phone'],
+                ]
+            );
+        }
+
 
         return redirect()->route('employees.index')
             ->with('success', 'Employee updated successfully.');

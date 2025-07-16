@@ -92,6 +92,27 @@
                                 </div>
                             </div>
 
+                            <hr>
+                            <h5>Emergency Contact</h5>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="contact_name">Contact Name</label>
+                                    <input type="text" class="form-control" id="contact_name" name="contact_name" value="{{ $employee->emergencyContacts->first()->contact_name ?? '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="relationship">Relationship</label>
+                                    <input type="text" class="form-control" id="relationship" name="relationship" value="{{ $employee->emergencyContacts->first()->relationship ?? '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="phone_number">Phone Number</label>
+                                    <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ $employee->emergencyContacts->first()->phone_number ?? '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="alternate_phone">Alternate Phone</label>
+                                    <input type="text" class="form-control" id="alternate_phone" name="alternate_phone" value="{{ $employee->emergencyContacts->first()->alternate_phone ?? '' }}">
+                                </div>
+                            </div>
+
                             <div class="card-footer text-right">
                                 <button type="submit" class="btn btn-primary">Update Employee</button>
                             </div>
