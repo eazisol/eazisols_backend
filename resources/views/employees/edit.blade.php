@@ -113,6 +113,63 @@
                                 </div>
                             </div>
 
+                            <hr>
+                            <h5>Job Information</h5>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="department_id">Department</label>
+                                    <input type="text" class="form-control" id="department_id" name="department_id" value="{{ $employee->jobInformation->department_id ?? '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="designation_id">Designation</label>
+                                    <input type="text" class="form-control" id="designation_id" name="designation_id" value="{{ $employee->jobInformation->designation_id ?? '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="work_type">Work Type</label>
+                                    <select class="form-control" id="work_type" name="work_type">
+                                        <option value="full_time" {{ ($employee->jobInformation->work_type ?? '') == 'full_time' ? 'selected' : '' }}>Full Time</option>
+                                        <option value="part_time" {{ ($employee->jobInformation->work_type ?? '') == 'part_time' ? 'selected' : '' }}>Part Time</option>
+                                        <option value="contract" {{ ($employee->jobInformation->work_type ?? '') == 'contract' ? 'selected' : '' }}>Contract</option>
+                                        <option value="intern" {{ ($employee->jobInformation->work_type ?? '') == 'intern' ? 'selected' : '' }}>Intern</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="joining_date">Joining Date</label>
+                                    <input type="date" class="form-control" id="joining_date" name="joining_date" value="{{ $employee->jobInformation->joining_date ?? '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="probation_end_date">Probation End Date</label>
+                                    <input type="date" class="form-control" id="probation_end_date" name="probation_end_date" value="{{ $employee->jobInformation->probation_end_date ?? '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="reporting_manager_id">Reporting Manager</label>
+                                    <select class="form-control" id="reporting_manager_id" name="reporting_manager_id">
+                                        <option value="">Select Manager</option>
+                                        @foreach($managers as $manager)
+                                            <option value="{{ $manager->id }}" {{ ($employee->jobInformation->reporting_manager_id ?? '') == $manager->id ? 'selected' : '' }}>{{ $manager->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="reporting_teamlead_id">Reporting Team Lead</label>
+                                    <select class="form-control" id="reporting_teamlead_id" name="reporting_teamlead_id">
+                                        <option value="">Select Team Lead</option>
+                                        @foreach($teamLeads as $lead)
+                                            <option value="{{ $lead->id }}" {{ ($employee->jobInformation->reporting_teamlead_id ?? '') == $lead->id ? 'selected' : '' }}>{{ $lead->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="work_location">Work Location</label>
+                                    <select class="form-control" id="work_location" name="work_location">
+                                        <option value="remote" {{ ($employee->jobInformation->work_location ?? '') == 'remote' ? 'selected' : '' }}>Remote</option>
+                                        @foreach($locations as $location)
+                                            <option value="{{ $location->address_line_1 }}" {{ ($employee->jobInformation->work_location ?? '') == $location->address_line_1 ? 'selected' : '' }}>{{ $location->address_line_1 }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="card-footer text-right">
                                 <button type="submit" class="btn btn-primary">Update Employee</button>
                             </div>

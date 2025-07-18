@@ -86,7 +86,7 @@
                                            <option value="">-- Select Workplace Type --</option>
                                            <option value="Remote" {{ old('workplace_type', $career->workplace_type) == 'Remote' ? 'selected' : '' }}>Remote</option>
                                            <option value="On Site" {{ old('workplace_type', $career->workplace_type) == 'On Site' ? 'selected' : '' }}>On Site</option>
-                                           <option value="Hybride" {{ old('workplace_type', $career->workplace_type) == 'Hybride' ? 'selected' : '' }}>Hybride</option>
+                                           <option value="Hybrid" {{ old('workplace_type', $career->workplace_type) == 'Hybrid' ? 'selected' : '' }}>Hybrid</option>
                                        </select>
                                        @error('workplace_type')
                                            <div class="invalid-feedback">{{ $message }}</div>

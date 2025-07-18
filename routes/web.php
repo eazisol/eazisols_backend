@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Query\QueryController;
 use App\Http\Controllers\AppliedJob\AppliedJobController;
+use App\Http\Controllers\Employee\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,11 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/applied-jobs/{appliedJob}', [AppliedJobController::class, 'show'])->name('applied-jobs.show');
     Route::put('/applied-jobs/{appliedJob}/status', [AppliedJobController::class, 'updateStatus'])->name('applied-jobs.update-status');
     Route::delete('/applied-jobs/{appliedJob}', [AppliedJobController::class, 'destroy'])->name('applied-jobs.destroy');
+
+
+
+    // Employee management routes
+    Route::resource('employees', EmployeeController::class);
 });
 
 // Roles and Permissions routes
@@ -92,6 +98,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles', 'App\Http\Controllers\RoleController');
     Route::resource('permissions', 'App\Http\Controllers\PermissionController');
 });
-use App\Http\Controllers\Employee\EmployeeController;
 
-Route::resource('employees', EmployeeController::class);
+

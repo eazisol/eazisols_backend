@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\EmpPersonalDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Location;
 
 class EmployeeController extends Controller
 {
@@ -115,8 +116,19 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employee = User::with('empPersonalDetail', 'emergencyContacts')->findOrFail($id);
-        return view('employees.edit', compact('employee'));
+        $employee = User::with('empPersonalDetail', 'emergencyContacts', 'jobInformation')->findOrFail($id);
+
+        $managers = User::whereHas('role', function ($query) {
+            $query->where('name', 'Project Manager');
+        })->get();
+
+        $teamLeads = User::whereHas('role', function ($query) {
+            $query->where('name', 'Team Lead');
+        })->get();
+
+        $locations = Location::all();
+
+        return view('employees.edit', compact('employee', 'managers', 'teamLeads', 'locations'));
     }
 
     /**
@@ -149,6 +161,15 @@ class EmployeeController extends Controller
             'relationship' => 'nullable|string|max:255',
             'phone_number' => 'nullable|string|max:20',
             'alternate_phone' => 'nullable|string|max:20',
+            // Job Information Validation
+            'department_id' => 'nullable|string|max:255',
+            'designation_id' => 'nullable|string|max:255',
+            'work_type' => 'nullable|string|in:full_time,part_time,contract,intern',
+            'joining_date' => 'nullable|date',
+            'probation_end_date' => 'nullable|date',
+            'reporting_manager_id' => 'nullable|exists:users,id',
+            'reporting_teamlead_id' => 'nullable|exists:users,id',
+            'work_location' => 'nullable|string|max:255',
         ]);
 
         $employee->update([
@@ -190,6 +211,21 @@ class EmployeeController extends Controller
                 ]
             );
         }
+
+        // Update or create job information
+        $employee->jobInformation()->updateOrCreate(
+            ['user_id' => $employee->id],
+            [
+                'department_id' => $validated['department_id'],
+                'designation_id' => $validated['designation_id'],
+                'work_type' => $validated['work_type'],
+                'joining_date' => $validated['joining_date'],
+                'probation_end_date' => $validated['probation_end_date'],
+                'reporting_manager_id' => $validated['reporting_manager_id'],
+                'reporting_teamlead_id' => $validated['reporting_teamlead_id'],
+                'work_location' => $validated['work_location'],
+            ]
+        );
 
 
         return redirect()->route('employees.index')
