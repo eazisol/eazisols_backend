@@ -160,7 +160,7 @@ foreach ($sections as $section => $routes) {
 
             {{-- Departments --}}
             <li class="dropdown {{ $activeSection == 'departments' ? 'active' : '' }}">
-              <a href="{{ route('departments.index') }}" class="nav-link"><i data-feather="layers"></i><span>Departments</span></a>
+              <a href="{{ route('departments.index') }}" class="nav-link"><i data-feather="layers"></i><span>Dept. & Desig.</span></a>
             </li>
 
             {{-- Blogs --}}

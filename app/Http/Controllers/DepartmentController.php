@@ -20,7 +20,16 @@ class DepartmentController extends Controller
             $query->where('name', 'LIKE', "%{$search}%");
         }
         $departments = $query->paginate(10);
-        return view('department_designation.index', compact('departments'));
+
+        // Also load designations for the toggle table
+        $designationQuery = \App\Models\Designation::with('department');
+        if ($request->has('search')) {
+            $search = $request->search;
+            $designationQuery->where('name', 'LIKE', "%{$search}%");
+        }
+        $designations = $designationQuery->paginate(10, ['*'], 'designation_page');
+
+        return view('department_designation.index', compact('departments', 'designations'));
     }
 
     /**

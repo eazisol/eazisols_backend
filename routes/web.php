@@ -91,6 +91,8 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::resource('employees', EmployeeController::class);
     // Department management routes
     Route::resource('departments', App\Http\Controllers\DepartmentController::class);
+    // Only allow create, store, edit, update, destroy for designations (no index or show)
+    Route::resource('designations', App\Http\Controllers\DesignationController::class)->except(['index', 'show']);
 });
 
 // Roles and Permissions routes
