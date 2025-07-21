@@ -87,10 +87,10 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::put('/applied-jobs/{appliedJob}/status', [AppliedJobController::class, 'updateStatus'])->name('applied-jobs.update-status');
     Route::delete('/applied-jobs/{appliedJob}', [AppliedJobController::class, 'destroy'])->name('applied-jobs.destroy');
 
-
-
     // Employee management routes
     Route::resource('employees', EmployeeController::class);
+    // Department management routes
+    Route::resource('departments', App\Http\Controllers\DepartmentController::class);
 });
 
 // Roles and Permissions routes

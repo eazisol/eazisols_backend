@@ -158,6 +158,11 @@ foreach ($sections as $section => $routes) {
             </li>
             @endif
 
+            {{-- Departments --}}
+            <li class="dropdown {{ $activeSection == 'departments' ? 'active' : '' }}">
+              <a href="{{ route('departments.index') }}" class="nav-link"><i data-feather="layers"></i><span>Departments</span></a>
+            </li>
+
             {{-- Blogs --}}
             @if(auth()->user()->hasPermission('dash_blogs'))
             <li class="dropdown {{ $activeSection == 'blogs' ? 'active' : '' }}">
