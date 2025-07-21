@@ -116,7 +116,7 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employee = User::with('empPersonalDetail', 'emergencyContacts', 'jobInformation', 'empFinanceInformation')->findOrFail($id);
+        $employee = User::with('empPersonalDetail', 'emergencyContacts', 'jobInformation', 'empFinanceInformation', 'empDocuments')->findOrFail($id);
 
         $managers = User::whereHas('role', function ($query) {
             $query->where('name', 'Project Manager');
@@ -238,6 +238,34 @@ class EmployeeController extends Controller
                 'account_number' => $request->input('account_number'),
                 'payment_type' => $request->input('payment_type'),
             ]
+        );
+
+        // Handle document uploads
+        $docData = [];
+        $docFields = [
+            'resume',
+            'id_proof',
+            'address_proof',
+            'offer_letter',
+            'joining_letter',
+            'contract_letter',
+            'education_documents',
+        ];
+        foreach ($docFields as $field) {
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $folder = public_path('uploads/employees/' . $field);
+                if (!file_exists($folder)) {
+                    mkdir($folder, 0777, true);
+                }
+                $file->move($folder, $fileName);
+                $docData[$field] = 'uploads/employees/' . $field . '/' . $fileName;
+            }
+        }
+        $employee->empDocuments()->updateOrCreate(
+            ['user_id' => $employee->id],
+            $docData
         );
 
 

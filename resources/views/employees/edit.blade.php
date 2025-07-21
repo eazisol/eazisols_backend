@@ -23,7 +23,7 @@
                         <h4>Edit Employee Details</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('employees.update', $employee->id) }}" method="POST">
+                        <form action="{{ route('employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="row">
@@ -226,6 +226,63 @@
                                         <option value="cash" {{ ($employee->empFinanceInformation->payment_type ?? '') == 'cash' ? 'selected' : '' }}>Cash</option>
                                         <option value="cheque" {{ ($employee->empFinanceInformation->payment_type ?? '') == 'cheque' ? 'selected' : '' }}>Cheque</option>
                                     </select>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <h5>Documents</h5>
+                            <div class="row">
+                                @php
+                                    $doc = $employee->empDocuments;
+                                @endphp
+                                <div class="form-group col-md-6">
+                                    <label for="resume">Resume</label>
+                                    @if($doc && $doc->resume)
+                                        <a href="{{ asset($doc->resume) }}" target="_blank">View/Download</a><br>
+                                    @endif
+                                    <input type="file" class="form-control" id="resume" name="resume" accept="application/pdf,image/*">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="id_proof">ID Proof</label>
+                                    @if($doc && $doc->id_proof)
+                                        <a href="{{ asset($doc->id_proof) }}" target="_blank">View/Download</a><br>
+                                    @endif
+                                    <input type="file" class="form-control" id="id_proof" name="id_proof" accept="application/pdf,image/*">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="address_proof">Address Proof</label>
+                                    @if($doc && $doc->address_proof)
+                                        <a href="{{ asset($doc->address_proof) }}" target="_blank">View/Download</a><br>
+                                    @endif
+                                    <input type="file" class="form-control" id="address_proof" name="address_proof" accept="application/pdf,image/*">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="offer_letter">Offer Letter</label>
+                                    @if($doc && $doc->offer_letter)
+                                        <a href="{{ asset($doc->offer_letter) }}" target="_blank">View/Download</a><br>
+                                    @endif
+                                    <input type="file" class="form-control" id="offer_letter" name="offer_letter" accept="application/pdf,image/*">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="joining_letter">Joining Letter</label>
+                                    @if($doc && $doc->joining_letter)
+                                        <a href="{{ asset($doc->joining_letter) }}" target="_blank">View/Download</a><br>
+                                    @endif
+                                    <input type="file" class="form-control" id="joining_letter" name="joining_letter" accept="application/pdf,image/*">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="contract_letter">Contract Letter</label>
+                                    @if($doc && $doc->contract_letter)
+                                        <a href="{{ asset($doc->contract_letter) }}" target="_blank">View/Download</a><br>
+                                    @endif
+                                    <input type="file" class="form-control" id="contract_letter" name="contract_letter" accept="application/pdf,image/*">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="education_documents">Education Documents</label>
+                                    @if($doc && $doc->education_documents)
+                                        <a href="{{ asset($doc->education_documents) }}" target="_blank">View/Download</a><br>
+                                    @endif
+                                    <input type="file" class="form-control" id="education_documents" name="education_documents" accept="application/pdf,image/*">
                                 </div>
                             </div>
 
