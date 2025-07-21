@@ -10,7 +10,7 @@
         <h1>Edit Designation</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="{{ route('designations.index') }}">Designations</a></div>
+            <div class="breadcrumb-item"><a href="{{ route('departments.index') }}">Departments</a></div>
             <div class="breadcrumb-item">Edit Designation</div>
         </div>
     </div>

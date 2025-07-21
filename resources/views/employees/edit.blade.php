@@ -118,12 +118,45 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="department_id">Department</label>
-                                    <input type="text" class="form-control" id="department_id" name="department_id" value="{{ $employee->jobInformation->department_id ?? '' }}">
+                                    <select class="form-control" id="department_id" name="department_id">
+                                        <option value="">Select Department</option>
+                                        @foreach($departments as $department)
+                                            <option value="{{ $department->id }}" {{ ($employee->jobInformation->department_id ?? '') == $department->id ? 'selected' : '' }}>{{ $department->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="designation_id">Designation</label>
-                                    <input type="text" class="form-control" id="designation_id" name="designation_id" value="{{ $employee->jobInformation->designation_id ?? '' }}">
+                                    <select class="form-control" id="designation_id" name="designation_id">
+                                        <option value="">Select Designation</option>
+                                        @foreach($designations as $designation)
+                                            <option value="{{ $designation->id }}" data-department="{{ $designation->department_id }}" {{ ($employee->jobInformation->designation_id ?? '') == $designation->id ? 'selected' : '' }}>{{ $designation->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const departmentSelect = document.getElementById('department_id');
+                                        const designationSelect = document.getElementById('designation_id');
+                                        const allOptions = Array.from(designationSelect.options);
+
+                                        function filterDesignations() {
+                                            const deptId = departmentSelect.value;
+                                            designationSelect.innerHTML = '';
+                                            // Always add the default option
+                                            designationSelect.appendChild(allOptions[0].cloneNode(true));
+                                            allOptions.slice(1).forEach(option => {
+                                                if (!deptId || option.getAttribute('data-department') === deptId) {
+                                                    designationSelect.appendChild(option.cloneNode(true));
+                                                }
+                                            });
+                                        }
+
+                                        departmentSelect.addEventListener('change', filterDesignations);
+                                        // Initial filter on page load
+                                        filterDesignations();
+                                    });
+                                </script>
                                 <div class="form-group col-md-6">
                                     <label for="work_type">Work Type</label>
                                     <select class="form-control" id="work_type" name="work_type">

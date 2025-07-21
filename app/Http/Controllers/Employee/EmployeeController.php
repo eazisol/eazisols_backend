@@ -127,8 +127,10 @@ class EmployeeController extends Controller
         })->get();
 
         $locations = Location::all();
+        $departments = \App\Models\Department::all();
+        $designations = \App\Models\Designation::all();
 
-        return view('employees.edit', compact('employee', 'managers', 'teamLeads', 'locations'));
+        return view('employees.edit', compact('employee', 'managers', 'teamLeads', 'locations', 'departments', 'designations'));
     }
 
     /**
