@@ -116,7 +116,7 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employee = User::with('empPersonalDetail', 'emergencyContacts', 'jobInformation')->findOrFail($id);
+        $employee = User::with('empPersonalDetail', 'emergencyContacts', 'jobInformation', 'empFinanceInformation')->findOrFail($id);
 
         $managers = User::whereHas('role', function ($query) {
             $query->where('name', 'Project Manager');
@@ -226,6 +226,17 @@ class EmployeeController extends Controller
                 'reporting_manager_id' => $validated['reporting_manager_id'],
                 'reporting_teamlead_id' => $validated['reporting_teamlead_id'],
                 'work_location' => $validated['work_location'],
+            ]
+        );
+
+        // Update or create finance information
+        $employee->empFinanceInformation()->updateOrCreate(
+            ['user_id' => $employee->id],
+            [
+                'basic_salary' => $request->input('basic_salary'),
+                'bank_name' => $request->input('bank_name'),
+                'account_number' => $request->input('account_number'),
+                'payment_type' => $request->input('payment_type'),
             ]
         );
 

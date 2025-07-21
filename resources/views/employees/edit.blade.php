@@ -203,6 +203,32 @@
                                 </div>
                             </div>
 
+                            <hr>
+                            <h5>Finance Information</h5>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="basic_salary">Basic Salary</label>
+                                    <input type="number" step="0.01" class="form-control" id="basic_salary" name="basic_salary" value="{{ $employee->empFinanceInformation->basic_salary ?? '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="bank_name">Bank Name</label>
+                                    <input type="text" class="form-control" id="bank_name" name="bank_name" value="{{ $employee->empFinanceInformation->bank_name ?? '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="account_number">Account Number</label>
+                                    <input type="text" class="form-control" id="account_number" name="account_number" value="{{ $employee->empFinanceInformation->account_number ?? '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="payment_type">Payment Type</label>
+                                    <select class="form-control" id="payment_type" name="payment_type">
+                                        <option value="">Select Payment Type</option>
+                                        <option value="bank_transfer" {{ ($employee->empFinanceInformation->payment_type ?? '') == 'bank_transfer' ? 'selected' : '' }}>Bank</option>
+                                        <option value="cash" {{ ($employee->empFinanceInformation->payment_type ?? '') == 'cash' ? 'selected' : '' }}>Cash</option>
+                                        <option value="cheque" {{ ($employee->empFinanceInformation->payment_type ?? '') == 'cheque' ? 'selected' : '' }}>Cheque</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="card-footer text-right">
                                 <button type="submit" class="btn btn-primary">Update Employee</button>
                             </div>

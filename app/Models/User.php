@@ -99,6 +99,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(EmpJobInformation::class);
     }
+    public function empFinanceInformation()
+    {
+        return $this->hasOne(EmpFinanceInformation::class);
+    }
+    public function empDocuments()
+    {
+        return $this->hasOne(EmpDocument::class);
+    }
 
 
 
