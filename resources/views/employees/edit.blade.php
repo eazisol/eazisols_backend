@@ -237,52 +237,94 @@
                                 @endphp
                                 <div class="form-group col-md-6">
                                     <label for="resume">Resume</label>
+                                    <input type="file" name="resume" id="resume" class="d-none emp-doc-input" accept="application/pdf,image/*" onchange="previewEmpDoc(this, 'resume')">
+                                    <div class="upload-area-emp" onclick="document.getElementById('resume').click()">
+                                        <img id="resume-preview-image" src="{{ $doc && $doc->resume && Str::endsWith(strtolower($doc->resume), ['.jpg','.jpeg','.png','.gif','.webp']) ? asset($doc->resume) : asset('assets/img/image-.png') }}" alt="Resume Preview" style="width:80px;height:80px;object-fit:cover;border-radius:4px;">
+                                        <div class="upload-overlay"><i class="fas fa-cloud-upload-alt"></i><p>Click to upload</p></div>
+                                    </div>
+                                    <div id="resume-file-name" class="mt-1"></div>
                                     @if($doc && $doc->resume)
-                                        <a href="{{ asset($doc->resume) }}" target="_blank">View/Download</a><br>
+                                        <a href="{{ asset($doc->resume) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                                        <a href="{{ asset($doc->resume) }}" download class="btn btn-sm btn-secondary ml-1">Download</a><br>
                                     @endif
-                                    <input type="file" class="form-control" id="resume" name="resume" accept="application/pdf,image/*">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="id_proof">ID Proof</label>
+                                    <input type="file" name="id_proof" id="id_proof" class="d-none emp-doc-input" accept="application/pdf,image/*" onchange="previewEmpDoc(this, 'id_proof')">
+                                    <div class="upload-area-emp" onclick="document.getElementById('id_proof').click()">
+                                        <img id="id_proof-preview-image" src="{{ $doc && $doc->id_proof && Str::endsWith(strtolower($doc->id_proof), ['.jpg','.jpeg','.png','.gif','.webp']) ? asset($doc->id_proof) : asset('assets/img/image-.png') }}" alt="ID Proof Preview" style="width:80px;height:80px;object-fit:cover;border-radius:4px;">
+                                        <div class="upload-overlay"><i class="fas fa-cloud-upload-alt"></i><p>Click to upload</p></div>
+                                    </div>
+                                    <div id="id_proof-file-name" class="mt-1"></div>
                                     @if($doc && $doc->id_proof)
-                                        <a href="{{ asset($doc->id_proof) }}" target="_blank">View/Download</a><br>
+                                        <a href="{{ asset($doc->id_proof) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                                        <a href="{{ asset($doc->id_proof) }}" download class="btn btn-sm btn-secondary ml-1">Download</a><br>
                                     @endif
-                                    <input type="file" class="form-control" id="id_proof" name="id_proof" accept="application/pdf,image/*">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="address_proof">Address Proof</label>
+                                    <input type="file" name="address_proof" id="address_proof" class="d-none emp-doc-input" accept="application/pdf,image/*" onchange="previewEmpDoc(this, 'address_proof')">
+                                    <div class="upload-area-emp" onclick="document.getElementById('address_proof').click()">
+                                        <img id="address_proof-preview-image" src="{{ $doc && $doc->address_proof && Str::endsWith(strtolower($doc->address_proof), ['.jpg','.jpeg','.png','.gif','.webp']) ? asset($doc->address_proof) : asset('assets/img/image-.png') }}" alt="Address Proof Preview" style="width:80px;height:80px;object-fit:cover;border-radius:4px;">
+                                        <div class="upload-overlay"><i class="fas fa-cloud-upload-alt"></i><p>Click to upload</p></div>
+                                    </div>
+                                    <div id="address_proof-file-name" class="mt-1"></div>
                                     @if($doc && $doc->address_proof)
-                                        <a href="{{ asset($doc->address_proof) }}" target="_blank">View/Download</a><br>
+                                        <a href="{{ asset($doc->address_proof) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                                        <a href="{{ asset($doc->address_proof) }}" download class="btn btn-sm btn-secondary ml-1">Download</a><br>
                                     @endif
-                                    <input type="file" class="form-control" id="address_proof" name="address_proof" accept="application/pdf,image/*">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="offer_letter">Offer Letter</label>
+                                    <input type="file" name="offer_letter" id="offer_letter" class="d-none emp-doc-input" accept="application/pdf,image/*" onchange="previewEmpDoc(this, 'offer_letter')">
+                                    <div class="upload-area-emp" onclick="document.getElementById('offer_letter').click()">
+                                        <img id="offer_letter-preview-image" src="{{ $doc && $doc->offer_letter && Str::endsWith(strtolower($doc->offer_letter), ['.jpg','.jpeg','.png','.gif','.webp']) ? asset($doc->offer_letter) : asset('assets/img/image-.png') }}" alt="Offer Letter Preview" style="width:80px;height:80px;object-fit:cover;border-radius:4px;">
+                                        <div class="upload-overlay"><i class="fas fa-cloud-upload-alt"></i><p>Click to upload</p></div>
+                                    </div>
+                                    <div id="offer_letter-file-name" class="mt-1"></div>
                                     @if($doc && $doc->offer_letter)
-                                        <a href="{{ asset($doc->offer_letter) }}" target="_blank">View/Download</a><br>
+                                        <a href="{{ asset($doc->offer_letter) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                                        <a href="{{ asset($doc->offer_letter) }}" download class="btn btn-sm btn-secondary ml-1">Download</a><br>
                                     @endif
-                                    <input type="file" class="form-control" id="offer_letter" name="offer_letter" accept="application/pdf,image/*">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="joining_letter">Joining Letter</label>
+                                    <input type="file" name="joining_letter" id="joining_letter" class="d-none emp-doc-input" accept="application/pdf,image/*" onchange="previewEmpDoc(this, 'joining_letter')">
+                                    <div class="upload-area-emp" onclick="document.getElementById('joining_letter').click()">
+                                        <img id="joining_letter-preview-image" src="{{ $doc && $doc->joining_letter && Str::endsWith(strtolower($doc->joining_letter), ['.jpg','.jpeg','.png','.gif','.webp']) ? asset($doc->joining_letter) : asset('assets/img/image-.png') }}" alt="Joining Letter Preview" style="width:80px;height:80px;object-fit:cover;border-radius:4px;">
+                                        <div class="upload-overlay"><i class="fas fa-cloud-upload-alt"></i><p>Click to upload</p></div>
+                                    </div>
+                                    <div id="joining_letter-file-name" class="mt-1"></div>
                                     @if($doc && $doc->joining_letter)
-                                        <a href="{{ asset($doc->joining_letter) }}" target="_blank">View/Download</a><br>
+                                        <a href="{{ asset($doc->joining_letter) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                                        <a href="{{ asset($doc->joining_letter) }}" download class="btn btn-sm btn-secondary ml-1">Download</a><br>
                                     @endif
-                                    <input type="file" class="form-control" id="joining_letter" name="joining_letter" accept="application/pdf,image/*">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="contract_letter">Contract Letter</label>
+                                    <input type="file" name="contract_letter" id="contract_letter" class="d-none emp-doc-input" accept="application/pdf,image/*" onchange="previewEmpDoc(this, 'contract_letter')">
+                                    <div class="upload-area-emp" onclick="document.getElementById('contract_letter').click()">
+                                        <img id="contract_letter-preview-image" src="{{ $doc && $doc->contract_letter && Str::endsWith(strtolower($doc->contract_letter), ['.jpg','.jpeg','.png','.gif','.webp']) ? asset($doc->contract_letter) : asset('assets/img/image-.png') }}" alt="Contract Letter Preview" style="width:80px;height:80px;object-fit:cover;border-radius:4px;">
+                                        <div class="upload-overlay"><i class="fas fa-cloud-upload-alt"></i><p>Click to upload</p></div>
+                                    </div>
+                                    <div id="contract_letter-file-name" class="mt-1"></div>
                                     @if($doc && $doc->contract_letter)
-                                        <a href="{{ asset($doc->contract_letter) }}" target="_blank">View/Download</a><br>
+                                        <a href="{{ asset($doc->contract_letter) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                                        <a href="{{ asset($doc->contract_letter) }}" download class="btn btn-sm btn-secondary ml-1">Download</a><br>
                                     @endif
-                                    <input type="file" class="form-control" id="contract_letter" name="contract_letter" accept="application/pdf,image/*">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="education_documents">Education Documents</label>
+                                    <input type="file" name="education_documents" id="education_documents" class="d-none emp-doc-input" accept="application/pdf,image/*" onchange="previewEmpDoc(this, 'education_documents')">
+                                    <div class="upload-area-emp" onclick="document.getElementById('education_documents').click()">
+                                        <img id="education_documents-preview-image" src="{{ $doc && $doc->education_documents && Str::endsWith(strtolower($doc->education_documents), ['.jpg','.jpeg','.png','.gif','.webp']) ? asset($doc->education_documents) : asset('assets/img/image-.png') }}" alt="Education Documents Preview" style="width:80px;height:80px;object-fit:cover;border-radius:4px;">
+                                        <div class="upload-overlay"><i class="fas fa-cloud-upload-alt"></i><p>Click to upload</p></div>
+                                    </div>
+                                    <div id="education_documents-file-name" class="mt-1"></div>
                                     @if($doc && $doc->education_documents)
-                                        <a href="{{ asset($doc->education_documents) }}" target="_blank">View/Download</a><br>
+                                        <a href="{{ asset($doc->education_documents) }}" target="_blank" class="btn btn-sm btn-info">View</a>
+                                        <a href="{{ asset($doc->education_documents) }}" download class="btn btn-sm btn-secondary ml-1">Download</a><br>
                                     @endif
-                                    <input type="file" class="form-control" id="education_documents" name="education_documents" accept="application/pdf,image/*">
                                 </div>
                             </div>
 
@@ -297,3 +339,29 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+    <script>
+        function previewEmpDoc(input, field) {
+            const file = input.files[0];
+            const previewImg = document.getElementById(field + '-preview-image');
+            const fileNameDiv = document.getElementById(field + '-file-name');
+            fileNameDiv.innerHTML = '';
+            if (file) {
+                console.log('Previewing file for field:', field, file);
+                if (file.type.startsWith('image/')) {
+                    const objectUrl = URL.createObjectURL(file);
+                    previewImg.src = objectUrl;
+                    previewImg.onload = function() {
+                        URL.revokeObjectURL(objectUrl);
+                    };
+                } else {
+                    previewImg.src = '{{ asset('assets/img/image-.png') }}';
+                    fileNameDiv.innerHTML = '<span>' + file.name + '</span>';
+                }
+            } else {
+                previewImg.src = '{{ asset('assets/img/image-.png') }}';
+            }
+        }
+    </script>
+@endpush
