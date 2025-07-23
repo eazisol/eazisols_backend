@@ -8,21 +8,42 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('careers', function (Blueprint $table) {
-        $table->renameColumn('type', 'work_type');
+            // Check if 'type' column exists to rename it
+            if (Schema::hasColumn('careers', 'type')) {
+                $table->renameColumn('type', 'work_type');
+            }
+            // If 'type' doesn't exist but 'work_type' also doesn't exist, then add it
+            elseif (!Schema::hasColumn('careers', 'work_type')) {
+                $table->string('work_type')->nullable();
+            }
 
-        $table->string('workplace_type')->nullable(); // Removed ->after('work_type')
-        $table->string('department')->nullable();     // Removed ->after('workplace_type')
-    });
+            // Add other new columns
+            if (!Schema::hasColumn('careers', 'workplace_type')) {
+                $table->string('workplace_type')->nullable();
+            }
+
+            if (!Schema::hasColumn('careers', 'department')) {
+                $table->string('department')->nullable();
+            }
+        });
     }
 
     public function down()
     {
         Schema::table('careers', function (Blueprint $table) {
-        $table->renameColumn('type', 'work_type');
+            // Revert 'work_type' back to 'type' only if 'work_type' exists
+            if (Schema::hasColumn('careers', 'work_type')) {
+                $table->renameColumn('work_type', 'type');
+            }
 
-        $table->string('workplace_type')->nullable(); // Removed ->after('work_type')
-        $table->string('department')->nullable();     // Removed ->after('workplace_type')
-    });
+            // Drop columns if they exist
+            if (Schema::hasColumn('careers', 'workplace_type')) {
+                $table->dropColumn('workplace_type');
+            }
+
+            if (Schema::hasColumn('careers', 'department')) {
+                $table->dropColumn('department');
+            }
+        });
     }
 };
-
