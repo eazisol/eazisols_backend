@@ -56,6 +56,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all reminders for the user.
+     */
+    public function reminders()
+    {
+        return $this->hasMany(Reminder::class);
+    }
+
+    /**
      * Get the attendance record for the specified date.
      */
     public function getAttendanceForDate($date)

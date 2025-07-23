@@ -30,7 +30,8 @@ $sections = [
     'settings' => ['settings.*', 'locations.*'],
     'users' => ['users.*', 'roles.*', 'permissions.*'],
     'attendances' => ['attendances.*'],
-    'leaves' => ['leaves.*']
+    'leaves' => ['leaves.*'],
+    'reminders' => ['reminders.*']
 ];
 
 // Determine which section is active
@@ -270,6 +271,19 @@ foreach ($sections as $section => $routes) {
             </ul>
           </li>
             @endif
+
+            {{-- Monthly Reminders --}}
+            <li class="dropdown {{ $activeSection == 'reminders' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'reminders' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="bell"></i><span>Monthly Reminders</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'reminders' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('reminders.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('reminders.index') }}">All Reminders</a>
+                </li>
+                <li class="{{ request()->routeIs('reminders.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('reminders.create') }}">Add New Reminder</a>
+                </li>
+              </ul>
+            </li>
 
             <li class="menu-header">Configuration</li>
             
