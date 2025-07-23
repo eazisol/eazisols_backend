@@ -36,3 +36,48 @@
   background-color: rgba(103, 119, 239, 0.05);
   color: #6777ef !important;
 }
+
+/* Sidebar scroll fix */
+.main-sidebar {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sidebar-style-2 {
+  height: 100vh;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optionally, ensure the sidebar wrapper also allows scrolling if needed */
+#sidebar-wrapper {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Custom sidebar scrollbar styling */
+.main-sidebar::-webkit-scrollbar, .sidebar-style-2::-webkit-scrollbar, #sidebar-wrapper::-webkit-scrollbar {
+  width: 8px;
+  background: #f1f1f1;
+  border-radius: 8px;
+}
+
+.main-sidebar::-webkit-scrollbar-thumb, .sidebar-style-2::-webkit-scrollbar-thumb, #sidebar-wrapper::-webkit-scrollbar-thumb {
+  background: #bfc6cd;
+  border-radius: 8px;
+}
+
+.main-sidebar::-webkit-scrollbar-thumb:hover, .sidebar-style-2::-webkit-scrollbar-thumb:hover, #sidebar-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #6777ef;
+}
+
+.main-sidebar::-webkit-scrollbar-track, .sidebar-style-2::-webkit-scrollbar-track, #sidebar-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 8px;
+}
+
+/* For Firefox */
+.main-sidebar, .sidebar-style-2, #sidebar-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: #bfc6cd #f1f1f1;
+}
