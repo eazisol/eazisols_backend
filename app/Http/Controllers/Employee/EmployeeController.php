@@ -105,7 +105,17 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        //
+        $employee = User::with('empPersonalDetail', 'emergencyContacts', 'jobInformation', 'empFinanceInformation', 'empDocuments', 'role')->findOrFail($id);
+        $managers = User::whereHas('role', function ($query) {
+            $query->where('name', 'Project Manager');
+        })->get();
+        $teamLeads = User::whereHas('role', function ($query) {
+            $query->where('name', 'Team Lead');
+        })->get();
+        $locations = \App\Models\Location::all();
+        $departments = \App\Models\Department::all();
+        $designations = \App\Models\Designation::all();
+        return view('employees.show', compact('employee', 'managers', 'teamLeads', 'locations', 'departments', 'designations'));
     }
 
     /**

@@ -54,6 +54,7 @@
                                             <td>{{ $employee->email }}</td>
                                             <td>{{ $employee->empPersonalDetail->phone ?? 'N/A' }}</td>
                                             <td>
+                                                <a href="{{ route('employees.show', $employee->id) }}" class="btn btn-sm btn-primary">View</a>
                                                 <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-sm btn-info">Edit</a>
                                                 <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="d-inline">
                                                     @csrf
