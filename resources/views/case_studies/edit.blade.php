@@ -237,6 +237,49 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="tech_stack">Tech Stack</label>
+                                <textarea name="tech_stack" id="tech_stack" class="form-control @error('tech_stack') is-invalid @enderror" rows="2">{{ old('tech_stack', $caseStudy->tech_stack) }}</textarea>
+                                @error('tech_stack')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="project_demand">Project Demand</label>
+                                <textarea name="project_demand" id="project_demand" class="form-control @error('project_demand') is-invalid @enderror" rows="2">{{ old('project_demand', $caseStudy->project_demand) }}</textarea>
+                                @error('project_demand')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="dedicated_team">Dedicated Team</label>
+                                <input type="text" name="dedicated_team" id="dedicated_team" class="form-control @error('dedicated_team') is-invalid @enderror" value="{{ old('dedicated_team', $caseStudy->dedicated_team) }}">
+                                @error('dedicated_team')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="client_location">Client Location</label>
+                                <input type="text" name="client_location" id="client_location" class="form-control @error('client_location') is-invalid @enderror" value="{{ old('client_location', $caseStudy->client_location) }}">
+                                @error('client_location')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="solution_we_provide">Solution We Provide</label>
+                                <textarea name="solution_we_provide" id="solution_we_provide" class="form-control @error('solution_we_provide') is-invalid @enderror" rows="2">{{ old('solution_we_provide', $caseStudy->solution_we_provide) }}</textarea>
+                                @error('solution_we_provide')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="result">Result</label>
+                                <textarea name="result" id="result" class="form-control @error('result') is-invalid @enderror" rows="2">{{ old('result', $caseStudy->result) }}</textarea>
+                                @error('result')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-lg">
                                     Update Case Study
                                 </button>

@@ -18,6 +18,12 @@ class CaseStudy extends Model
         'category_id',
         'short_summary',
         'description',
+        'tech_stack',           // <-- new
+        'project_demand',       // <-- new
+        'dedicated_team',       // <-- new
+        'client_location',      // <-- new
+        'solution_we_provide',  // <-- new
+        'result', 
         'thumbnail',
         'images',
         'project_url',

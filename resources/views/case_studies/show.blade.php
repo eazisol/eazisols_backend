@@ -108,6 +108,30 @@
                                         <th>Updated At</th>
                                         <td>{{ $caseStudy->updated_at->format('M d, Y H:i') }}</td>
                                     </tr>
+                                    <tr>
+                                        <th>Tech Stack</th>
+                                        <td>{{ $caseStudy->tech_stack ?? 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Project Demand</th>
+                                        <td>{{ $caseStudy->project_demand ?? 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Dedicated Team</th>
+                                        <td>{{ $caseStudy->dedicated_team ?? 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Client Location</th>
+                                        <td>{{ $caseStudy->client_location ?? 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Solution We Provide</th>
+                                        <td>{{ $caseStudy->solution_we_provide ?? 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Result</th>
+                                        <td>{{ $caseStudy->result ?? 'N/A' }}</td>
+                                    </tr>
                                 </table>
                             </div>
                             <div class="col-md-4">
