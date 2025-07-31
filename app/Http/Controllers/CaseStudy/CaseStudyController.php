@@ -313,4 +313,91 @@ class CaseStudyController extends Controller
         return redirect()->route('case_studies.index')
             ->with('success', 'Case study deleted successfully.');
     }
+    
+    public function apiGetAll(Request $request)
+    {
+        $query = CaseStudy::query();
+
+        // Filter by status
+        $status = $request->query('status', 'active');
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        // Filter by category
+        if ($request->has('category')) {
+            $query->where('category', $request->query('category'));
+        }
+
+        // Filter by client
+        if ($request->has('client')) {
+            $query->where('client', $request->query('client'));
+        }
+
+        // Search in title and description
+        if ($request->has('search')) {
+            $search = $request->query('search');
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%")
+                ->orWhere('client', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Sorting
+        $sort = $request->query('sort', 'created_at');
+        $direction = $request->query('direction', 'desc');
+        $query->orderBy($sort, $direction);
+
+        // Pagination
+        $perPage = $request->query('per_page', 10);
+        $caseStudies = $query->paginate($perPage, [
+            'id',
+            'title',
+            'slug',
+            'client_name',
+            'category_id',
+            'category',
+            'short_summary',
+            'description',
+            'thumbnail',
+            'images',
+            'project_url',
+            'status',
+            'start_date',
+            'end_date',
+            'is_featured',
+            'order',
+            'created_at',
+            'updated_at'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $caseStudies->items(),
+            'meta' => [
+                'total' => $caseStudies->total(),
+                'per_page' => $caseStudies->perPage(),
+                'current_page' => $caseStudies->currentPage(),
+                'last_page' => $caseStudies->lastPage(),
+            ]
+        ]);
+    }
+
+    public function apiGetOne($id)
+    {
+        $caseStudy = CaseStudy::find($id);
+
+        if (!$caseStudy) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Case study not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $caseStudy
+        ]);
+    }
 }

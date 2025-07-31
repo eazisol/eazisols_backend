@@ -237,4 +237,81 @@ class BlogsController extends Controller
         return redirect()->route('blogs.index')
             ->with('success', 'Blog restored successfully.');
     }
+    public function apiGetAll(Request $request)
+    {
+        $query = Blog::query();
+
+        // Filter by status
+        $status = $request->query('status', 'published');
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        // Filter by category
+        if ($request->has('category')) {
+            $query->where('category', $request->query('category'));
+        }
+
+        // Filter by author
+        if ($request->has('author')) {
+            $query->where('author_id', $request->query('author'));
+        }
+
+        // Search in title and description
+        if ($request->has('search')) {
+            $search = $request->query('search');
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Sorting
+        $sort = $request->query('sort', 'created_at');
+        $direction = $request->query('direction', 'desc');
+        $query->orderBy($sort, $direction);
+
+        // Pagination
+        $perPage = $request->query('per_page', 10);
+        $blogs = $query->paginate($perPage, [
+            'id', 
+            'title', 
+            'slug',
+            'description',
+            'category',
+            'status',
+            'thumbnail',
+            'created_at'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $blogs->items(),
+            'meta' => [
+                'total' => $blogs->total(),
+                'per_page' => $blogs->perPage(),
+                'current_page' => $blogs->currentPage(),
+                'last_page' => $blogs->lastPage(),
+            ]
+        ]);
+    }
+
+    public function apiGetOne($id)
+    {
+        $blog = Blog::find($id);
+
+        if (!$blog) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Blog not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $blog
+        ]);
+    }
+    
+
 }
