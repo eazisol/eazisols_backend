@@ -326,8 +326,10 @@ class CaseStudyController extends Controller
             ->with('success', 'Case study deleted successfully.');
     }
     
-    public function apiGetAll(Request $request)
-    {
+
+public function apiGetAll(Request $request)
+{
+    try {
         $query = CaseStudy::query();
 
         // Filter by status
@@ -336,24 +338,29 @@ class CaseStudyController extends Controller
             $query->where('status', $status);
         }
 
-        // Filter by category
-        if ($request->has('category')) {
-            $query->where('category', $request->query('category'));
+        // Filter by category_id
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->query('category_id'));
         }
 
-        // Filter by client
-        if ($request->has('client')) {
-            $query->where('client', $request->query('client'));
+        // Filter by client name
+        if ($request->has('client_name')) {
+            $query->where('client_name', 'LIKE', '%' . $request->query('client_name') . '%');
         }
 
-        // Search in title and description
+        // Search in title, description and client name
         if ($request->has('search')) {
             $search = $request->query('search');
             $query->where(function($q) use ($search) {
                 $q->where('title', 'LIKE', "%{$search}%")
-                ->orWhere('description', 'LIKE', "%{$search}%")
-                ->orWhere('client', 'LIKE', "%{$search}%");
+                  ->orWhere('description', 'LIKE', "%{$search}%")
+                  ->orWhere('client_name', 'LIKE', "%{$search}%");
             });
+        }
+
+        // Filter by featured
+        if ($request->has('is_featured')) {
+            $query->where('is_featured', $request->query('is_featured'));
         }
 
         // Sorting
@@ -363,36 +370,43 @@ class CaseStudyController extends Controller
 
         // Pagination
         $perPage = $request->query('per_page', 10);
-        $caseStudies = $query->paginate($perPage, [
-            'id',
-            'title',
-            'slug',
-            'client_name',
-            'category_id',
-            'category',
-            'short_summary',
-            'description',
-            'tech_stack',
-            'project_demand',
-            'dedicated_team',
-            'client_location',
-            'solution_we_provide',
-            'result',
-            'thumbnail',
-            'images',
-            'project_url',
-            'status',
-            'start_date',
-            'end_date',
-            'is_featured',
-            'order',
-            'created_at',
-            'updated_at'
-        ]);
+        $caseStudies = $query->paginate($perPage);
+
+        // Transform data to include full URLs for images
+        $transformedData = collect($caseStudies->items())->map(function($item) {
+            return [
+                'id' => $item->id,
+                'title' => $item->title,
+                'slug' => $item->slug,
+                'client_name' => $item->client_name,
+                'category_id' => $item->category_id,
+                'category' => $item->category,
+                'short_summary' => $item->short_summary,
+                'description' => $item->description,
+                'tech_stack' => $item->tech_stack,
+                'project_demand' => $item->project_demand,
+                'dedicated_team' => $item->dedicated_team,
+                'client_location' => $item->client_location,
+                'solution_we_provide' => $item->solution_we_provide,
+                'result' => $item->result,
+                'thumbnail' => $item->thumbnail ? asset($item->thumbnail) : null,
+                'images' => $item->images ? array_map(function($image) {
+                    return asset($image);
+                }, $item->images) : [],
+                'project_url' => $item->project_url,
+                'status' => $item->status,
+                'start_date' => $item->start_date,
+                'end_date' => $item->end_date,
+                'is_featured' => (bool) $item->is_featured,
+                'order' => $item->order,
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at
+            ];
+        });
 
         return response()->json([
             'success' => true,
-            'data' => $caseStudies->items(),
+            'data' => $transformedData,
             'meta' => [
                 'total' => $caseStudies->total(),
                 'per_page' => $caseStudies->perPage(),
@@ -400,7 +414,15 @@ class CaseStudyController extends Controller
                 'last_page' => $caseStudies->lastPage(),
             ]
         ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'An error occurred while fetching case studies',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
     public function apiGetOne($id)
     {
