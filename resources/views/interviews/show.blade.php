@@ -100,6 +100,7 @@
                                 </dl>
                             </div>
                         </div>
+                        <a href="{{ route('interviews.print', $interview) }}" target="_blank" class="btn btn-secondary mt-3"><i class="fas fa-print mr-1"></i> Print</a>
                         <a href="{{ route('interviews.index') }}" class="btn btn-light mt-3">Back to List</a>
                     </div>
                 </div>

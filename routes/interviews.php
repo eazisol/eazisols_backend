@@ -13,3 +13,7 @@ use App\Http\Controllers\Interviews\InterviewsController;
 */
 
 Route::resource('interviews', InterviewsController::class);
+
+// Print single interview as HR Evaluation form
+Route::get('interviews/{interview}/print', [InterviewsController::class, 'print'])
+    ->name('interviews.print');

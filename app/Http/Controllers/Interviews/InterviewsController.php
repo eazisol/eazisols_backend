@@ -124,6 +124,17 @@ class InterviewsController extends Controller
     }
 
     /**
+     * Print the specified resource as HR Evaluation form.
+     *
+     * @param  Interview  $interview
+     * @return \Illuminate\Http\Response
+     */
+    public function print(Interview $interview)
+    {
+        return view('interviews.print', compact('interview'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

@@ -16,6 +16,11 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Interview Details</h4>
+                        <div class="card-header-action">
+                            <a href="{{ route('interviews.print', $interview) }}" target="_blank" class="btn btn-secondary">
+                                <i class="fas fa-print mr-1"></i> Print
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
                         @if ($errors->any())

@@ -90,6 +90,9 @@
                                             {{-- <td>{{ ucfirst($interview->interview_type) }}</td> --}}
 
                                             <td>
+                                                <a href="{{ route('interviews.print', $interview) }}" target="_blank" class="btn btn-sm btn-secondary" title="Print">
+                                                    <i class="fas fa-print"></i>
+                                                </a>
                                                 <a href="{{ route('interviews.edit', $interview) }}" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i></a>
                                                 <form action="{{ route('interviews.destroy', $interview) }}" method="POST" class="d-inline delete-form">
                                                     @csrf

@@ -60,7 +60,6 @@ class Interview extends Model
     // If you want to automatically cast some fields
     protected $casts = [
         'date_of_interview' => 'date',
-        'interview_time' => 'datetime:H:i',
         'negotiable' => 'boolean',
         'immediate_joining' => 'boolean',
         'currently_studying' => 'boolean',
