@@ -20,6 +20,57 @@
                             <a href="{{ route('interviews.print', $interview) }}" target="_blank" class="btn btn-secondary">
                                 <i class="fas fa-print mr-1"></i> Print
                             </a>
+                            @php
+                                $waPhone = preg_replace('/\D+/', '', $interview->phone ?? '');
+                                if ($waPhone) {
+                                    if (strpos($waPhone, '0092') === 0) {
+                                        $waPhone = '92' . substr($waPhone, 4);
+                                    } elseif (strpos($waPhone, '92') === 0) {
+                                        // already with PK code
+                                    } elseif (strpos($waPhone, '0') === 0) {
+                                        $waPhone = '92' . substr($waPhone, 1);
+                                    } else {
+                                        if (strlen($waPhone) === 10 || strlen($waPhone) === 9) {
+                                            $waPhone = '92' . $waPhone;
+                                        }
+                                    }
+                                }
+
+                                $waDate = '';
+                                if ($interview->date_of_interview) {
+                                    try { $waDate = \Carbon\Carbon::parse($interview->date_of_interview)->format('M jS, Y'); } catch (\Exception $e) { $waDate = (string)$interview->date_of_interview; }
+                                }
+
+                                $rawTime = $interview->interview_time ?? '';
+                                $waTime = '';
+                                if ($rawTime) {
+                                    $attempts = ['H:i', 'H:i:s', 'H:i:s.u'];
+                                    foreach ($attempts as $fmt) {
+                                        try { $waTime = \Carbon\Carbon::createFromFormat($fmt, trim($rawTime))->format('h:iA'); break; } catch (\Exception $e) {}
+                                    }
+                                    if ($waTime === '') {
+                                        try { $waTime = \Carbon\Carbon::parse($rawTime)->format('h:iA'); } catch (\Exception $e) { $waTime = $rawTime; }
+                                    }
+                                }
+
+                                $waType = ($interview->interview_type === 'onsite') ? 'on-site' : (($interview->interview_type === 'online') ? 'online' : ucfirst($interview->interview_type ?? ''));
+
+                                $waMsg = "Dear {$interview->name},\n\nWe appreciate your interest in the position of {$interview->position_applied} at Eazisols. We would like to invite you for an {$waType} interview on {$waDate} at {$waTime}.\n\nAddress: 65-J1, Wapda Town Phase 1, Lahore, Pakistan.\nLocation: https://goo.gl/maps/Naxu32J2NkDmjkKR8\n\nPlease confirm your availability for the interview by replying to this message.\n\nBest regards,\nHR Department\nEazisol";
+
+                                $waUrl = $waPhone ? ('https://wa.me/' . $waPhone . '?text=' . urlencode($waMsg)) : null;
+                            @endphp
+                            @if($waUrl)
+                                <a href="{{ $waUrl }}" target="_blank" class="btn btn-success">
+                                    <i class="fab fa-whatsapp mr-1"></i> WhatsApp
+                                </a>
+                            @endif
+                            <form action="{{ route('interviews.sendMail', $interview) }}" method="POST" class="d-inline">
+                                @csrf
+                                <input type="hidden" name="subject" value="Interview Invitation - {{ $interview->position_applied }}">
+                                <button type="submit" class="btn btn-info">
+                                    <i class="fas fa-envelope mr-1"></i> Email
+                                </button>
+                            </form>
                         </div>
                     </div>
                     <div class="card-body">
