@@ -17,3 +17,7 @@ Route::resource('interviews', InterviewsController::class);
 // Print single interview as HR Evaluation form
 Route::get('interviews/{interview}/print', [InterviewsController::class, 'print'])
     ->name('interviews.print');
+
+// Send email to interview's email address
+Route::post('interviews/{interview}/send-mail', [InterviewsController::class, 'sendMail'])
+    ->name('interviews.sendMail');

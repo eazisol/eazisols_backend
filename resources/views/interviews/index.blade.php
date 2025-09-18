@@ -93,6 +93,13 @@
                                                 <a href="{{ route('interviews.print', $interview) }}" target="_blank" class="btn btn-sm btn-secondary" title="Print">
                                                     <i class="fas fa-print"></i>
                                                 </a>
+                                                <form action="{{ route('interviews.sendMail', $interview) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    <input type="hidden" name="subject" value="Interview Invitation - {{ $interview->position_applied }}">
+                                                    <button type="submit" class="btn btn-sm btn-info" title="Send Email">
+                                                        <i class="fas fa-envelope"></i>
+                                                    </button>
+                                                </form>
                                                 <a href="{{ route('interviews.edit', $interview) }}" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i></a>
                                                 <form action="{{ route('interviews.destroy', $interview) }}" method="POST" class="d-inline delete-form">
                                                     @csrf

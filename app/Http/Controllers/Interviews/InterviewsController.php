@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Interviews;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Interview;
+use App\Helpers\MailHelper;
+use Illuminate\Support\Facades\Log;
 
 class InterviewsController extends Controller
 {
@@ -132,6 +134,36 @@ class InterviewsController extends Controller
     public function print(Interview $interview)
     {
         return view('interviews.print', compact('interview'));
+    }
+
+    /**
+     * Send an email to interviewee using existing MailHelper configuration.
+     */
+    public function sendMail(Interview $interview, Request $request)
+    {
+        $request->validate([
+            'subject' => 'nullable|string|max:255',
+            'message' => 'nullable|string',
+        ]);
+
+        $to = $interview->email;
+        if (!$to) {
+            return back()->with('error', 'No email found for this interview.');
+        }
+
+        $subject = $request->input('subject') ?: 'Regarding your interview at Eazisols';
+        $data = [
+            'interview' => $interview,
+            'messageBody' => $request->input('message') ?: 'Thank you for your time. We will get back to you soon.',
+        ];
+
+        try {
+            MailHelper::send($to, $interview->name ?? '', $subject, 'emails.interview-generic', $data);
+            return back()->with('success', 'Email sent successfully.');
+        } catch (\Exception $e) {
+            Log::error('Interview email send failed', ['error' => $e->getMessage(), 'interview_id' => $interview->id]);
+            return back()->with('error', 'Failed to send email: ' . $e->getMessage());
+        }
     }
 
     /**
