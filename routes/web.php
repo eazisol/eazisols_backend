@@ -55,6 +55,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     require __DIR__.'/queries.php';
     require __DIR__.'/case_studies.php';
     require __DIR__.'/categories.php';
+    require __DIR__.'/interviews.php';
     require __DIR__.'/locations.php';
     require __DIR__.'/reminders.php';
     

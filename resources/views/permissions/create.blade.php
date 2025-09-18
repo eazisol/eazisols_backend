@@ -57,6 +57,8 @@
                                             <option value="dashboard">Dashboard</option>
                                             <option value="applied_jobs">Applied Jobs</option>
                                             <option value="locations">Locations</option>
+                                            <option value="reminders">Monthly Reminders</option>
+                                            <option value="interviews">Interviews</option>
                                             <option value="other">Other (custom)</option>
                                         </select>
                                     </div>

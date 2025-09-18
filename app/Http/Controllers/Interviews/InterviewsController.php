@@ -1,0 +1,201 @@
+<?php
+
+namespace App\Http\Controllers\Interviews;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Interview;
+
+class InterviewsController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $query = Interview::query();
+
+        // Search functionality (by name, email, phone, position_applied)
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('email', 'LIKE', "%{$search}%")
+                  ->orWhere('phone', 'LIKE', "%{$search}%")
+                  ->orWhere('position_applied', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Filter by interview_type
+        if ($request->has('interview_type') && $request->interview_type != '') {
+            $query->where('interview_type', $request->interview_type);
+        }
+
+        // Filter by job_status
+        if ($request->has('job_status') && $request->job_status != '') {
+            $query->where('job_status', $request->job_status);
+        }
+
+        // Sort options
+        $sort = $request->sort ?? 'date_of_interview';
+        $direction = $request->direction ?? 'desc';
+        $query->orderBy($sort, $direction);
+
+        $interviews = $query->paginate(10);
+        $interviewTypes = ['onsite', 'online'];
+        $jobStatuses = ['offered', 'rejected', 'on-hold'];
+
+        return view('interviews.index', compact('interviews', 'interviewTypes', 'jobStatuses'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $interviewTypes = ['onsite', 'online'];
+        $jobStatuses = ['offered', 'rejected', 'on-hold'];
+        return view('interviews.create', compact('interviewTypes', 'jobStatuses'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:255',
+            'qualification' => 'nullable|string|max:255',
+            'year' => 'nullable|integer',
+            'age' => 'nullable|integer',
+            'home_town' => 'nullable|string|max:255',
+            'current_location' => 'nullable|string|max:255',
+            'date_of_interview' => 'required|date',
+            'interview_time' => 'nullable',
+            'position_applied' => 'nullable|string|max:255',
+            'interview_type' => 'required|in:onsite,online',
+            'name_of_interviewer' => 'nullable|string|max:255',
+            'remarks' => 'nullable|string',
+            'technical_remarks' => 'nullable|string',
+            'technical_interview_conducted_by' => 'nullable|string|max:255',
+            'job_status' => 'nullable|string|max:255',
+            'marital_status' => 'nullable|string|max:255',
+            'technical_skills' => 'nullable|string|max:255',
+            'reference' => 'nullable|string|max:255',
+            'last_company_name' => 'nullable|string|max:255',
+            'employee_count' => 'nullable|integer',
+            'total_experience' => 'nullable|numeric',
+            'last_job_position' => 'nullable|string|max:255',
+            'relevant_experience' => 'nullable|numeric',
+            'last_current_salary' => 'nullable|numeric',
+            'notice_period' => 'nullable|string|max:255',
+            'expected_salary' => 'nullable|numeric',
+            'negotiable' => 'nullable|boolean',
+            'immediate_joining' => 'nullable|boolean',
+            'reason_for_leaving' => 'nullable|string',
+            'other_benefits' => 'nullable|string|max:255',
+            'communication_skills' => 'nullable|string|max:255',
+            'health_condition' => 'nullable|string|max:255',
+            'currently_studying' => 'nullable|boolean',
+            'interviewed_previously' => 'nullable|boolean',
+        ]);
+        Interview::create($validated);
+        return redirect()->route('interviews.index')->with('success', 'Interview created successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Interview $interview)
+    {
+        return view('interviews.show', compact('interview'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Interview $interview)
+    {
+        $interviewTypes = ['onsite', 'online'];
+        $jobStatuses = ['offered', 'rejected', 'on-hold'];
+        return view('interviews.edit', compact('interview', 'interviewTypes', 'jobStatuses'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Interview $interview)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:255',
+            'qualification' => 'nullable|string|max:255',
+            'year' => 'nullable|integer',
+            'age' => 'nullable|integer',
+            'home_town' => 'nullable|string|max:255',
+            'current_location' => 'nullable|string|max:255',
+            'date_of_interview' => 'required|date',
+            'interview_time' => 'nullable',
+            'position_applied' => 'nullable|string|max:255',
+            'interview_type' => 'required|in:onsite,online',
+            'name_of_interviewer' => 'nullable|string|max:255',
+            'remarks' => 'nullable|string',
+            'technical_remarks' => 'nullable|string',
+            'technical_interview_conducted_by' => 'nullable|string|max:255',
+            'job_status' => 'nullable|string|max:255',
+            'marital_status' => 'nullable|string|max:255',
+            'technical_skills' => 'nullable|string|max:255',
+            'reference' => 'nullable|string|max:255',
+            'last_company_name' => 'nullable|string|max:255',
+            'employee_count' => 'nullable|integer',
+            'total_experience' => 'nullable|numeric',
+            'last_job_position' => 'nullable|string|max:255',
+            'relevant_experience' => 'nullable|numeric',
+            'last_current_salary' => 'nullable|numeric',
+            'notice_period' => 'nullable|string|max:255',
+            'expected_salary' => 'nullable|numeric',
+            'negotiable' => 'nullable|boolean',
+            'immediate_joining' => 'nullable|boolean',
+            'reason_for_leaving' => 'nullable|string',
+            'other_benefits' => 'nullable|string|max:255',
+            'communication_skills' => 'nullable|string|max:255',
+            'health_condition' => 'nullable|string|max:255',
+            'currently_studying' => 'nullable|boolean',
+            'interviewed_previously' => 'nullable|boolean',
+        ]);
+        $interview->update($validated);
+        return redirect()->route('interviews.index')->with('success', 'Interview updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Interview $interview)
+    {
+        $interview->delete();
+        return redirect()->route('interviews.index')->with('success', 'Interview deleted successfully.');
+    }
+}

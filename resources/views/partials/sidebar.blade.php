@@ -31,7 +31,8 @@ $sections = [
     'users' => ['users.*', 'roles.*', 'permissions.*'],
     'attendances' => ['attendances.*'],
     'leaves' => ['leaves.*'],
-    'reminders' => ['reminders.*']
+    'reminders' => ['reminders.*'],
+    'interviews' => ['interviews.*']
 ];
 
 // Determine which section is active
@@ -284,6 +285,21 @@ foreach ($sections as $section => $routes) {
                 </li>
               </ul>
             </li>
+
+            {{-- Interviews --}}
+            @if(auth()->user()->hasPermission('dash_interviews'))
+            <li class="dropdown {{ $activeSection == 'interviews' ? 'active' : '' }}">
+              <a class="menu-toggle nav-link has-dropdown {{ $activeSection == 'interviews' ? 'toggled' : '' }}" style="cursor: pointer;"><i data-feather="user-check"></i><span>Interviews</span></a>
+              <ul class="dropdown-menu" style="{{ $activeSection == 'interviews' ? 'display: block;' : '' }}">
+                <li class="{{ request()->routeIs('interviews.index') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('interviews.index') }}">All Interviews</a>
+                </li>
+                <li class="{{ request()->routeIs('interviews.create') ? 'active' : '' }}">
+                  <a class="nav-link" href="{{ route('interviews.create') }}">Add New Interview</a>
+                </li>
+              </ul>
+            </li>
+            @endif
 
             <li class="menu-header">Configuration</li>
             
