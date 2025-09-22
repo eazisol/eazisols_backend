@@ -147,6 +147,9 @@
                                                         <i class="fab fa-slack"></i>
                                                     </button>
                                                 </form>
+                                                <a href="{{ route('interviews.show', $interview) }}" class="btn btn-sm btn-light" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
                                                 <form action="{{ route('interviews.sendMail', $interview) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     <input type="hidden" name="subject" value="Interview Invitation - {{ $interview->position_applied }}">
@@ -154,7 +157,7 @@
                                                         <i class="fas fa-envelope"></i>
                                                     </button>
                                                 </form>
-                                                <a href="{{ route('interviews.edit', $interview) }}" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                                                {{-- <a href="{{ route('interviews.edit', $interview) }}" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i></a> --}}
                                                 <form action="{{ route('interviews.destroy', $interview) }}" method="POST" class="d-inline delete-form">
                                                     @csrf
                                                     @method('DELETE')
