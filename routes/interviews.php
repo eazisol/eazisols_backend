@@ -21,3 +21,7 @@ Route::get('interviews/{interview}/print', [InterviewsController::class, 'print'
 // Send email to interview's email address
 Route::post('interviews/{interview}/send-mail', [InterviewsController::class, 'sendMail'])
     ->name('interviews.sendMail');
+
+// Send Slack message for interview
+Route::post('interviews/{interview}/send-slack', [InterviewsController::class, 'sendSlack'])
+    ->name('interviews.sendSlack');

@@ -64,6 +64,12 @@
                                     <i class="fab fa-whatsapp mr-1"></i> WhatsApp
                                 </a>
                             @endif
+                            <form action="{{ route('interviews.sendSlack', $interview) }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-dark">
+                                    <i class="fab fa-slack mr-1"></i> Slack
+                                </button>
+                            </form>
                             <form action="{{ route('interviews.sendMail', $interview) }}" method="POST" class="d-inline">
                                 @csrf
                                 <input type="hidden" name="subject" value="Interview Invitation - {{ $interview->position_applied }}">

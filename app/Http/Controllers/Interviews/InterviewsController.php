@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Interview;
 use App\Helpers\MailHelper;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class InterviewsController extends Controller
 {
@@ -163,6 +164,54 @@ class InterviewsController extends Controller
         } catch (\Exception $e) {
             Log::error('Interview email send failed', ['error' => $e->getMessage(), 'interview_id' => $interview->id]);
             return back()->with('error', 'Failed to send email: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Send a Slack message to a channel via Incoming Webhook.
+     */
+    public function sendSlack(Interview $interview, Request $request)
+    {
+        $webhookUrl = env('SLACK_WEBHOOK_URL');
+        if (!$webhookUrl) {
+            return back()->with('error', 'Slack webhook URL is not configured. Set SLACK_WEBHOOK_URL in .env');
+        }
+
+        $date = '';
+        if ($interview->date_of_interview) {
+            try { $date = \Carbon\Carbon::parse($interview->date_of_interview)->format('M jS, Y'); } catch (\Exception $e) { $date = (string)$interview->date_of_interview; }
+        }
+        $time = '';
+        if ($interview->interview_time) {
+            foreach (['H:i', 'H:i:s', 'H:i:s.u'] as $fmt) {
+                try { $time = \Carbon\Carbon::createFromFormat($fmt, trim($interview->interview_time))->format('h:i A'); break; } catch (\Exception $e) {}
+            }
+            if ($time === '') { try { $time = \Carbon\Carbon::parse($interview->interview_time)->format('h:i A'); } catch (\Exception $e) { $time = (string)$interview->interview_time; } }
+        }
+        $type = ($interview->interview_type === 'onsite') ? 'on-site' : (($interview->interview_type === 'online') ? 'online' : ucfirst($interview->interview_type ?? ''));
+
+        $text = "Interview Reminder\n" .
+            "Candidate: {$interview->name}\n" .
+            "Position: {$interview->position_applied}\n" .
+            "Type: {$type}\n" .
+            "Date: {$date}\n" .
+            "Time: {$time}\n" .
+            "Address: 65-J1, Wapda Town Phase 1, Lahore, Pakistan.\n" .
+            "Maps: https://goo.gl/maps/Naxu32J2NkDmjkKR8";
+
+        try {
+            $payload = [
+                'text' => $text,
+            ];
+            $resp = Http::asJson()->post($webhookUrl, $payload);
+            if ($resp->successful()) {
+                return back()->with('success', 'Slack notification sent.');
+            }
+            Log::error('Slack webhook failed', ['status' => $resp->status(), 'body' => $resp->body()]);
+            return back()->with('error', 'Failed to send Slack notification.');
+        } catch (\Throwable $e) {
+            Log::error('Slack webhook exception', ['error' => $e->getMessage()]);
+            return back()->with('error', 'Failed to send Slack notification: ' . $e->getMessage());
         }
     }
 
