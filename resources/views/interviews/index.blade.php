@@ -132,10 +132,12 @@
 
                                                     $waMsg = "Dear {$interview->name},\n\nWe appreciate your interest in the position of {$interview->position_applied} at Eazisols. We would like to invite you for an {$waType} interview on {$waDate} at {$waTime}.\n\nAddress: 65-J1, Wapda Town Phase 1, Lahore, Pakistan.\nLocation: https://goo.gl/maps/Naxu32J2NkDmjkKR8\n\nPlease confirm your availability for the interview by replying to this message.\n\nBest regards,\nHR Department\nEazisol";
 
-                                                    $waUrl = $waPhone ? ('https://wa.me/' . $waPhone . '?text=' . urlencode($waMsg)) : null;
+                                                    $waUrl = $waPhone ? ('https://api.whatsapp.com/send?phone=' . $waPhone . '&text=' . rawurlencode($waMsg)) : null;
                                                 @endphp
-                                                @if($waUrl)
-                                                    <a href="{{ $waUrl }}" target="_blank" class="btn btn-sm btn-success" title="WhatsApp">
+                                                @if($waPhone)
+                                                    <a href="javascript:void(0)" class="btn btn-sm btn-success open-wa" title="WhatsApp"
+                                                       data-wa-phone="{{ $waPhone }}"
+                                                       data-wa-message="{{ $waMsg }}">
                                                         <i class="fab fa-whatsapp"></i>
                                                     </a>
                                                 @endif
@@ -198,6 +200,31 @@
                 }
             });
         });
+    });
+</script>
+<script>
+    function openWhatsApp(phone, message) {
+        const encoded = encodeURIComponent(message);
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile) {
+            // Mobile: try native app first, then fallback to API
+            let opened = false;
+            try { opened = !!window.open(`whatsapp://send?phone=${phone}&text=${encoded}`, '_blank'); } catch(e) {}
+            setTimeout(() => {
+                if (!opened) {
+                    window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encoded}`, '_blank');
+                }
+            }, 350);
+        } else {
+            // Desktop: open Web for reliable prefill on unsaved numbers
+            window.open(`https://web.whatsapp.com/send?phone=${phone}&text=${encoded}`, '_blank');
+        }
+    }
+
+    $(document).on('click', '.open-wa', function() {
+        const phone = $(this).attr('data-wa-phone');
+        const message = $(this).attr('data-wa-message');
+        openWhatsApp(phone, message);
     });
 </script>
 @endsection
