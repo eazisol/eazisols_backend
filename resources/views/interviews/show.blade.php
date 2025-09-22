@@ -22,7 +22,11 @@
         elseif (strpos($waPhone, '0') === 0) { $waPhone = '92' . substr($waPhone, 1); }
         elseif (strlen($waPhone) === 10 || strlen($waPhone) === 9) { $waPhone = '92' . $waPhone; }
     }
-    $msg = "Dear {$interview->name},\n\nWe appreciate your interest in the position of {$interview->position_applied} at Eazisols. We would like to invite you for an " . strtolower($typeStr) . " interview on {$dateStr} at {$timeStr}.\n\nAddress: 65-J1, Wapda Town Phase 1, Lahore, Pakistan.\nLocation: https://goo.gl/maps/Naxu32J2NkDmjkKR8\n\nPlease confirm your availability for the interview by replying to this message.\n\nBest regards,\nHR Department\nEazisol";
+    if (($interview->round_type ?? 'first') === 'second') {
+        $msg = "Dear {$interview->name},\n\nWith reference to your first interview, we’re pleased to inform you that you’ve been shortlisted for the second round of interviews, scheduled on {$dateStr} at {$timeStr}.\n\nAddress: 65-J1, Wapda Town Phase 1, Lahore, Pakistan.\nLocation: https://goo.gl/maps/Naxu32J2NkDmjkKR8\n\nPlease acknowledge this message and confirm your availability for the interview.\n\nBest regards,\nHR Department\nEazisol";
+    } else {
+        $msg = "Dear {$interview->name},\n\nWe appreciate your interest in the position of {$interview->position_applied} at Eazisols. We would like to invite you for an " . strtolower($typeStr) . " interview on {$dateStr} at {$timeStr}.\n\nAddress: 65-J1, Wapda Town Phase 1, Lahore, Pakistan.\nLocation: https://goo.gl/maps/Naxu32J2NkDmjkKR8\n\nPlease confirm your availability for the interview by replying to this message.\n\nBest regards,\nHR Department\nEazisol";
+    }
     $waDesktop = $waPhone ? 'https://web.whatsapp.com/send?phone=' . $waPhone . '&text=' . urlencode($msg) : null;
     $waMobile = $waPhone ? 'https://api.whatsapp.com/send?phone=' . $waPhone . '&text=' . urlencode($msg) : null;
 @endphp

@@ -55,7 +55,11 @@
 
                                 $waType = ($interview->interview_type === 'onsite') ? 'on-site' : (($interview->interview_type === 'online') ? 'online' : ucfirst($interview->interview_type ?? ''));
 
-                                $waMsg = "Dear {$interview->name},\n\nWe appreciate your interest in the position of {$interview->position_applied} at Eazisols. We would like to invite you for an {$waType} interview on {$waDate} at {$waTime}.\n\nAddress: 65-J1, Wapda Town Phase 1, Lahore, Pakistan.\nLocation: https://goo.gl/maps/Naxu32J2NkDmjkKR8\n\nPlease confirm your availability for the interview by replying to this message.\n\nBest regards,\nHR Department\nEazisol";
+                                if (($interview->round_type ?? 'first') === 'second') {
+                                    $waMsg = "Dear {$interview->name},\n\nWith reference to your first interview, we’re pleased to inform you that you’ve been shortlisted for the second round of interviews, scheduled on {$waDate} at {$waTime}.\n\nAddress: 65-J1, Wapda Town Phase 1, Lahore, Pakistan.\nLocation: https://goo.gl/maps/Naxu32J2NkDmjkKR8\n\nPlease acknowledge this message and confirm your availability for the interview.\n\nBest regards,\nHR Department\nEazisol";
+                                } else {
+                                    $waMsg = "Dear {$interview->name},\n\nWe appreciate your interest in the position of {$interview->position_applied} at Eazisols. We would like to invite you for an {$waType} interview on {$waDate} at {$waTime}.\n\nAddress: 65-J1, Wapda Town Phase 1, Lahore, Pakistan.\nLocation: https://goo.gl/maps/Naxu32J2NkDmjkKR8\n\nPlease confirm your availability for the interview by replying to this message.\n\nBest regards,\nHR Department\nEazisol";
+                                }
 
                                 $waUrl = $waPhone ? ('https://api.whatsapp.com/send?phone=' . $waPhone . '&text=' . rawurlencode($waMsg)) : null;
                             @endphp
