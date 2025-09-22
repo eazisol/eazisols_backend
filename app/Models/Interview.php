@@ -34,6 +34,7 @@ class Interview extends Model
 
         // Job-related info
         'job_status',
+        'round_type',
         'marital_status',
         'technical_skills',
         'reference',

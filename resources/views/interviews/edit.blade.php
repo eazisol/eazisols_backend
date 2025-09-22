@@ -192,6 +192,17 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
+                                        <label for="round_type">Round Type <span class="text-danger">*</span></label>
+                                        <select name="round_type" id="round_type" class="form-control @error('round_type') is-invalid @enderror" required>
+                                            <option value="">-- Select Round --</option>
+                                            <option value="first" {{ old('round_type', $interview->round_type) == 'first' ? 'selected' : '' }}>1st Interview</option>
+                                            <option value="second" {{ old('round_type', $interview->round_type) == 'second' ? 'selected' : '' }}>2nd Interview</option>
+                                        </select>
+                                        @error('round_type')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
                                         <label for="name_of_interviewer">Name of Interviewer</label>
                                         <input type="text" name="name_of_interviewer" id="name_of_interviewer" class="form-control @error('name_of_interviewer') is-invalid @enderror" value="{{ old('name_of_interviewer', $interview->name_of_interviewer) }}">
                                         @error('name_of_interviewer')<div class="invalid-feedback">{{ $message }}</div>@enderror
